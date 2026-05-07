@@ -1,0 +1,2730 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Smart Skills Morocco</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Arial,sans-serif;}
+body{background:#f5f4f1;color:#1a1a1a;min-height:100vh;}
+
+/* ── TOPBAR ── */
+.topbar{background:#1B2F5E;padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.tb-brand{color:white;font-size:17px;font-weight:700;letter-spacing:-0.3px;}
+.tb-brand .sk{color:#D4A847;}.tb-brand .mo{color:#3DAB8E;}
+.tb-badge{font-size:11px;color:rgba(255,255,255,0.5);margin-left:8px;}
+.tb-r{display:flex;align-items:center;gap:10px;}
+.tb-av{width:32px;height:32px;border-radius:50%;background:#D4A847;color:#1B2F5E;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;}
+.tb-name{color:rgba(255,255,255,0.8);font-size:13px;}
+.tb-btn{padding:5px 12px;border-radius:6px;border:1px solid rgba(255,255,255,0.3);background:transparent;color:white;font-size:12px;cursor:pointer;font-family:inherit;}
+.tb-btn:hover{background:rgba(255,255,255,0.1);}
+.tb-btn.accent{background:#D4A847;color:#1B2F5E;border-color:#D4A847;font-weight:600;}
+
+/* ── SCREENS ── */
+.screen{display:none;}
+.screen.active{display:block;}
+
+/* ── LOGIN ── */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1B2F5E 0%,#2a4a8f 100%);padding:20px;}
+.login-card{background:white;border-radius:16px;padding:36px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.login-logo{text-align:center;margin-bottom:24px;}
+.login-logo .big{font-size:28px;font-weight:700;color:#1B2F5E;}
+.login-logo .big .sk{color:#D4A847;}.login-logo .big .mo{color:#3DAB8E;}
+.login-logo .sub{font-size:13px;color:#888;margin-top:4px;}
+.role-row{display:flex;gap:8px;margin-bottom:20px;}
+.rbtn{flex:1;padding:10px;border-radius:8px;border:1.5px solid #e8e5e0;background:white;color:#666;font-size:13px;cursor:pointer;font-family:inherit;text-align:center;transition:all 0.15s;}
+.rbtn.on{background:#1B2F5E;color:white;border-color:#1B2F5E;font-weight:500;}
+.rbtn.gold{background:#D4A847;color:#1B2F5E;border-color:#D4A847;font-weight:600;}
+.fld{margin-bottom:14px;}
+.fld label{display:block;font-size:12px;color:#888;margin-bottom:5px;font-weight:500;}
+.fld input{width:100%;padding:10px 12px;border:1.5px solid #e8e5e0;border-radius:8px;font-size:14px;font-family:inherit;outline:none;transition:border-color 0.15s;}
+.fld input:focus{border-color:#1B2F5E;}
+.btn-login{width:100%;padding:12px;background:#1B2F5E;color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+.btn-login:hover{background:#16264d;}
+.login-hint{font-size:12px;color:#aaa;text-align:center;margin-top:12px;}
+
+/* ── LAYOUT ── */
+.app-layout{display:flex;min-height:calc(100vh - 52px);}
+.sidebar{width:220px;background:white;border-right:1px solid #e8e5e0;padding:16px 0;flex-shrink:0;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;}
+.main{flex:1;padding:20px;overflow-y:auto;}
+.sb-section{font-size:10px;color:#aaa;font-weight:600;letter-spacing:0.8px;padding:10px 16px 4px;text-transform:uppercase;}
+.sb-item{padding:9px 16px;font-size:13px;color:#555;cursor:pointer;display:flex;align-items:center;gap:8px;border-left:3px solid transparent;transition:all 0.15s;}
+.sb-item:hover{background:#f5f4f1;color:#1B2F5E;}
+.sb-item.on{background:#EBF0F8;color:#1B2F5E;border-left-color:#1B2F5E;font-weight:500;}
+.sb-item.locked{color:#ccc;cursor:not-allowed;}
+.sb-item.done{color:#3DAB8E;}
+.sb-dot{width:8px;height:8px;border-radius:50%;background:#e8e5e0;flex-shrink:0;}
+.sb-dot.done{background:#3DAB8E;}
+.sb-dot.on{background:#1B2F5E;}
+.sb-dot.locked{background:#e8e5e0;opacity:0.4;}
+.lv-pills{display:flex;gap:6px;padding:8px 16px;}
+.lv-pill{padding:5px 12px;border-radius:20px;font-size:12px;border:1px solid #e8e5e0;cursor:pointer;transition:all 0.15s;}
+.lv-pill.on{background:#1B2F5E;color:white;border-color:#1B2F5E;}
+
+/* ── CARDS ── */
+.card{background:white;border-radius:12px;padding:20px;margin-bottom:16px;border:1px solid #e8e5e0;}
+.card-title{font-size:16px;font-weight:600;color:#1B2F5E;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+
+/* ── DOMAIN TILES ── */
+.dom-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px;}
+.dom-tile{border-radius:14px;padding:20px;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;position:relative;overflow:hidden;}
+.dom-tile:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.15);}
+.dom-tile.locked{opacity:0.5;cursor:not-allowed;}
+.dom-tile h3{color:white;font-size:15px;margin-bottom:6px;}
+.dom-tile p{color:rgba(255,255,255,0.75);font-size:12px;line-height:1.4;}
+.dom-icon{font-size:28px;margin-bottom:10px;}
+.dom-prog{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.2);}
+.dom-prog-fill{height:100%;background:rgba(255,255,255,0.6);}
+
+/* ── LESSON VIEW ── */
+.lesson-header{margin-bottom:16px;}
+.lesson-header h2{font-size:20px;font-weight:600;color:#1B2F5E;}
+.lesson-header p{font-size:13px;color:#888;margin-top:4px;}
+.lesson-goal{background:#EBF0F8;border-radius:10px;padding:12px 14px;font-size:13px;color:#1B2F5E;margin-bottom:16px;line-height:1.5;}
+.lesson-goal strong{display:block;margin-bottom:4px;}
+
+/* ── VIDEO ── */
+.video-wrap{border-radius:12px;overflow:hidden;margin-bottom:16px;box-shadow:0 4px 20px rgba(27,47,94,0.15);}
+.video-header{background:#1B2F5E;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;}
+.video-header .vl{display:flex;align-items:center;gap:8px;}
+.video-header .vdot{width:8px;height:8px;border-radius:50%;background:#3DAB8E;animation:pulse 1.5s infinite;}
+.video-header .vtitle{color:white;font-size:12px;font-weight:500;}
+.video-header .vbadge{background:#D4A847;color:#1B2F5E;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600;}
+.video-header .vtime{color:#D4A847;font-size:11px;}
+.video-placeholder{background:#f0ede8;padding:40px;text-align:center;color:#aaa;font-size:13px;}
+.video-placeholder .vp-icon{font-size:40px;margin-bottom:8px;}
+@keyframes pulse{0%{opacity:1;}50%{opacity:0.4;}100%{opacity:1;}}
+
+/* ── STEPS ── */
+.steps{margin-bottom:16px;}
+.steps h4{font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:10px;}
+.step-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #f5f4f1;}
+.step-item:last-child{border-bottom:none;}
+.step-num{width:28px;height:28px;border-radius:50%;background:#1B2F5E;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.step-body h5{font-size:13px;font-weight:600;margin-bottom:3px;}
+.step-body p{font-size:12px;color:#666;line-height:1.5;}
+
+/* ── DELIVERABLES ── */
+.deliv{background:#f9f8f6;border-radius:10px;padding:12px 14px;margin-bottom:16px;}
+.deliv h4{font-size:12px;font-weight:600;color:#1a1a1a;margin-bottom:8px;}
+.deliv ul{list-style:none;padding:0;}
+.deliv ul li{font-size:12px;color:#555;padding:3px 0;display:flex;align-items:center;gap:6px;}
+.deliv ul li::before{content:"✓";color:#3DAB8E;font-weight:700;}
+
+/* ── UPLOAD ── */
+.upl{border:2px dashed #d0cdc8;border-radius:10px;padding:20px;text-align:center;color:#aaa;font-size:13px;cursor:pointer;margin-bottom:16px;transition:border-color 0.15s;}
+.upl:hover{border-color:#1B2F5E;color:#1B2F5E;}
+
+/* ── QUESTIONS ── */
+.q-card{background:white;border-radius:12px;padding:16px;margin-bottom:12px;border:1px solid #e8e5e0;}
+.q-num{font-size:11px;color:#aaa;margin-bottom:6px;}
+.q-text{font-size:14px;font-weight:500;margin-bottom:12px;line-height:1.5;}
+.mc-opts{display:flex;flex-direction:column;gap:8px;}
+.mc-opt{padding:10px 14px;border-radius:8px;border:1.5px solid #e8e5e0;cursor:pointer;font-size:13px;transition:all 0.15s;display:flex;align-items:center;gap:10px;}
+.mc-opt:hover{border-color:#1B2F5E;background:#f5f8ff;}
+.mc-opt.sel{border-color:#1B2F5E;background:#EBF0F8;}
+.mc-opt.ok{border-color:#3DAB8E;background:#EBF3EE;color:#0F6E56;}
+.mc-opt.no{border-color:#E24B4A;background:#FCEBEB;color:#A32D2D;}
+.mc-radio{width:16px;height:16px;border-radius:50%;border:2px solid #d0cdc8;flex-shrink:0;}
+.mc-opt.sel .mc-radio{border-color:#1B2F5E;background:#1B2F5E;}
+.mc-opt.ok .mc-radio{border-color:#3DAB8E;background:#3DAB8E;}
+.mc-opt.no .mc-radio{border-color:#E24B4A;background:#E24B4A;}
+.open-ans{width:100%;padding:10px 12px;border:1.5px solid #e8e5e0;border-radius:8px;font-size:13px;font-family:inherit;resize:vertical;min-height:80px;outline:none;}
+.open-ans:focus{border-color:#1B2F5E;}
+.fb{padding:8px 12px;border-radius:8px;font-size:12px;margin-top:8px;}
+.fb-ok{background:#EBF3EE;color:#0F6E56;}
+.fb-no{background:#FCEBEB;color:#A32D2D;}
+.retry-btn{margin-top:8px;padding:6px 14px;background:#D4A847;color:#1B2F5E;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;}
+.score-box{border-radius:12px;padding:20px;text-align:center;margin-bottom:16px;}
+.score-big{font-size:48px;font-weight:700;}
+.score-lbl{font-size:14px;margin-top:4px;opacity:0.8;}
+.score-bar{height:8px;border-radius:4px;background:#e8e5e0;margin-top:12px;overflow:hidden;}
+.score-fill{height:100%;border-radius:4px;transition:width 0.5s;}
+.btn-row{display:flex;gap:10px;margin-top:16px;}
+
+/* ── BUTTONS ── */
+.btn-p{padding:10px 20px;background:#1B2F5E;color:white;border:none;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+.btn-p:hover{background:#16264d;}
+.btn-s{padding:10px 20px;background:white;color:#1B2F5E;border:1.5px solid #1B2F5E;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;}
+.btn-s:hover{background:#EBF0F8;}
+.btn-g{padding:10px 20px;background:#3DAB8E;color:white;border:none;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;}
+
+/* ── NULMETING ── */
+.nul-intro{text-align:center;padding:20px 0;}
+.nul-intro h2{font-size:22px;font-weight:700;color:#1B2F5E;margin-bottom:8px;}
+.nul-intro p{font-size:14px;color:#666;line-height:1.6;max-width:500px;margin:0 auto 20px;}
+.nul-dom-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px;}
+.nul-dom{border-radius:10px;padding:12px;text-align:center;border:2px solid transparent;cursor:pointer;transition:all 0.15s;}
+.nul-dom.done{opacity:0.6;}
+.nul-dom h4{color:white;font-size:13px;margin-top:6px;}
+
+/* ── TEACHER DASHBOARD ── */
+.t-sec{background:white;border-radius:12px;margin-bottom:10px;border:1px solid #e8e5e0;overflow:hidden;}
+.t-sec-hdr{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;}
+.t-sec-hdr:hover{background:#f9f8f6;}
+.t-sec-title{font-size:14px;font-weight:500;color:#1a1a1a;display:flex;align-items:center;gap:8px;}
+.t-sec-body{display:none;padding:0 16px 16px;}
+.t-sec-body.open{display:block;}
+.chev{font-size:12px;color:#aaa;transition:transform 0.2s;}
+.chev.open{transform:rotate(180deg);}
+.t-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;}
+.t-tbl{width:100%;border-collapse:collapse;font-size:13px;}
+.t-tbl th{padding:8px 10px;background:#f5f4f1;text-align:left;font-weight:500;font-size:12px;color:#666;border-bottom:1px solid #e8e5e0;}
+.t-tbl td{padding:8px 10px;border-bottom:1px solid #f5f4f1;}
+.t-tbl tr:last-child td{border-bottom:none;}
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;}
+.bg{background:#EBF3EE;color:#0F6E56;}
+.bb{background:#EBF0F8;color:#1B2F5E;}
+.br{background:#FCEBEB;color:#A32D2D;}
+.by{background:#FAEEDA;color:#633806;}
+.t-btn{padding:5px 10px;border-radius:6px;border:1px solid #d0cdc8;background:white;font-size:11px;cursor:pointer;font-family:inherit;transition:all 0.15s;}
+.t-btn:hover{background:#f5f4f1;}
+.t-btn.on{background:#1B2F5E;color:white;border-color:#1B2F5E;}
+.notice{padding:10px 14px;border-radius:8px;font-size:12px;line-height:1.5;}
+.n-blue{background:#EBF0F8;color:#1B2F5E;}
+.n-yellow{background:#FAEEDA;color:#633806;}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.stat{background:white;border-radius:10px;padding:14px;text-align:center;border:1px solid #e8e5e0;}
+.stat-n{font-size:26px;font-weight:700;color:#1B2F5E;}
+.stat-l{font-size:11px;color:#888;margin-top:2px;}
+
+/* ── TOGGLE SWITCH ── */
+.tog-sw{position:relative;width:46px;height:24px;flex-shrink:0;}
+.tog-sw input{opacity:0;width:0;height:0;position:absolute;}
+.tog-sl{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;border-radius:12px;transition:.3s;}
+.tog-sl:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.3s;}
+.tog-sw input:checked + .tog-sl{background:#3DAB8E;}
+.tog-sw input:checked + .tog-sl:before{transform:translateX(22px);}
+.access-tog{display:flex;align-items:center;gap:8px;}
+.tog-lbl{font-size:12px;color:#888;}
+.tog-lbl.granted{color:#0F6E56;font-weight:500;}
+
+/* ── FORMS ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.form-grid.g3{grid-template-columns:1fr 1fr 1fr;}
+.inp-wrap label{display:block;font-size:12px;color:#888;margin-bottom:4px;font-weight:500;}
+.inp-wrap input,.inp-wrap select,.inp-wrap textarea{width:100%;padding:8px 10px;border:1.5px solid #e8e5e0;border-radius:8px;font-size:13px;font-family:inherit;outline:none;}
+.inp-wrap input:focus,.inp-wrap select:focus{border-color:#1B2F5E;}
+.rights-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
+.right-btn{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;border:1px solid #d0cdc8;background:#f5f4f1;color:#666;transition:all 0.15s;}
+.right-btn.on{background:#EBF3EE;color:#0F6E56;border-color:#3DAB8E;}
+
+/* ── PROGRESS ── */
+.prog-bar-wrap{background:#e8e5e0;border-radius:4px;height:8px;overflow:hidden;}
+.prog-bar{height:100%;border-radius:4px;transition:width 0.4s;}
+.xp-badge{display:inline-flex;align-items:center;gap:6px;background:#FAEEDA;color:#633806;padding:6px 12px;border-radius:20px;font-size:13px;font-weight:500;}
+
+/* ── NOTIF TOAST ── */
+.toast{position:fixed;bottom:20px;right:20px;background:#1B2F5E;color:white;padding:12px 18px;border-radius:10px;font-size:13px;z-index:9999;display:none;box-shadow:0 4px 20px rgba(0,0,0,0.3);max-width:300px;line-height:1.5;}
+.toast.show{display:block;animation:fadeIn 0.3s;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── ADD DEMO USER ── */
+.demo-add-box{background:linear-gradient(135deg,#1B2F5E,#2a4a8f);border-radius:12px;padding:16px;margin-bottom:14px;color:white;}
+.demo-add-box h3{font-size:14px;font-weight:600;margin-bottom:8px;}
+.demo-add-box p{font-size:12px;opacity:0.7;margin-bottom:12px;}
+.demo-add-box .form-grid{gap:8px;}
+.demo-add-box input,.demo-add-box select{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;border-radius:6px;padding:7px 10px;font-size:12px;font-family:inherit;}
+.demo-add-box input::placeholder{color:rgba(255,255,255,0.5);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .dom-grid,.nul-dom-grid{grid-template-columns:1fr;}
+  .sidebar{display:none;}
+  .form-grid,.form-grid.g3{grid-template-columns:1fr;}
+  .stat-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body style="transition:all 0.2s;">
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SCREEN: LOGIN -->
+<!-- ══════════════════════════════════════════ -->
+<div class="screen active" id="scr-login">
+<div class="login-wrap">
+  <div class="login-card">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px;gap:4px;">
+      <button onclick="setLang('nl')" id="login-btn-nl" style="background:#1B2F5E;border:1px solid rgba(255,255,255,0.3);color:white;padding:4px 10px;border-radius:4px;font-size:12px;cursor:pointer;font-weight:700;">NL</button>
+      <button onclick="setLang('en')" id="login-btn-en" style="background:transparent;border:1px solid #d0cdc8;color:#888;padding:4px 10px;border-radius:4px;font-size:12px;cursor:pointer;">EN</button>
+      <button onclick="setLang('ar')" id="login-btn-ar" style="background:transparent;border:1px solid #d0cdc8;color:#888;padding:4px 10px;border-radius:4px;font-size:12px;cursor:pointer;">ع</button>
+    </div>
+    <div class="login-logo">
+      <div class="big">Smart <span class="sk">Skills</span> <span class="mo">Morocco</span></div>
+      <div class="sub" id="login-sub">Digitale geletterdheid platform</div>
+    </div>
+    <div class="role-row">
+      <div class="rbtn on" id="r-st" onclick="setRole('student')"><span id="lbl-st">🎓 Student</span></div>
+      <div class="rbtn" id="r-tc" onclick="setRole('teacher')"><span id="lbl-tc">👩‍🏫 Docent</span></div>
+      <div class="rbtn gold" id="r-bh" onclick="setRole('beheerder')"><span id="lbl-bh">🔑 Beheerder</span></div>
+      <div class="rbtn" id="r-ow" onclick="setRole('eigenaar')" style="background:#8B4513;color:white;border-color:#8B4513;"><span id="lbl-ow">👑 Eigenaar</span></div>
+    </div>
+    <div class="fld" id="fld-name">
+      <label id="lbl-naam">Naam</label>
+      <input type="text" id="inp-naam" placeholder="Vul je naam in"/>
+    </div>
+    <div class="fld" id="fld-jaar" style="display:none;">
+      <label id="lbl-jaar">Leerlingcode</label>
+      <input type="text" id="inp-jaar" placeholder="bijv. AM2025" maxlength="10" style="text-transform:uppercase;"/>
+    </div>
+    <div class="fld" id="fld-jaar" style="display:none;">
+      <label id="lbl-jaar">Leerlingcode</label>
+      <input type="text" id="inp-jaar" placeholder="bijv. AM2025" maxlength="10" style="text-transform:uppercase;"/>
+    </div>
+    <div class="fld" id="fld-jaar" style="display:none;">
+      <label id="lbl-jaar">Geboortejaar</label>
+      <input type="number" id="inp-jaar" placeholder="bijv. 2012" min="2000" max="2015"/>
+    </div>
+    <div class="fld" id="fld-email" style="display:none;">
+      <label id="lbl-email">E-mailadres</label>
+      <input type="email" id="inp-email" placeholder="naam@school.ma"/>
+    </div>
+    <button class="btn-login" id="btn-login" onclick="doLogin()">Inloggen →</button>
+    <div class="login-hint" id="login-hint">Student: vul je naam in en klik inloggen</div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SCREEN: STUDENT -->
+<!-- ══════════════════════════════════════════ -->
+<div class="screen" id="scr-student">
+  <div class="topbar">
+    <div class="tb-brand">Smart <span class="sk">Skills</span> <span class="mo">Morocco</span></div>
+    <div class="tb-r">
+      <div style="display:flex;gap:4px;margin-right:8px;">
+      <button id="btn-nl" onclick="setLang('nl')" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:white;padding:3px 8px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:700;">NL</button>
+      <button id="btn-en" onclick="setLang('en')" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:white;padding:3px 8px;border-radius:4px;font-size:11px;cursor:pointer;">EN</button>
+      <button id="btn-ar" onclick="setLang('ar')" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:white;padding:3px 8px;border-radius:4px;font-size:11px;cursor:pointer;">ع</button>
+    </div><span class="tb-name" id="tb-st-name">Student</span>
+      <div class="tb-av" id="tb-st-av">S</div>
+      <button class="tb-btn" id="btn-logout-1" onclick="doLogout()">Uitloggen</button>
+    </div>
+  </div>
+  <div class="app-layout" id="app-layout">
+    <div clas<div class="sidebar" id="sidebar">
+      <div class="sb-item" onclick="renderHome()" style="font-weight:600;border-left:3px solid transparent;padding:9px 16px;font-size:13px;color:#1B2F5E;cursor:pointer;display:flex;align-items:center;gap:8px;">
+        🏠 <span id="sb-lbl-home">Startscherm</span>
+      </div>
+      <div id="sb-domain-section" style="display:none;">
+        <div class="sb-section" id="sb-lbl-domein" style="margin-top:4px;">Domein</div>
+        <div id="sb-domain-name" style="padding:6px 16px;font-size:13px;font-weight:600;color:#1B2F5E;cursor:pointer;" onclick="renderHome()"></div>
+        <div class="sb-section" style="margin-top:8px;" id="sb-lbl-niveaus">Niveaus</div>
+        <div class="lv-pills" id="sb-levels"></div>
+        <div class="sb-section" style="margin-top:8px;" id="sb-lbl-lessen">Lessen</div>
+        <div id="sb-lessons"></div>
+      </div>
+      <div style="border-top:1px solid #f0ede8;margin-top:12px;padding-top:8px;">
+        <div class="sb-item" id="sb-progress-lnk" onclick="showProgress()">📊 <span id="sb-lbl-progress">Mijn voortgang</span></div>
+      </div>
+    </div>
+    <div class="main" id="main-area"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SCREEN: TEACHER -->
+<!-- ══════════════════════════════════════════ -->
+<div class="screen" id="scr-teacher">
+  <div class="topbar">
+    <div class="tb-brand">Smart <span class="sk">Skills</span> <span class="mo">Morocco</span> <span class="tb-badge" id="tb-badge-teacher">— Leraardashboard</span></div>
+    <div class="tb-r">
+      <div style="display:flex;gap:4px;margin-right:8px;">
+      <button id="btn-nl" onclick="setLang('nl')" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:white;padding:3px 8px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:700;">NL</button>
+      <button id="btn-en" onclick="setLang('en')" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:white;padding:3px 8px;border-radius:4px;font-size:11px;cursor:pointer;">EN</button>
+      <button id="btn-ar" onclick="setLang('ar')" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:white;padding:3px 8px;border-radius:4px;font-size:11px;cursor:pointer;">ع</button>
+    </div><!-- student view button removed -->
+      <span class="tb-name" id="tb-tc-name">Docent</span>
+      <div class="tb-av" id="tb-tc-av">D</div>
+      <button onclick="docentNaarStudent()" style="background:#D4A847;color:#1B2F5E;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;margin-right:6px;" id="btn-student-view">&#128065; Studentomgeving</button><button class="tb-btn" id="btn-logout-2" onclick="doLogout()">Uitloggen</button>
+    </div>
+  </div>
+  <div style="padding:20px;background:#f5f4f1;min-height:calc(100vh - 52px);" id="teacher-body"></div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SCREEN: EIGENAAR -->
+<div class="screen" id="scr-eigenaar">
+  <div class="topbar">
+    <div class="tb-brand">Smart <span class="sk">Skills</span> <span class="mo">Morocco</span> <span class="tb-badge" id="tb-badge-eigen">— Eigenaarspaneel</span></div>
+    <div class="tb-r">
+      <div style="display:flex;gap:4px;margin-right:8px;">
+      <button id="btn-nl" onclick="setLang('nl')" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:white;padding:3px 8px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:700;">NL</button>
+      <button id="btn-en" onclick="setLang('en')" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:white;padding:3px 8px;border-radius:4px;font-size:11px;cursor:pointer;">EN</button>
+      <button id="btn-ar" onclick="setLang('ar')" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:white;padding:3px 8px;border-radius:4px;font-size:11px;cursor:pointer;">ع</button>
+    </div><div class="tb-av" style="background:#8B4513;color:white;">&#128081;</div>
+      <button class="tb-btn" id="btn-logout-3" onclick="doLogout()">Uitloggen</button>
+    </div>
+  </div>
+  <div style="padding:20px;background:#f5f4f1;min-height:calc(100vh - 52px);" id="eigenaar-body"></div>
+</div>
+
+<!-- SCREEN: BEHEERDER -->
+<!-- ══════════════════════════════════════════ -->
+<div class="screen" id="scr-beheer">
+  <div class="topbar">
+    <div class="tb-brand">Smart <span class="sk">Skills</span> <span class="mo">Morocco</span> <span class="tb-badge" id="tb-badge-beheer">— Beheerderspaneel</span></div>
+    <div class="tb-r">
+      <div style="display:flex;gap:4px;margin-right:8px;">
+      <button id="btn-nl" onclick="setLang('nl')" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:white;padding:3px 8px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:700;">NL</button>
+      <button id="btn-en" onclick="setLang('en')" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:white;padding:3px 8px;border-radius:4px;font-size:11px;cursor:pointer;">EN</button>
+      <button id="btn-ar" onclick="setLang('ar')" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:white;padding:3px 8px;border-radius:4px;font-size:11px;cursor:pointer;">ع</button>
+    </div><div class="tb-av" style="background:#D4A847;color:#1B2F5E;">B</div>
+      <button class="tb-btn" id="btn-logout-4" onclick="doLogout()">Uitloggen</button>
+    </div>
+  </div>
+  <div style="padding:20px;background:#f5f4f1;min-height:calc(100vh - 52px);" id="beheer-body"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ══════════════════════════════════════════
+// SUPABASE CONFIG
+// ══════════════════════════════════════════
+var SUPA_URL = 'https://bvyxhfrnwrgkkszumjbp.supabase.co';;
+var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2eXhoZnJud3Jna2tzenVtamJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwODkwMTgsImV4cCI6MjA5MTY2NTAxOH0.6hhvVaxHCnfWUrujGteVjJMFfQsQ3-DXqdSheC_KYf4';
+var supa = null;
+
+function initSupabase() {
+  try {
+    if (window.supabase && window.supabase.createClient) {
+      supa = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+      console.log('Supabase connected!');
+    }
+  } catch(e) {
+    console.warn('Supabase init failed, using local DB:', e.message);
+  }
+}
+
+// ── SUPABASE HELPERS ──────────────────────
+async function dbGetScholen() {
+  if (!supa) return DB.scholen;
+  var r = await supa.from('scholen').select('*');
+  if (r.error) { console.warn(r.error); return DB.scholen; }
+  return r.data;
+}
+
+async function dbGetGebruikers(schoolId) {
+  if (!supa) return DB.leerlingen;
+  var q = supa.from('gebruikers').select('*').eq('rol','leerling');
+  if (schoolId) q = q.eq('school_id', schoolId);
+  var r = await q;
+  if (r.error) { console.warn(r.error); return DB.leerlingen; }
+  return r.data;
+}
+
+async function dbSaveVoortgang(leerlingId, lesId, score, niveau) {
+  if (!supa) { lessonDone[lesId] = score; return; }
+  if (supa && currentUser) { var ll2=DB.leerlingen.find(function(l){return l.naam===currentUser.naam;}); if(ll2) { supa.from('voortgang').insert({leerling_id:ll2.id||null,les_id:lesId,score:score,datum:new Date().toISOString()}).then(function(r){if(r.error)console.error('voortgang fout:',r.error.message);else console.log('voortgang opgeslagen:',lesId,score);}); }}
+  await supa.from('voortgang').insert({
+    leerling_id: leerlingId,
+    les_id: lesId,
+    score: score,
+    niveau: niveau,
+    datum: new Date().toISOString()
+  });
+  lessonDone[lesId] = score;
+}
+
+async function dbSaveNulmeting(leerlingId, domeinId, score) {
+  if (!supa) { nulmetingDone[domeinId] = score; return; }
+  await supa.from('nulmeting').insert({
+    leerling_id: leerlingId,
+    domein_id: domeinId,
+    score: score,
+    datum: new Date().toISOString()
+  });
+  nulmetingDone[domeinId] = score;
+}
+
+async function dbLoadLeerlingVoortgang(leerlingId) {
+  if (!supa) return;
+  var v = await supa.from('voortgang').select('*').eq('leerling_id', leerlingId);
+  if (!v.error && v.data) {
+    v.data.forEach(function(row) { lessonDone[row.les_id] = row.score; });
+  }
+  var n = await supa.from('nulmeting').select('*').eq('leerling_id', leerlingId);
+  if (!n.error && n.data) {
+    n.data.forEach(function(row) { nulmetingDone[row.domein_id] = row.score; });
+  }
+}
+
+async function dbAddLeerling(leerling) {
+  if (!supa) { DB.leerlingen.push(leerling); return; }
+  await supa.from('gebruikers').insert({
+    naam: leerling.naam,
+    email: leerling.email,
+    rol: 'leerling',
+    code: leerling.code,
+    school_id: currentSchool ? currentSchool.id : null,
+    klas_id: leerling.klas,
+    actief: true
+  });
+  DB.leerlingen.push(leerling);
+}
+
+
+function updateLesGenLang() {
+  var ar=lang==='ar', en=lang==='en';
+  var h1=g('lg-h1'); if(h1) h1.innerHTML='&#10133; '+(ar?'اصنع درسك':en?'Create your lesson':'Maak je eigen les');
+  var sub=g('lg-sub'); if(sub) sub.textContent=(ar?'أنشئ درساً في دقيقة واحدة':en?'Generate a lesson in 1 minute':'Vul in en genereer direct een les');
+  var lg=g('lg-lbl-groep'); if(lg) lg.textContent=(ar?'المجموعة':en?'Group':'Groep');
+  var lo=g('lg-lbl-onderwerp'); if(lo) lo.textContent=(ar?'الموضوع':en?'Topic':'Onderwerp');
+  var lt=g('lg-lbl-taal'); if(lt) lt.textContent=(ar?'اللغة':en?'Language':'Taal');
+  var lb=g('lg-btn-txt'); if(lb) lb.textContent=(ar?'أنشئ الدرس':en?'Generate lesson':'Genereer les');
+  var lc=g('lg-copy-txt'); if(lc) lc.textContent=(ar?'نسخ':en?'Copy':'Kopieer');
+  var lscreen=g('scr-les-gen'); if(lscreen) lscreen.setAttribute('dir',ar?'rtl':'ltr');
+}
+
+function sluitLesGen() {
+  if (role === 'teacher') { showScreen('scr-teacher'); renderTeacher(); }
+  else { showScreen('scr-student'); renderHome(); }
+}
+
+function kopieerLesGen() {
+  var t = (g('lg-titel')||{textContent:''}).textContent + '\n\n';
+  ['doel','intro','uitleg','opdracht','diff','refl'].forEach(function(id) {
+    var l = g('lg-lbl-'+id); var b = g('lg-'+id);
+    if (l && b) t += l.textContent + '\n' + b.textContent + '\n\n';
+  });
+  navigator.clipboard.writeText(t).then(function(){ showToast('&#10003; Les gekopieerd!'); });
+}
+
+// ════════════════════════════════════════════════════
+// TRANSLATIONS
+// ════════════════════════════════════════════════════
+var T = {
+  nl: {
+    welcome: 'Welkom',
+    chooseRole: 'Kies je rol',
+    student: 'Student',
+    teacher: 'Docent',
+    admin: 'Beheerder',
+    owner: 'Eigenaar',
+    login: 'Inloggen',
+    logout: 'Uitloggen',
+    name: 'Naam',
+    email: 'E-mailadres',
+    domains: 'Domeinen',
+    lessons: 'Lessen',
+    questions: 'Vragen',
+    submit: 'Inleveren',
+    next: 'Volgende',
+    prev: 'Vorige',
+    progress: 'Mijn voortgang',
+    home: 'Startscherm',
+    score: 'Score',
+    passed: 'Gehaald',
+    failed: 'Niet gehaald',
+    retry: 'Opnieuw proberen',
+    nulmeting: 'Nulmeting',
+    nulmetingDesc: '2 vragen per domein — bepaalt je startpunt',
+    startNulmeting: 'Start nulmeting',
+    doFirst: 'Doe eerst de nulmeting',
+    teacherDash: 'Leraardashboard',
+    adminPanel: 'Beheerderspaneel',
+    ownerPanel: 'Eigenaarspaneel',
+    viewAsStudent: 'Bekijk als leerling',
+    backToDash: '← Terug naar dashboard',
+    resetDemo: '🔄 Reset demo',
+    resetConfirm: 'Weet je zeker dat je de demo wilt resetten? Alle voortgang wordt gewist.',
+    resetDone: 'Demo gereset! Alles is terug naar de beginstand.',
+    demoMode: '⚠️ Demo modus — wijzigingen worden niet opgeslagen',
+    students: 'Leerlingen',
+    classes: 'Klassen',
+    rights: 'Rechten',
+    active: 'Actief',
+    inactive: 'Inactief',
+    save: 'Opslaan',
+    cancel: 'Annuleren',
+    add: 'Toevoegen',
+    deactivate: 'Deactiveren',
+    reactivate: 'Heractiveren',
+    schools: 'Scholen',
+    uploadHint: 'Upload je bestand of verslag hier',
+    lockedLesson: 'Maak eerst de vorige les af om door te gaan.',
+    levelGoal: 'Leerdoel',
+    steps: 'Stappen',
+    deliver: 'Wat lever je in?',
+    videoTitle: 'Uitlegvideo',
+    noVideo: 'Geen video beschikbaar voor deze les',
+    noVideoHint: 'Docent kan een video toevoegen via het dashboard',
+  },
+  en: {
+    welcome: 'Welcome',
+    chooseRole: 'Choose your role',
+    student: 'Student',
+    teacher: 'Teacher',
+    admin: 'Administrator',
+    owner: 'Owner',
+    login: 'Sign in',
+    logout: 'Sign out',
+    name: 'Name',
+    email: 'Email address',
+    domains: 'Domains',
+    lessons: 'Lessons',
+    questions: 'Questions',
+    submit: 'Submit',
+    next: 'Next',
+    prev: 'Previous',
+    progress: 'My progress',
+    home: 'Home',
+    score: 'Score',
+    passed: 'Passed',
+    failed: 'Not passed',
+    retry: 'Try again',
+    nulmeting: 'Baseline test',
+    nulmetingDesc: '2 questions per domain — determines your starting point',
+    startNulmeting: 'Start baseline test',
+    doFirst: 'Please complete the baseline test first',
+    teacherDash: 'Teacher dashboard',
+    adminPanel: 'Admin panel',
+    ownerPanel: 'Owner panel',
+    viewAsStudent: 'View as student',
+    backToDash: '← Back to dashboard',
+    resetDemo: '🔄 Reset demo',
+    resetConfirm: 'Are you sure you want to reset the demo? All progress will be lost.',
+    resetDone: 'Demo reset! Everything is back to the starting state.',
+    demoMode: '⚠️ Demo mode — changes are not saved',
+    students: 'Students',
+    classes: 'Classes',
+    rights: 'Rights',
+    active: 'Active',
+    inactive: 'Inactive',
+    save: 'Save',
+    cancel: 'Cancel',
+    add: 'Add',
+    deactivate: 'Deactivate',
+    reactivate: 'Reactivate',
+    schools: 'Schools',
+    uploadHint: 'Upload your file or report here',
+    lockedLesson: 'Complete the previous lesson first.',
+    levelGoal: 'Learning goal',
+    steps: 'Steps',
+    deliver: 'What to submit?',
+    videoTitle: 'Explanation video',
+    noVideo: 'No video available for this lesson',
+    noVideoHint: 'Teacher can add a video via the dashboard',
+  },
+  ar: {
+    welcome: 'مرحباً',
+    chooseRole: 'اختر دورك',
+    student: 'طالب',
+    teacher: 'معلم',
+    admin: 'مدير',
+    owner: 'المالك',
+    login: 'تسجيل الدخول',
+    logout: 'تسجيل الخروج',
+    name: 'الاسم',
+    email: 'البريد الإلكتروني',
+    domains: 'المجالات',
+    lessons: 'الدروس',
+    questions: 'الأسئلة',
+    submit: 'تسليم',
+    next: 'التالي',
+    prev: 'السابق',
+    progress: 'تقدمي',
+    home: 'الرئيسية',
+    score: 'النتيجة',
+    passed: 'ناجح',
+    failed: 'لم ينجح',
+    retry: 'حاول مرة أخرى',
+    nulmeting: 'الاختبار التمهيدي',
+    nulmetingDesc: 'سؤالان لكل مجال — يحدد نقطة البداية',
+    startNulmeting: 'ابدأ الاختبار التمهيدي',
+    doFirst: 'أكمل الاختبار التمهيدي أولاً',
+    teacherDash: 'لوحة المعلم',
+    adminPanel: 'لوحة الإدارة',
+    ownerPanel: 'لوحة المالك',
+    viewAsStudent: 'عرض كطالب',
+    backToDash: '← العودة إلى لوحة التحكم',
+    resetDemo: '🔄 إعادة تعيين العرض',
+    resetConfirm: 'هل أنت متأكد من إعادة تعيين العرض؟ سيتم حذف جميع التقدم.',
+    resetDone: 'تمت إعادة التعيين! كل شيء عاد إلى الحالة الأولى.',
+    demoMode: '⚠️ وضع العرض التوضيحي — التغييرات لن تُحفظ',
+    students: 'الطلاب',
+    classes: 'الفصول',
+    rights: 'الصلاحيات',
+    active: 'نشط',
+    inactive: 'غير نشط',
+    save: 'حفظ',
+    cancel: 'إلغاء',
+    add: 'إضافة',
+    deactivate: 'إلغاء التفعيل',
+    reactivate: 'إعادة التفعيل',
+    schools: 'المدارس',
+    uploadHint: 'ارفع ملفك أو تقريرك هنا',
+    lockedLesson: 'أكمل الدرس السابق للمتابعة.',
+    levelGoal: 'هدف التعلم',
+    steps: 'الخطوات',
+    deliver: 'ماذا تسلّم؟',
+    videoTitle: 'فيديو الشرح',
+    noVideo: 'لا يوجد فيديو لهذا الدرس',
+    noVideoHint: 'يمكن للمعلم إضافة رابط فيديو من لوحة التحكم',
+  }
+};
+
+
+// ════════════════════════════════════════════════════
+// LANGUAGE HELPER
+// ════════════════════════════════════════════════════
+function openLesGen() {
+  showScreen('scr-les-gen');
+}
+
+function tl(obj) {
+  if(!obj) return '';
+  if(typeof obj === 'string') return obj;
+  return obj[lang] || obj.nl || obj.en || String(obj);
+}
+
+function t(key) { return (T[lang] && T[lang][key]) || T.nl[key] || key; }
+
+function setLang(l) {
+  lang = l;
+  // Update HTML direction
+  document.documentElement.setAttribute('dir', l==='ar'?'rtl':'ltr');
+  document.documentElement.setAttribute('lang', l);
+  // Re-render current screen
+  var active = document.querySelector('.screen.active');
+  if(!active) return;
+  var id = active.id;
+  if(id==='scr-student') { if(curPage==='lesson') renderLesson(); else if(curPage==='vragen') renderVragen(); else if(curPage==='progress') showProgress(); else renderHome(); }
+  else if(id==='scr-teacher') renderTeacher();
+  else if(id==='scr-beheer') renderBeheer();
+  else if(id==='scr-eigenaar') renderEigenaar();
+  else if(id==='scr-login') updateLoginLang();
+  updateLangButtons();
+  updateLoginLang();
+  updateLesGenLang();
+  // Translate sidebar labels
+  var sbMap = {
+    'sb-lbl-home':   {nl:'Startscherm',   en:'Home',        ar:'الرئيسية'},
+    'sb-lbl-domein': {nl:'Domein',        en:'Domain',      ar:'المجال'},
+    'sb-lbl-niveaus':{nl:'Niveaus',       en:'Levels',      ar:'المستويات'},
+    'sb-lbl-lessen': {nl:'Lessen',        en:'Lessons',     ar:'الدروس'},
+    'sb-lbl-progress':{nl:'Mijn voortgang',en:'My progress',ar:'تقدمي'}
+  };
+  Object.keys(sbMap).forEach(function(sid){
+    var sel = document.getElementById(sid);
+    if(sel) sel.textContent = sbMap[sid][l] || sbMap[sid].nl;
+  });
+  // RTL layout fix for sidebar
+  var appLayout = g('app-layout');
+  if(appLayout) appLayout.style.flexDirection = lang==='ar'?'row-reverse':'row';
+}
+
+function updateLangButtons() {
+  ['btn-nl','btn-en','btn-ar'].forEach(function(id2){
+    var el=g(id2);
+    if(!el) return;
+    var l2=id2.replace('btn-','');
+    el.style.fontWeight = lang===l2 ? '700' : '400';
+    el.style.background = lang===l2 ? 'rgba(255,255,255,0.25)' : 'transparent';
+  });
+}
+
+function updateLoginLang() {
+  // Role buttons
+  var labels = {
+    nl: {st:'🎓 Student', tc:'👩‍🏫 Docent', bh:'🔑 Beheerder', ow:'👑 Eigenaar',
+         naam:'Naam', email:'E-mailadres', login:'Inloggen →', sub:'Digitale geletterdheid platform',
+         tDash:'— Leraardashboard', bPanel:'— Beheerderspaneel', ePanel:'— Eigenaarspaneel'},
+    en: {st:'🎓 Student', tc:'👩‍🏫 Teacher', bh:'🔑 Administrator', ow:'👑 Owner',
+         naam:'Name', email:'Email address', login:'Sign in →', sub:'Digital literacy platform',
+         tDash:'— Teacher dashboard', bPanel:'— Admin panel', ePanel:'— Owner panel'},
+    ar: {st:'🎓 طالب', tc:'👩‍🏫 معلم', bh:'🔑 مدير', ow:'👑 المالك',
+         naam:'الاسم', email:'البريد الإلكتروني', login:'تسجيل الدخول ←', sub:'منصة محو الأمية الرقمية',
+         tDash:'— لوحة المعلم', bPanel:'— لوحة الإدارة', ePanel:'— لوحة المالك'}
+  };
+  var lb = labels[lang] || labels.nl;
+  var els = {
+    'lbl-st': lb.st, 'lbl-tc': lb.tc, 'lbl-bh': lb.bh, 'lbl-ow': lb.ow,
+    'lbl-naam': lb.naam, 'lbl-email': lb.email, 'lbl-jaar': (lang==='ar'?'سنة الميلاد':lang==='en'?'Birth year':'Geboortejaar'), 'btn-login': lb.login,
+    'login-sub': lb.sub,
+    'tb-badge-teacher': lb.tDash, 'tb-badge-beheer': lb.bPanel, 'tb-badge-eigen': lb.ePanel
+  };
+  Object.keys(els).forEach(function(id2){
+    var el=g(id2); if(el) el.textContent=els[id2];
+  });
+  // Input placeholders
+  var inp = g('inp-naam'); if(inp) inp.placeholder = lang==='ar'?'أدخل اسمك':lang==='en'?'Enter your name':'Vul je naam in';
+  var inpj = g('inp-jaar'); if(inpj) inpj.placeholder = lang==='ar'?'مثال: AM2025':lang==='en'?'e.g. AM2025':'bijv. AM2025';
+  var inpj = g('inp-jaar'); if(inpj) inpj.placeholder = lang==='ar'?'سنة الميلاد (مثال: 2012)':lang==='en'?'Birth year (e.g. 2012)':'Geboortejaar (bijv. 2012)';
+  var lblj = g('lbl-jaar'); if(lblj) lblj.textContent = lang==='ar'?'سنة الميلاد':lang==='en'?'Birth year':'Geboortejaar';
+  var inpe = g('inp-email'); if(inpe) inpe.placeholder = lang==='ar'?'name@school.ma':lang==='en'?'name@school.ma':'naam@school.ma';
+  var lj=g('lbl-jaar'); if(lj) lj.textContent=lang==='ar'?'سنة الميلاد':lang==='en'?'Birth year':'Geboortejaar';
+  var ij=g('inp-jaar'); if(ij) ij.placeholder=lang==='ar'?'مثال: 2012':lang==='en'?'e.g. 2012':'bijv. 2012';
+  // Login hint
+
+  var nl=g('fld-name'); var ll=g('login-hint');
+  if(nl) nl.querySelector('label').textContent=t('name');
+  var hintsMap = {
+    nl: {student:'Student: naam + geboortejaar', teacher:'Docent: vul e-mail in → PIN', beheerder:'Beheerder: PIN-prompt', eigenaar:'Eigenaar: super-PIN'},
+    en: {student:'Student: name + birth year', teacher:'Teacher: enter email → PIN', beheerder:'Administrator: PIN prompt', eigenaar:'Owner: super-PIN'},
+    ar: {student:'طالب: الاسم + سنة الميلاد', teacher:'معلم: البريد الإلكتروني ← PIN', beheerder:'مدير: رمز PIN', eigenaar:'المالك: الرمز السري'}
+  };
+  var hm = hintsMap[lang]||hintsMap.nl;
+  var ll2=g('login-hint'); if(ll2) ll2.textContent=hm[role]||hm.student;
+  // Update login screen language buttons
+  ['nl','en','ar'].forEach(function(l2){
+    var lb=g('login-btn-'+l2);
+    if(!lb) return;
+    lb.style.background = lang===l2?'#1B2F5E':'transparent';
+    lb.style.color = lang===l2?'white':'#888';
+    lb.style.fontWeight = lang===l2?'700':'400';
+    lb.style.borderColor = lang===l2?'#1B2F5E':'#d0cdc8';
+  });
+  // Update all logout buttons
+  var logoutTxt = lang==='ar'?'تسجيل الخروج':lang==='en'?'Sign out':'Uitloggen';
+  for(var li=1;li<=4;li++){var lb2=g('btn-logout-'+li);if(lb2)lb2.textContent=logoutTxt;}
+  // Update student view button in teacher topbar
+  var svb=document.querySelector('.tb-btn.accent');
+  if(svb&&svb.textContent.indexOf('Student')>-1||svb&&svb.textContent.indexOf('view')>-1||svb&&svb.textContent.indexOf('طالب')>-1){
+    svb.textContent=lang==='ar'?'← عرض الطالب':lang==='en'?'← Student view':'← Student view';
+  }
+}
+
+function domClick(el){if(el.dataset.did)pickDom(el.dataset.did);}
+function selNulEl(el){selNul(el.dataset.dom,parseInt(el.dataset.qi),parseInt(el.dataset.oi));}
+function submitNulEl(el){submitNul(el.dataset.dom);}
+function showLockedMsg(){alert('Maak eerst de vorige les af om door te gaan.');}
+function showUploadMsg(){alert('Upload beschikbaar in de live versie.');}
+function resetVragenEl(el){resetVragen(el.dataset.lid);}
+function submitVragenEl(el){submitVragen(el.dataset.lid);}
+function selQEl(el){selQ(el.dataset.lid,parseInt(el.dataset.qi),el.value);}
+function selQClickEl(el){selQ(el.dataset.lid,parseInt(el.dataset.qi),parseInt(el.dataset.oi));renderVragen();}
+function selRetryEl(el){selRetry(el.dataset.lid,parseInt(el.dataset.qi),parseInt(el.dataset.oi));}
+function submitRetryEl(el){submitRetry(el.dataset.lid,parseInt(el.dataset.qi),parseInt(el.dataset.cor));}
+function togSecEl(el){togSec(el.dataset.sid);}
+function bTogSecEl(el){bTogSec(el.dataset.sid);}
+function resetLeerlingEl(el){resetLeerling(el.dataset.naam);}
+function viewAsStudentEl(el){viewAsStudent(el.dataset.naam);}
+function toggleDomeinEl(el){toggleDomein(el.dataset.lid,el.dataset.did,el.checked);}
+function saveVidLinkEl(el){saveVidLink(el.dataset.lid,el.value);}
+function toggleRechtEl(el){toggleRecht(el.dataset.did||el.dataset.idx,el.dataset.r);}
+function toggleDocentEl(el){toggleDocent(el.dataset.did||parseInt(el.dataset.idx));}
+function toggleLLEl(el){toggleLL(el.dataset.did||parseInt(el.dataset.idx));}
+
+function editLLEl(el){
+  var i=parseInt(el.dataset.idx);
+  var l=DB.leerlingen[i];
+  if(!l) return;
+  var klasOpties=DB.klassen.map(function(k){return k.id+'|'+k.naam;}).join(',');
+  var newNaam=prompt('Naam:'+(DB.klassen.length?' (klas kan je ook wijzigen)':''),l.naam);
+  if(!newNaam) return;
+  var klasIds=DB.klassen.map(function(k){return k.id;});
+  var klasNamen=DB.klassen.map(function(k){return k.naam;});
+  var curIdx=klasIds.indexOf(l.klas);
+  var newKlasNaam=prompt('Klas ('+klasNamen.join(' / ')+'):',klasNamen[curIdx]||'');
+  if(newKlasNaam===null) return;
+  var gevondenKlas=DB.klassen.find(function(k){return k.naam.toLowerCase()===newKlasNaam.toLowerCase();});
+  DB.leerlingen[i].naam=newNaam.trim()||l.naam;
+  if(gevondenKlas) DB.leerlingen[i].klas=gevondenKlas.id;
+  showToast('&#10003; Leerling bijgewerkt!');
+  renderBeheer();
+}
+
+function editDocEl(el){
+  var i=parseInt(el.dataset.idx);
+  var d=DB.docenten[i];
+  if(!d) return;
+  var newNaam=prompt('Naam:',d.naam);
+  if(!newNaam) return;
+  var klasNamen=DB.klassen.map(function(k){return k.naam;});
+  var curKlas=DB.klassen.find(function(k){return k.id===d.klas;});
+  var newKlasNaam=prompt('Klas ('+klasNamen.join(' / ')+'):',(curKlas?curKlas.naam:''));
+  if(newKlasNaam===null) return;
+  var gevondenKlas=DB.klassen.find(function(k){return k.naam.toLowerCase()===newKlasNaam.toLowerCase();});
+  DB.docenten[i].naam=newNaam.trim()||d.naam;
+  if(gevondenKlas) DB.docenten[i].klas=gevondenKlas.id;
+  showToast('&#10003; Docent bijgewerkt!');
+  renderBeheer();
+}
+function setLvEl(el){setLv(parseInt(el.dataset.lv));}
+function selectLesEl(el){selectLes(parseInt(el.dataset.li));}
+function hideForm(id){var el=g(id);if(el)el.style.display='none';}
+
+// ════════════════════════════════════════════════════
+// EMAILJS INIT
+// ════════════════════════════════════════════════════
+emailjs.init('S_jUV-he5_taKy7sX');
+var EJS_SERVICE = 'service_i36u274';
+var EJS_TPL_DOCENT = 'template_0ii5bid';
+var EJS_TPL_BEHEER = 'template_vwy94zz';
+
+function sendEmail(templateId, params) {
+  emailjs.send(EJS_SERVICE, templateId, params)
+    .then(function() { console.log('Email sent to', params.to_email||'template address'); })
+    .catch(function(e) { console.warn('Email error:', e.text||e); });
+}
+
+function sendWelcomEmail(naam, email, rol) {
+  // Send welcome email directly to the person using docent template
+  // which goes to redouanouali@gmail.com with the person's details
+  var params = {
+    docent_naam: 'Smart Skills Morocco',
+    student_naam: naam + ' (' + rol + ')',
+    les_naam: 'Welkom bij Smart Skills Morocco',
+    score: '100',
+    to_email: email
+  };
+  emailjs.send(EJS_SERVICE, EJS_TPL_DOCENT, params)
+    .then(function() { console.log('Welcome email sent to', email); })
+    .catch(function(e) { console.warn('Email error:', e.text||e); });
+  // Also notify beheerder
+  sendEmail(EJS_TPL_BEHEER, {docent_naam:'Beheerder',student_naam:naam,klas_naam:'Demo - '+rol});
+}
+
+// ════════════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════════════
+var DOMS = [
+  {id:'ict',   name:{nl:'ICT Skills',           en:'ICT Skills',            ar:'مهارات الحاسوب'},       icon:'⚙️',  col:'#1B2F5E'},
+  {id:'info',  name:{nl:'Information Skills',   en:'Information Skills',    ar:'مهارات المعلومات'},     icon:'🔍',  col:'#3DAB8E'},
+  {id:'media', name:{nl:'Media Literacy',       en:'Media Literacy',        ar:'محو الأمية الإعلامية'}, icon:'📱',  col:'#C8714A'},
+  {id:'ct',    name:{nl:'Computational Thinking',en:'Computational Thinking',ar:'التفكير الحسابي'},     icon:'🧠', col:'#D4A847'}
+];
+
+var CONTENT = {
+  ict: {
+    nulmeting: [
+      {q:{nl:'Wat is een spreadsheet?',ar:'ما هو جدول البيانات؟',en:'What is a spreadsheet?'},
+       opts:[{nl:'Een soort database',ar:'نوع من قواعد البيانات',en:'A type of database'},{nl:'Een raster van cellen voor data',ar:'شبكة من الخلايا للبيانات',en:'A grid of cells for data'},{nl:'Een tekstverwerkingsprogramma',ar:'برنامج معالجة النصوص',en:'A word processor'},{nl:'Een presentatietool',ar:'أداة عروض',en:'A presentation tool'}],correct:1},
+      {q:{nl:'Wat doet de formule =B2*C2?',ar:'ماذا تفعل المعادلة =B2*C2؟',en:'What does =B2*C2 do?'},
+       opts:[{nl:'Telt B2 en C2 op',ar:'تجمع B2 و C2',en:'Adds B2 and C2'},{nl:'Deelt B2 door C2',ar:'تقسم B2 على C2',en:'Divides B2 by C2'},{nl:'Vermenigvuldigt B2 met C2',ar:'تضرب B2 في C2',en:'Multiplies B2 by C2'},{nl:'Trekt C2 af van B2',ar:'تطرح C2 من B2',en:'Subtracts C2 from B2'}],correct:2}
+    ],
+    lessen: [
+      {id:'ict_1_0',
+       titel:{nl:'Eenvoudige tabel in Excel',ar:'جدول بسيط في Excel',en:'Simple table in Excel'},
+       niveau:1,
+       doel:{nl:'Leerlingen kunnen een eenvoudige tabel maken in Excel',ar:'يستطيع الطلاب إنشاء جدول بسيط في Excel',en:'Students can create a basic table in Excel'},
+       video:'https://app.heygen.com/embeds/520d8b16450d451089cee681739d691b',
+       stappen:[
+         {t:{nl:'Open Excel',ar:'افتح Excel',en:'Open Excel'}, d:{nl:'Open Excel of Google Sheets. Je ziet een raster van cellen. Elke cel heeft een adres zoals A1, B1, C1.',ar:'افتح Excel أو Google Sheets. ستجد شبكة من الخلايا. كل خلية لها عنوان مثل A1 وB1.',en:'Open Excel or Google Sheets. You see a grid of cells. Each cell has an address like A1, B1.'}},
+         {t:{nl:'Maak kolomkoppen',ar:'أنشئ عناوين الأعمدة',en:'Make column headers'}, d:{nl:'Klik op cel A1 en typ: Naam. Klik B1 en typ: Leeftijd. Klik C1 en typ: Hobby. Maak ze vetgedrukt.',ar:'انقر على A1 واكتب: الاسم. انقر B1: العمر. انقر C1: الهواية. اجعلها غامقة.',en:'Click A1: Name. Click B1: Age. Click C1: Hobby. Make them bold.'}},
+         {t:{nl:'Vul 3 rijen in',ar:'أكمل 3 صفوف',en:'Fill in 3 rows'}, d:{nl:'Vul rij 2, 3 en 4 in met namen, leeftijden en hobby\u2019s.',ar:'أكمل الصفوف 2 و3 و4 بالأسماء والأعمار والهوايات.',en:'Fill rows 2, 3 and 4 with names, ages and hobbies.'}},
+         {t:{nl:'Reflectie',ar:'التأمل',en:'Reflection'}, d:{nl:'Schrijf 1-2 zinnen: wat was makkelijk? Wat was moeilijk?',ar:'اكتب 1-2 جملة: ما الذي كان سهلاً؟ ما الذي كان صعباً؟',en:'Write 1-2 sentences: what was easy? What was difficult?'}}
+       ],
+       inleveren:[
+         {nl:'Excel-tabel met 3 kolommen: Naam, Leeftijd, Hobby',ar:'جدول Excel: الاسم، العمر، الهواية',en:'Excel table: Name, Age, Hobby'},
+         {nl:'Minimaal 3 rijen ingevuld',ar:'ثلاثة صفوف على الأقل',en:'At least 3 rows'},
+         {nl:'Koppen zijn vetgedrukt',ar:'العناوين غامقة',en:'Headers are bold'},
+         {nl:'1-2 zinnen reflectie',ar:'1-2 جملة تأمل',en:'1-2 reflection sentences'}
+       ],
+       vragen:[
+         {type:'mc',q:{nl:'Wat is een cel in Excel?',ar:'ما هي الخلية في Excel؟',en:'What is a cell in Excel?'},
+          opts:[{nl:'Een heel rij',ar:'صف كامل',en:'A whole row'},{nl:'Eén vakje in het raster',ar:'مربع واحد في الشبكة',en:'One box in the grid'},{nl:'Het hele spreadsheet',ar:'جدول البيانات كله',en:'The whole spreadsheet'},{nl:'Een formule',ar:'معادلة',en:'A formula'}],correct:1},
+         {type:'mc',q:{nl:'Wat zet je in rij 1?',ar:'ماذا تضع في الصف 1؟',en:'What do you put in row 1?'},
+          opts:[{nl:'De gegevens',ar:'البيانات',en:'The data'},{nl:'De kolomkoppen',ar:'عناوين الأعمدة',en:'Column headers'},{nl:'Niets',ar:'لا شيء',en:'Nothing'},{nl:'Een formule',ar:'معادلة',en:'A formula'}],correct:1},
+         {type:'open',q:{nl:'Wat vond je makkelijk en wat moeilijk?',ar:'ما الذي وجدته سهلاً وما الصعب؟',en:'What was easy and what was difficult?'},
+          model:{nl:'Er is geen fout antwoord.',ar:'لا توجد إجابة خاطئة.',en:'There is no wrong answer.'}}
+       ]},
+      {id:'ict_1_1',
+       titel:{nl:'Sterk wachtwoord maken',ar:'إنشاء كلمة مرور قوية',en:'Create a strong password'},
+       niveau:1,
+       doel:{nl:'Leerlingen kennen de kenmerken van een sterk wachtwoord',ar:'يعرف الطلاب خصائص كلمة المرور القوية',en:'Students know the characteristics of a strong password'},
+       video:'',
+       stappen:[
+         {t:{nl:'Regels',ar:'القواعد',en:'Rules'}, d:{nl:'Een sterk wachtwoord heeft minimaal 12 tekens met hoofdletters, cijfers en symbolen.',ar:'كلمة المرور القوية: 12 حرفاً على الأقل مع أحرف كبيرة وأرقام ورموز.',en:'A strong password: at least 12 characters with uppercase, numbers and symbols.'}},
+         {t:{nl:'Wat te vermijden',ar:'ما يجب تجنبه',en:'What to avoid'}, d:{nl:'Gebruik geen namen, verjaardagen of woorden uit het woordenboek.',ar:'لا تستخدم الأسماء أو تواريخ الميلاد أو الكلمات الشائعة.',en:'Do not use names, birthdays or common words.'}},
+         {t:{nl:'Ezelsbruggetje',ar:'جملة للتذكر',en:'Memory trick'}, d:{nl:'Maak een zin en gebruik de eerste letter van elk woord als wachtwoord.',ar:'اصنع جملة واستخدم أول حرف من كل كلمة ككلمة مرور.',en:'Make a sentence and use the first letter of each word as a password.'}}
+       ],
+       inleveren:[
+         {nl:'1 voorbeeld sterk wachtwoord',ar:'مثال على كلمة مرور قوية',en:'1 example strong password'},
+         {nl:'Uitleg waarom het sterk is',ar:'شرح لماذا هي قوية',en:'Explanation why it is strong'},
+         {nl:'Je ezelsbruggetje',ar:'جملتك للتذكر',en:'Your memory sentence'}
+       ],
+       vragen:[
+         {type:'mc',q:{nl:'Welk wachtwoord is het sterkst?',ar:'أي كلمة مرور هي الأقوى؟',en:'Which password is strongest?'},
+          opts:[{nl:'password123',ar:'password123',en:'password123'},{nl:'Mohamed2005',ar:'Mohamed2005',en:'Mohamed2005'},{nl:'Tr!8kL@92mNx',ar:'Tr!8kL@92mNx',en:'Tr!8kL@92mNx'},{nl:'qwerty',ar:'qwerty',en:'qwerty'}],correct:2},
+         {type:'mc',q:{nl:'Wat maakt een wachtwoord zwak?',ar:'ما الذي يجعل كلمة المرور ضعيفة؟',en:'What makes a password weak?'},
+          opts:[{nl:'Veel tekens',ar:'كثير من الرموز',en:'Many characters'},{nl:'Je naam of geboortejaar',ar:'اسمك أو سنة ميلادك',en:'Your name or birth year'},{nl:'Minimaal 12 tekens',ar:'12 حرفاً على الأقل',en:'At least 12 characters'},{nl:'Symbolen gebruiken',ar:'استخدام الرموز',en:'Using symbols'}],correct:1},
+         {type:'open',q:{nl:'Schrijf een ezelsbruggetje voor een sterk wachtwoord.',ar:'اكتب جملة لتذكر كلمة مرور قوية.',en:'Write a memory sentence for a strong password.'},
+          model:{nl:'Bijv: "Ik Hou Van Voetbal!" → IHvV!',ar:'مثال: "أنا أحب كرة القدم!" → AAkK!',en:'Example: "I Love Football!" → ILF!'}}
+       ]}
+    ]
+  },
+  info: {
+    nulmeting: [
+      {q:{nl:'Wat betekent een slotje op een website?',ar:'ماذا يعني وجود قفل على الموقع؟',en:'What does a padlock on a website mean?'},
+       opts:[{nl:'De website is geblokkeerd',ar:'الموقع محظور',en:'The site is blocked'},{nl:'De verbinding is beveiligd',ar:'الاتصال آمن',en:'The connection is secure'},{nl:'De website is betaald',ar:'الموقع مدفوع',en:'The site is paid'},{nl:'De website is langzaam',ar:'الموقع بطيء',en:'The site is slow'}],correct:1},
+      {q:{nl:'Hoe weet je of informatie op internet betrouwbaar is?',ar:'كيف تعرف أن المعلومات موثوقة؟',en:'How do you know if information online is reliable?'},
+       opts:[{nl:'Als er veel tekst staat',ar:'إذا كان هناك كثير من النص',en:'If there is a lot of text'},{nl:'Als de bron bekend is en bronnen worden genoemd',ar:'إذا كان المصدر معروفاً ويذكر مصادر',en:'If the source is known and references listed'},{nl:'Als de website mooi is',ar:'إذا كان الموقع جميلاً',en:'If the website looks nice'},{nl:'Als er veel reacties zijn',ar:'إذا كان هناك كثير من التعليقات',en:'If there are many comments'}],correct:1}
+    ],
+    lessen: [
+      {id:'info_1_0',
+       titel:{nl:'Verkoopdata lezen en vergelijken',ar:'قراءة ومقارنة بيانات المبيعات',en:'Reading and comparing sales data'},
+       niveau:1,
+       doel:{nl:'Leerlingen kunnen data lezen en vergelijken met getallen',ar:'يستطيع الطلاب قراءة البيانات ومقارنتها بالأرقام',en:'Students can read and compare data using numbers'},
+       video:'',
+       stappen:[
+         {t:{nl:'Bekijk de data',ar:'انظر إلى البيانات',en:'Look at the data'}, d:{nl:'Bekijk de verkoopdata van Café Tangier. Welke producten worden het meest verkocht?',ar:'انظر إلى بيانات مبيعات مقهى طنجة. ما المنتجات الأكثر مبيعاً؟',en:'Look at the sales data of Café Tangier. Which products sell most?'}},
+         {t:{nl:'Vergelijk',ar:'قارن',en:'Compare'}, d:{nl:'Vergelijk januari met maart. Is de omzet gestegen of gedaald? Met hoeveel procent?',ar:'قارن يناير بمارس. هل ارتفعت المبيعات؟ بكم في المئة؟',en:'Compare January with March. Did sales go up or down? By how many percent?'}},
+         {t:{nl:'Schrijf conclusie',ar:'اكتب الاستنتاج',en:'Write conclusion'}, d:{nl:'Schrijf 2-3 zinnen met een getal om je conclusie te onderbouwen.',ar:'اكتب 2-3 جمل مع رقم لدعم استنتاجك.',en:'Write 2-3 sentences with a number to support your conclusion.'}},
+         {t:{nl:'Reflectie',ar:'التأمل',en:'Reflection'}, d:{nl:'Waarom is het beter een getal te gebruiken dan alleen te zeggen "het gaat goed"?',ar:'لماذا من الأفضل استخدام رقم؟',en:'Why is it better to use a number than just saying "it is going well"?'}}
+       ],
+       inleveren:[
+         {nl:'2-3 zinnen conclusie met getallen',ar:'2-3 جمل استنتاج مع أرقام',en:'2-3 conclusion sentences with numbers'},
+         {nl:'Vergelijking van 2 maanden',ar:'مقارنة شهرين',en:'Comparison of 2 months'},
+         {nl:'Antwoord op reflectievraag',ar:'إجابة على سؤال التأمل',en:'Answer to reflection question'}
+       ],
+       vragen:[
+         {type:'mc',q:{nl:'Hassan zegt: "Koffie verkoopt goed." Wat is een betere manier?',ar:'يقول حسن: "القهوة تبيع جيداً." ما هي طريقة أفضل؟',en:'Hassan says "Coffee sells well." What is a better way?'},
+          opts:[{nl:'Koffie is populair',ar:'القهوة شعبية',en:'Coffee is popular'},{nl:'Koffie werd 142 keer verkocht in januari',ar:'بيعت القهوة 142 مرة في يناير',en:'Coffee was sold 142 times in January'},{nl:'Koffie is het beste product',ar:'القهوة أفضل منتج',en:'Coffee is the best product'},{nl:'Mensen houden van koffie',ar:'الناس يحبون القهوة',en:'People love coffee'}],correct:1},
+         {type:'mc',q:{nl:'Je wilt bewijzen dat de omzet is gestegen. Wat gebruik je?',ar:'تريد إثبات أن المبيعات ارتفعت. ماذا تستخدم؟',en:'You want to prove sales went up. What do you use?'},
+          opts:[{nl:'Een mening',ar:'رأي',en:'An opinion'},{nl:'Een gevoel',ar:'شعور',en:'A feeling'},{nl:'Een getal of percentage',ar:'رقم أو نسبة مئوية',en:'A number or percentage'},{nl:'Een verhaal',ar:'قصة',en:'A story'}],correct:2},
+         {type:'open',q:{nl:'Schrijf een conclusie over de verkoopdata. Gebruik minimaal 1 getal.',ar:'اكتب استنتاجاً عن بيانات المبيعات. استخدم رقماً على الأقل.',en:'Write a conclusion about the sales data. Use at least 1 number.'},
+          model:{nl:'De omzet van koffie steeg van €1.136 naar €1.336, een stijging van 17%.',ar:'ارتفعت مبيعات القهوة من 1136 إلى 1336 درهم، بزيادة 17%.',en:'Coffee sales rose from €1,136 to €1,336, an increase of 17%.'}}
+       ]},
+      {id:'info_1_1',
+       titel:{nl:'Een eenvoudige analyse schrijven',ar:'كتابة تحليل بسيط',en:'Writing a simple analysis'},
+       niveau:1,
+       doel:{nl:'Leerlingen kunnen een korte analyse schrijven met bronnen',ar:'يستطيع الطلاب كتابة تحليل قصير مع المصادر',en:'Students can write a short analysis with sources'},
+       video:'',
+       stappen:[
+         {t:{nl:'Kies onderwerp',ar:'اختر موضوعاً',en:'Choose topic'}, d:{nl:'Kies een onderwerp: sport, muziek, of eten in jouw stad.',ar:'اختر موضوعاً: رياضة أو موسيقى أو طعام في مدينتك.',en:'Choose a topic: sport, music, or food in your city.'}},
+         {t:{nl:'Zoek feiten',ar:'ابحث عن حقائق',en:'Find facts'}, d:{nl:'Zoek 2 feiten op internet. Schrijf de bron op (naam website + datum).',ar:'ابحث عن حقيقتين على الإنترنت. اكتب المصدر (اسم الموقع + التاريخ).',en:'Find 2 facts online. Write the source (website name + date).'}},
+         {t:{nl:'Schrijf analyse',ar:'اكتب التحليل',en:'Write analysis'}, d:{nl:'Schrijf je analyse in 3 zinnen: wat zijn de feiten? Wat betekent dit?',ar:'اكتب تحليلك في 3 جمل: ما الحقائق؟ ماذا تعني؟',en:'Write your analysis in 3 sentences: what are the facts? What do they mean?'}},
+         {t:{nl:'Controleer',ar:'تحقق',en:'Check'}, d:{nl:'Gebruik je feiten of meningen? Feiten zijn beter.',ar:'هل تستخدم حقائق أم آراء؟ الحقائق أفضل.',en:'Are you using facts or opinions? Facts are better.'}}
+       ],
+       inleveren:[
+         {nl:'2 feiten met bronvermelding',ar:'حقيقتان مع ذكر المصدر',en:'2 facts with source'},
+         {nl:'Analyse van 3 zinnen',ar:'تحليل من 3 جمل',en:'3-sentence analysis'},
+         {nl:'Onderscheid tussen feit en mening',ar:'الفرق بين الحقيقة والرأي',en:'Distinction between fact and opinion'}
+       ],
+       vragen:[
+         {type:'mc',q:{nl:'Wat is een feit?',ar:'ما هي الحقيقة؟',en:'What is a fact?'},
+          opts:[{nl:'Iets wat je denkt',ar:'شيء تعتقده',en:'Something you think'},{nl:'Iets wat je kunt bewijzen met data',ar:'شيء يمكن إثباته بالبيانات',en:'Something you can prove with data'},{nl:'Iets wat je mooi vindt',ar:'شيء تجده جميلاً',en:'Something you find nice'},{nl:'Iets wat iedereen zegt',ar:'شيء يقوله الجميع',en:'Something everyone says'}],correct:1},
+         {type:'mc',q:{nl:'"Voetbal is de beste sport." Dit is een...',ar:'"كرة القدم هي أفضل رياضة." هذا هو...',en:'"Football is the best sport." This is a...'},
+          opts:[{nl:'Feit',ar:'حقيقة',en:'Fact'},{nl:'Statistiek',ar:'إحصاء',en:'Statistic'},{nl:'Mening',ar:'رأي',en:'Opinion'},{nl:'Analyse',ar:'تحليل',en:'Analysis'}],correct:2},
+         {type:'open',q:{nl:'Schrijf 1 feit en 1 mening over een interessant onderwerp.',ar:'اكتب حقيقة واحدة ورأياً واحداً عن موضوع مثير.',en:'Write 1 fact and 1 opinion about an interesting topic.'},
+          model:{nl:'Feit: "Marokko heeft 37 miljoen inwoners." Mening: "Marokko is het mooiste land."',ar:'حقيقة: "المغرب 37 مليون ساكن." رأي: "المغرب أجمل بلد."',en:'Fact: "Morocco has 37 million inhabitants." Opinion: "Morocco is the most beautiful country."'}}
+       ]}
+    ]
+  },
+  media: {
+    nulmeting: [
+      {q:{nl:'Wat is een "deepfake"?',ar:'ما هو التزييف العميق؟',en:'What is a "deepfake"?'},
+       opts:[{nl:'Een heel diepe foto',ar:'صورة عميقة',en:'A very deep photo'},{nl:'Een nep video of foto gemaakt met AI',ar:'فيديو أو صورة مزيفة بالذكاء الاصطناعي',en:'A fake video or photo made with AI'},{nl:'Een populaire social media app',ar:'تطبيق شائع',en:'A popular social media app'},{nl:'Een soort filter',ar:'نوع من الفلاتر',en:'A type of filter'}],correct:1},
+      {q:{nl:'Je ziet een schokkend bericht op WhatsApp. Wat doe je eerst?',ar:'ترى رسالة صادمة على واتساب. ماذا تفعل أولاً؟',en:'You see a shocking message on WhatsApp. What do you do first?'},
+       opts:[{nl:'Direct doorsturen',ar:'إعادة الإرسال فوراً',en:'Forward it immediately'},{nl:'De bron controleren',ar:'التحقق من المصدر',en:'Check the source'},{nl:'Er een reactie op plaatsen',ar:'كتابة تعليق',en:'Post a reaction'},{nl:'Niets doen',ar:'لا تفعل شيئاً',en:'Do nothing'}],correct:1}
+    ],
+    lessen: [
+      {id:'media_1_0',
+       titel:{nl:'AI tools — kritisch denken',ar:'أدوات الذكاء الاصطناعي — التفكير النقدي',en:'AI tools — critical thinking'},
+       niveau:1,
+       doel:{nl:'Leerlingen kunnen AI-content herkennen en kritisch beoordelen',ar:'يستطيع الطلاب التعرف على محتوى الذكاء الاصطناعي وتقييمه',en:'Students can recognize and critically evaluate AI content'},
+       video:'',
+       stappen:[
+         {t:{nl:'AI detective',ar:'محقق الذكاء الاصطناعي',en:'AI detective'}, d:{nl:'Kijk naar 3 afbeeldingen: welke is echt en welke is AI? Let op vingers, ogen, achtergrond.',ar:'انظر إلى 3 صور: أيها حقيقية وأيها ذكاء اصطناعي؟ انتبه للأصابع والعيون والخلفية.',en:'Look at 3 images: real or AI? Check fingers, eyes, background.'}},
+         {t:{nl:'Tekst analyse',ar:'تحليل النص',en:'Text analysis'}, d:{nl:'Lees 2 teksten: welke is door een mens geschreven en welke door AI?',ar:'اقرأ نصين: أيهما كتبه إنسان وأيهما الذكاء الاصطناعي؟',en:'Read 2 texts: which was written by a human and which by AI?'}},
+         {t:{nl:'Wanneer is AI gevaarlijk?',ar:'متى يكون الذكاء الاصطناعي خطيراً؟',en:'When is AI dangerous?'}, d:{nl:'Schrijf 2 voorbeelden wanneer AI handig is en 2 wanneer het gevaarlijk is.',ar:'اكتب مثالين متى يكون الذكاء الاصطناعي مفيداً ومثالين متى يكون خطيراً.',en:'Write 2 examples when AI is useful and 2 when it is dangerous.'}}
+       ],
+       inleveren:[
+         {nl:'Antwoorden op AI-detective vragen',ar:'إجابات على أسئلة المحقق',en:'Answers to AI detective questions'},
+         {nl:'2 voorbeelden handig + 2 gevaarlijk',ar:'مثالان مفيد + مثالان خطير',en:'2 useful + 2 dangerous examples'}
+       ],
+       vragen:[
+         {type:'mc',q:{nl:'Je ziet een vreemde foto van een beroemde persoon. Wat doe je?',ar:'ترى صورة غريبة لشخص مشهور. ماذا تفعل؟',en:'You see a strange photo of a famous person. What do you do?'},
+          opts:[{nl:'Direct delen',ar:'مشاركتها فوراً',en:'Share immediately'},{nl:'Controleren bij betrouwbare nieuwssite',ar:'التحقق من موقع موثوق',en:'Check on a reliable news site'},{nl:'Geloven want het ziet er echt uit',ar:'تصديقها لأنها تبدو حقيقية',en:'Believe it because it looks real'},{nl:'Negeren',ar:'تجاهلها',en:'Ignore it'}],correct:1},
+         {type:'mc',q:{nl:'Wat is een teken dat een foto AI is?',ar:'ما هي علامة أن الصورة بالذكاء الاصطناعي؟',en:'What is a sign that a photo is AI?'},
+          opts:[{nl:'Mooie kleuren',ar:'ألوان جميلة',en:'Beautiful colors'},{nl:'Vingers of oren zien er vreemd uit',ar:'الأصابع أو الآذان غريبة',en:'Fingers or ears look strange'},{nl:'De foto is scherp',ar:'الصورة واضحة',en:'The photo is sharp'},{nl:'Er staat tekst bij',ar:'يوجد نص',en:'There is text next to it'}],correct:1},
+         {type:'open',q:{nl:'Geef een voorbeeld van hoe AI media kan worden misbruikt.',ar:'أعطِ مثالاً على إساءة استخدام الذكاء الاصطناعي في الإعلام.',en:'Give an example of how AI media can be misused.'},
+          model:{nl:'Iemand maakt een nep video van een politicus. Mensen geloven het.',ar:'يصنع شخص فيديو مزيفاً لسياسي. يصدقه الناس.',en:'Someone makes a fake video of a politician. People believe it.'}}
+       ]},
+      {id:'media_1_1',
+       titel:{nl:'Een social media post maken',ar:'إنشاء منشور على وسائل التواصل',en:'Create a social media post'},
+       niveau:1,
+       doel:{nl:'Leerlingen kunnen een effectieve social media post schrijven',ar:'يستطيع الطلاب كتابة منشور فعّال',en:'Students can write an effective social media post'},
+       video:'',
+       stappen:[
+         {t:{nl:'Kies je doel',ar:'اختر هدفك',en:'Choose your goal'}, d:{nl:'Kies een doel: informeren, overtuigen, of vermaken.',ar:'اختر هدفاً: إعلام أو إقناع أو ترفيه.',en:'Choose a goal: inform, persuade, or entertain.'}},
+         {t:{nl:'Schrijf je post',ar:'اكتب منشورك',en:'Write your post'}, d:{nl:'Schrijf een post van maximaal 3 zinnen. Gebruik eenvoudige taal.',ar:'اكتب منشوراً من 3 جمل كحد أقصى. استخدم لغة بسيطة.',en:'Write a post of max 3 sentences. Use simple language.'}},
+         {t:{nl:'Afbeelding of emoji',ar:'صورة أو رمز',en:'Image or emoji'}, d:{nl:'Bedenk welke afbeelding of emoji past bij je boodschap.',ar:'فكر في الصورة أو الرمز المناسب.',en:'Think about which image or emoji fits your message.'}},
+         {t:{nl:'Lees hardop',ar:'اقرأ بصوت عالٍ',en:'Read aloud'}, d:{nl:'Lees je post hardop. Klinkt het echt?',ar:'اقرأ منشورك بصوت عالٍ. هل يبدو حقيقياً؟',en:'Read your post out loud. Does it sound real?'}}
+       ],
+       inleveren:[
+         {nl:'Je post (max 3 zinnen)',ar:'منشورك (3 جمل كحد أقصى)',en:'Your post (max 3 sentences)'},
+         {nl:'Het doel van je post',ar:'هدف منشورك',en:'The goal of your post'},
+         {nl:'Welke afbeelding of emoji + uitleg',ar:'أي صورة أو رمز + شرح',en:'Which image or emoji + explanation'}
+       ],
+       vragen:[
+         {type:'mc',q:{nl:'Welke post over waterverspilling is het meest effectief?',ar:'أي منشور عن هدر الماء هو الأكثر فاعلية؟',en:'Which water waste post is most effective?'},
+          opts:[{nl:'"Water is belangrijk."',ar:'"الماء مهم."',en:'"Water is important."'},{nl:'"Stop met water verspillen!!"',ar:'"توقف عن هدر الماء!!"',en:'"Stop wasting water!!"'},{nl:'"Elke dag 95 liter. Sluit de kraan."',ar:'"95 لتراً يومياً. أغلق الصنبور."',en:'"Every day 95 liters. Turn off the tap."'},{nl:'Een lange tekst',ar:'نص طويل',en:'A long text'}],correct:2},
+         {type:'mc',q:{nl:'Wat is het verschil tussen informeren en overtuigen?',ar:'ما الفرق بين الإعلام والإقناع؟',en:'What is the difference between informing and persuading?'},
+          opts:[{nl:'Er is geen verschil',ar:'لا فرق',en:'No difference'},{nl:'Informeren geeft feiten, overtuigen wil actie',ar:'الإعلام يعطي حقائق، الإقناع يريد فعلاً',en:'Informing gives facts, persuading wants action'},{nl:'Overtuigen is altijd slecht',ar:'الإقناع سيء دائماً',en:'Persuading is always bad'},{nl:'Informeren is alleen voor media',ar:'الإعلام فقط للإعلام',en:'Informing is only for media'}],correct:1},
+         {type:'open',q:{nl:'Schrijf een post over iets wat jij belangrijk vindt. Vermeld je doel.',ar:'اكتب منشوراً عن شيء تجده مهماً. اذكر هدفك.',en:'Write a post about something you find important. State your goal.'},
+          model:{nl:'Doel: informeren. "Elke dag 9 miljard plastic zakjes. Neem een stoffen tas. ♻️"',ar:'الهدف: إعلام. "9 مليار كيس يومياً. استخدم حقيبة قماشية. ♻️"',en:'Goal: inform. "Every day 9 billion plastic bags. Use a cloth bag. ♻️"'}}
+       ]}
+    ]
+  },
+  ct: {
+    nulmeting: [
+      {q:{nl:'Wat is een algoritme?',ar:'ما هو الخوارزمية؟',en:'What is an algorithm?'},
+       opts:[{nl:'Een wiskundige formule',ar:'معادلة رياضية',en:'A mathematical formula'},{nl:'Een stap-voor-stap plan om een probleem op te lossen',ar:'خطة خطوة بخطوة لحل مشكلة',en:'A step-by-step plan to solve a problem'},{nl:'Een computerprogramma',ar:'برنامج كمبيوتر',en:'A computer program'},{nl:'Een soort rekenmachine',ar:'نوع من الآلات الحاسبة',en:'A type of calculator'}],correct:1},
+      {q:{nl:'Wat is de eerste stap bij het opruimen van je kamer?',ar:'ما هي الخطوة الأولى عند ترتيب غرفتك؟',en:'What is the first step when cleaning your room?'},
+       opts:[{nl:'Alles in één keer oprapen',ar:'جمع كل شيء دفعة واحدة',en:'Pick up everything at once'},{nl:'Het probleem opsplitsen in kleine stappen',ar:'تقسيم المشكلة إلى خطوات صغيرة',en:'Split the problem into small steps'},{nl:'Wachten tot iemand anders het doet',ar:'انتظار شخص آخر',en:'Wait for someone else'},{nl:'Een app downloaden',ar:'تنزيل تطبيق',en:'Download an app'}],correct:1}
+    ],
+    lessen: [
+      {id:'ct_1_0',
+       titel:{nl:'Probleem opsplitsen',ar:'تقسيم المشكلة',en:'Problem decomposition'},
+       niveau:1,
+       doel:{nl:'Leerlingen kunnen een probleem opsplitsen in kleine stappen',ar:'يستطيع الطلاب تقسيم المشكلة إلى خطوات صغيرة',en:'Students can split a problem into small steps'},
+       video:'',
+       stappen:[
+         {t:{nl:'Kies je probleem',ar:'اختر مشكلتك',en:'Choose your problem'}, d:{nl:'Kies een probleem: "Hoe organiseer ik een schoolfeest?" of "Hoe leer ik voor een examen?"',ar:'اختر مشكلة: "كيف أنظم حفلة مدرسية؟" أو "كيف أستعد لامتحان؟"',en:'Choose: "How do I organize a school party?" or "How do I study for an exam?"'}},
+         {t:{nl:'Splits het op',ar:'قسّمها',en:'Split it up'}, d:{nl:'Splits het op in minimaal 5 kleine stappen.',ar:'قسّمها إلى 5 خطوات صغيرة على الأقل.',en:'Split it into at least 5 small steps.'}},
+         {t:{nl:'Juiste volgorde',ar:'الترتيب الصحيح',en:'Right order'}, d:{nl:'Zet de stappen in de juiste volgorde. Welke stap moet eerst?',ar:'رتّب الخطوات بالترتيب الصحيح. أيها يجب أن يكون أولاً؟',en:'Put the steps in the right order. Which must come first?'}},
+         {t:{nl:'Controleer',ar:'تحقق',en:'Check'}, d:{nl:'Kijk kritisch: heb je een stap vergeten?',ar:'انظر بعين ناقدة: هل نسيت خطوة؟',en:'Look critically: did you forget a step?'}}
+       ],
+       inleveren:[
+         {nl:'Je gekozen probleem',ar:'المشكلة التي اخترتها',en:'Your chosen problem'},
+         {nl:'Minimaal 5 stappen in de juiste volgorde',ar:'5 خطوات على الأقل بالترتيب الصحيح',en:'At least 5 steps in the right order'},
+         {nl:'Uitleg waarom die volgorde logisch is',ar:'شرح لماذا هذا الترتيب منطقي',en:'Why that order is logical'}
+       ],
+       vragen:[
+         {type:'mc',q:{nl:'Wat betekent "probleem decompositie"?',ar:'ماذا تعني تقسيم المشكلة؟',en:'What does "problem decomposition" mean?'},
+          opts:[{nl:'Een probleem negeren',ar:'تجاهل المشكلة',en:'Ignoring a problem'},{nl:'Een groot probleem opsplitsen in kleine delen',ar:'تقسيم مشكلة كبيرة إلى أجزاء صغيرة',en:'Splitting a big problem into small parts'},{nl:'Een probleem oplossen met een computer',ar:'حل مشكلة بالكمبيوتر',en:'Solving a problem with a computer'},{nl:'Een probleem opschrijven',ar:'كتابة المشكلة',en:'Writing down a problem'}],correct:1},
+         {type:'mc',q:{nl:'Wat moet EERST bij het koken van een maaltijd?',ar:'ما الذي يجب أن يكون أولاً عند الطهي؟',en:'What must come FIRST when cooking?'},
+          opts:[{nl:'Opdienen',ar:'التقديم',en:'Serving'},{nl:'Koken',ar:'الطهي',en:'Cooking'},{nl:'Ingrediënten kopen en klaarzetten',ar:'شراء المكونات وتحضيرها',en:'Buy and prepare ingredients'},{nl:'Afwassen',ar:'غسل الصحون',en:'Washing dishes'}],correct:2},
+         {type:'open',q:{nl:'Kies een dagelijks probleem en splits het op in 4 stappen.',ar:'اختر مشكلة يومية وقسّمها إلى 4 خطوات.',en:'Choose a daily problem and split it into 4 steps.'},
+          model:{nl:'Op tijd op school: 1) Wekker 7:00. 2) Kleren klaarlegen. 3) Ontbijt. 4) 20 min voor vertrek klaar.',ar:'1) منبّه 7:00. 2) تحضير الملابس. 3) الإفطار. 4) الاستعداد 20 دق قبل الخروج.',en:'1) Alarm 7:00. 2) Prepare clothes. 3) Breakfast. 4) Ready 20 min before.'}}
+       ]},
+      {id:'ct_1_1',
+       titel:{nl:'Als-dan regels in Excel',ar:'قواعد إذا-إذن في Excel',en:'If-then rules in Excel'},
+       niveau:1,
+       doel:{nl:'Leerlingen begrijpen hoe als-dan regels werken',ar:'يفهم الطلاب كيفية عمل قواعد إذا-إذن',en:'Students understand how if-then rules work'},
+       video:'',
+       stappen:[
+         {t:{nl:'Open Excel',ar:'افتح Excel',en:'Open Excel'}, d:{nl:'Open Excel. Maak een kolom "Score" en een kolom "Resultaat".',ar:'افتح Excel. أنشئ عموداً للنتيجة وعموداً للحكم.',en:'Open Excel. Make a "Score" and "Result" column.'}},
+         {t:{nl:'De formule',ar:'المعادلة',en:'The formula'}, d:{nl:'Typ in B2: =ALS(A2>=70;"Geslaagd";"Gezakt")',ar:'اكتب في B2: =IF(A2>=70,"Passed","Failed")',en:'Type in B2: =IF(A2>=70,"Passed","Failed")'}},
+         {t:{nl:'Test het',ar:'جرّبها',en:'Test it'}, d:{nl:'Typ verschillende scores in A2. Wat zegt B2?',ar:'اكتب درجات مختلفة في A2. ماذا تقول B2؟',en:'Type different scores in A2. What does B2 say?'}},
+         {t:{nl:'Aanpassen',ar:'التعديل',en:'Adjust'}, d:{nl:'Pas de formule aan: gebruik 60% als grens.',ar:'عدّل المعادلة: استخدم 60% كحد.',en:'Adjust the formula: use 60% as the limit.'}}
+       ],
+       inleveren:[
+         {nl:'Beschrijving van je Excel formule',ar:'وصف معادلتك في Excel',en:'Description of your Excel formula'},
+         {nl:'Resultaten bij 3 scores',ar:'النتائج عند 3 درجات',en:'Results for 3 scores'},
+         {nl:'Uitleg van hoe als-dan werkt',ar:'شرح كيفية عمل إذا-إذن',en:'Explanation of how if-then works'}
+       ],
+       vragen:[
+         {type:'mc',q:{nl:'Wat doet =ALS(A2>=70;"Geslaagd";"Gezakt")?',ar:'ماذا تفعل =IF(A2>=70,"Passed","Failed")؟',en:'What does =IF(A2>=70,"Passed","Failed") do?'},
+          opts:[{nl:'Berekent het gemiddelde',ar:'تحسب المتوسط',en:'Calculates the average'},{nl:'Kijkt of A2>=70 en geeft Geslaagd of Gezakt',ar:'تتحقق من A2>=70 وتعطي ناجح أو راسب',en:'Checks if A2>=70 and gives Passed or Failed'},{nl:'Telt alle scores op',ar:'تجمع كل الدرجات',en:'Adds all scores'},{nl:'Maakt een grafiek',ar:'تصنع رسماً بيانياً',en:'Makes a chart'}],correct:1},
+         {type:'mc',q:{nl:'Als A2=65, wat geeft de formule?',ar:'إذا كانت A2=65، ماذا تعطي المعادلة؟',en:'If A2=65, what does the formula give?'},
+          opts:[{nl:'Geslaagd',ar:'ناجح',en:'Passed'},{nl:'Gezakt',ar:'راسب',en:'Failed'},{nl:'65',ar:'65',en:'65'},{nl:'Fout',ar:'خطأ',en:'Error'}],correct:1},
+         {type:'open',q:{nl:'Bedenk een situatie waar een als-dan regel nuttig is.',ar:'فكر في موقف حيث تكون قاعدة إذا-إذن مفيدة.',en:'Think of a situation where an if-then rule is useful.'},
+          model:{nl:'Als het regent, neem een paraplu.',ar:'إذا كانت الأمطار تهطل، خذ مظلة.',en:'If it rains, take an umbrella.'}}
+       ]}
+    ]
+  }
+};
+
+var DB = {
+  docenten: [
+    {id:'d1', naam:'Mr. Ben Ali', email:'benali@school.ma', pin:'1234', klas:'k1', schoolId:'s1', actief:true,
+     rechten:{reset:false, domein:false, score:false, les:false}}
+  ],
+  klassen: [
+    {id:'k1', naam:'Klas 3A', docent:'d1', schoolId:'s1'}
+  ],
+  leerlingen: [
+    {id:'l1', naam:'Amina Karimi',  email:'amina@school.ma',  geboortejaar:'2011', klas:'k1', actief:true, geboortejaar:'2011', domeinen:{ict:true,info:true,media:true,ct:true}, verborgenLessen:[]},
+    {id:'l2', naam:'Youssef Benali',email:'youssef@school.ma',geboortejaar:'2012', klas:'k1', actief:true, geboortejaar:'2011', domeinen:{ict:true,info:true,media:true,ct:true}, verborgenLessen:[]},
+    {id:'l3', naam:'Fatima Zahra',  email:'fatima@school.ma',  geboortejaar:'2011', klas:'k1', actief:true, geboortejaar:'2011', domeinen:{ict:true,info:true,media:true,ct:true}, verborgenLessen:[]}
+  ],
+  beheerders: [
+    {id:'b1', naam:'Beheerder', pin:'9999', schoolId:'s1'}
+  ],
+  eigenaar: {pin:'7017', naam:'Smart Skills Morocco'},
+  scholen: [
+    {id:'s1', naam:'Al-Farabi School', stad:'Tanger', actief:true,  plan:'Pro', since:'2024-09', pin:'9999'},
+    {id:'s2', naam:'Ibn Rushd Academie', stad:'Casablanca', actief:true,  plan:'Starter', since:'2025-01', pin:'8888'},
+    {id:'s3', naam:'Averroes College', stad:'Rabat', actief:false, plan:'Pro', since:'2024-06', pin:'7777', reden:'Abonnement verlopen'}
+  ]
+};
+
+// ════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════
+var role = 'student';
+var lang = 'nl';
+var currentSchool = null; // set on beheerder login // nl, en, ar
+var currentUser = null;
+var currentDocent = null;
+var curDom = null;
+var curLv = 1;
+var curLes = null;
+var curPage = 'home';
+var passThreshold = 70;
+
+// Student progress (in-memory)
+var nulmetingDone = {};   // {domId: score}
+var lessonDone = {};      // {lesId: score}
+var qAnswers = {};        // {lesId_qi: answer}
+var qScores = {};         // {lesId: score}
+var qSubmitted = {};      // {lesId: true}
+var qRetry = {};          // {lesId_qi: answer}
+
+function g(id){return document.getElementById(id);}
+
+// ════════════════════════════════════════════════════
+// LOGIN
+// ════════════════════════════════════════════════════
+function setRole(r) {
+  role = r;
+  var jaarFld = g('fld-jaar');
+  if(jaarFld) jaarFld.style.display = r==='student' ? 'block' : 'none';
+  ['st','tc','bh'].forEach(function(x){
+    var el = g('r-'+x);
+    if(el) el.className = 'rbtn' + (x==='bh'?' gold':'');
+  });
+  var id = {student:'r-st',teacher:'r-tc',beheerder:'r-bh',eigenaar:'r-ow'}[r];
+  if(g(id)) { g(id).className += ' on'; if(r==='eigenaar') g(id).style.cssText='background:#5D2E0C;color:white;border-color:#5D2E0C;flex:1;padding:10px;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;text-align:center;'; }
+  g('fld-email').style.display = r==='teacher' ? 'block' : 'none';
+  g('fld-name').style.display = r==='beheerder' ? 'none' : 'block';
+  var hints = {
+    student:'Student: vul je naam in en klik inloggen',
+    teacher:'Docent: vul je e-mail in — je krijgt een PIN-prompt',
+    beheerder:'Beheerder: je krijgt een PIN-prompt',
+    eigenaar:'Eigenaar: je krijgt een super-PIN-prompt'
+  };
+  g('login-hint').textContent = hints[r];
+}
+
+function doLogin() {
+  if(role === 'eigenaar') {
+    var pin = prompt('Super-PIN eigenaar:');
+    if(!pin) return;
+    if(pin !== DB.eigenaar.pin){alert('Onjuiste super-PIN.');return;}
+    currentUser = DB.eigenaar;
+    showScreen('scr-eigenaar');
+    renderEigenaar();
+    return;
+  }
+  if(role === 'beheerder') {
+    var pin = prompt(lang==='ar'?'رمز PIN للمدير:':lang==='en'?'Admin PIN:':'Beheerderspincode:');
+    if(!pin) return;
+    // First check if it matches a school PIN
+    var school = DB.scholen ? DB.scholen.find(function(s){return s.pin===pin;}) : null;
+    if(school) {
+      if(!school.actief){
+        alert(lang==='ar'?'هذه المدرسة غير نشطة':lang==='en'?'This school is inactive':'Deze school is gedeactiveerd.');return;
+      }
+      currentSchool = school;
+      currentUser = {naam: school.naam, pin: pin, schoolId: school.id};
+      showScreen('scr-beheer');
+      renderBeheer();
+      return;
+    }
+    // Fallback to old beheerders list
+    var bh = DB.beheerders.find(function(b){return b.pin===pin;});
+    if(!bh){alert(lang==='ar'?'رمز غير صحيح':lang==='en'?'Incorrect PIN':'Onjuiste pincode.');return;}
+    currentSchool = DB.scholen ? DB.scholen.find(function(s){return s.id===bh.schoolId;}) : null;
+    currentUser = bh;
+    showScreen('scr-beheer');
+    renderBeheer();
+    return;
+  }
+  if(role === 'teacher') {
+    var email = (g('inp-email')||{value:''}).value.trim();
+    if(!email){alert('Vul je e-mailadres in.');return;}
+    var pin2 = prompt('Docentpincode (van beheerder ontvangen):');
+    if(!pin2) return;
+    var doc = DB.docenten.find(function(d){return d.email===email&&d.pin===pin2&&d.actief;});
+    if(!doc){alert('Onjuiste inloggegevens of geen toegang.');return;}
+    currentDocent = doc;
+    currentUser = doc;
+    showScreen('scr-teacher');
+    renderTeacher();
+    return;
+  }
+  // Student — alleen bekende leerlingen met juiste code
+  var naam = (g('inp-naam')||{value:''}).value.trim();
+  var code = ((g('inp-jaar')||{value:''}).value.trim()).toUpperCase();
+  if(!naam){alert(lang==='ar'?'أدخل اسمك':lang==='en'?'Enter your name':'Vul je naam in.');return;}
+  if(!code){alert(lang==='ar'?'أدخل رمز الطالب':lang==='en'?'Enter your student code':'Vul je leerlingcode in.');return;}
+  // Check leerling bestaat in DB
+  var stuLL = DB.leerlingen.find(function(l){return l.naam.toLowerCase()===naam.toLowerCase();});
+  if(!stuLL){
+    alert(lang==='ar'?'الاسم غير موجود. تواصل مع مدرسك':lang==='en'?'Name not found. Contact your teacher':'Naam niet gevonden. Vraag je docent om je toe te voegen.');return;
+  }
+  // Check code
+  if(stuLL.code && stuLL.code.toUpperCase()!==code){
+    alert(lang==='ar'?'الرمز غير صحيح':lang==='en'?'Incorrect code':'Onjuiste leerlingcode.');return;
+  }
+  // Check actief
+  if(!stuLL.actief){
+    alert(lang==='ar'?'حسابك غير نشط. تواصل مع مدرسك':lang==='en'?'Your account is inactive':'Je account is gedeactiveerd. Vraag je docent.');return;
+  }
+  // Check school actief
+  if(stuLL.klas){
+    var stuKlas = DB.klassen.find(function(k){return k.id===stuLL.klas;});
+    if(stuKlas){
+      var stuSchool = DB.scholen?DB.scholen.find(function(s){return s.id===stuKlas.schoolId;}):null;
+      if(stuSchool && !stuSchool.actief){
+        currentUser = {naam:naam,readOnly:true};
+        g('tb-st-name').textContent = naam.split(' ')[0];
+        g('tb-st-av').textContent = naam[0].toUpperCase();
+        showScreen('scr-student');
+        showProgressOnly();
+        return;
+      }
+    }
+  }
+  currentUser = {naam:naam, code:code};
+  g('tb-st-name').textContent = naam.split(' ')[0];
+  g('tb-st-av').textContent = naam[0].toUpperCase();
+  // Sync leerling to Supabase + load their progress
+  if (supa) {
+    // First check if user exists, then insert or get
+    supa.from('gebruikers').select('id').eq('naam', naam).eq('rol', 'leerling').limit(1).then(function(existing) {
+      if (existing.data && existing.data.length > 0) {
+        // User exists - load their progress
+        currentUser.supaId = existing.data[0].id;
+        console.log('Bestaande leerling gevonden:', naam, existing.data[0].id);
+        dbLoadLeerlingVoortgang(existing.data[0].id).then(function() { renderHome(); });
+      } else {
+        // New user - insert
+        supa.from('gebruikers').insert({
+          naam: naam,
+          rol: 'leerling',
+          code: code,
+          school_id: stuLL && stuLL.schoolId ? stuLL.schoolId : null,
+          klas_id: stuLL ? stuLL.klas : null,
+          actief: true
+        }).select('id').then(function(r) {
+          if (r.error) {
+            console.error('Supabase insert fout:', r.error.message);
+            renderHome();
+          } else {
+            currentUser.supaId = r.data && r.data[0] ? r.data[0].id : null;
+            console.log('Nieuwe leerling opgeslagen:', naam, currentUser.supaId);
+            renderHome();
+          }
+        });
+      }
+    });
+  } else {
+    renderHome();
+  }
+  showScreen('scr-student');
+}
+
+function doLogout() {
+  role = 'student';
+  currentUser = null;
+  currentDocent = null;
+  curDom = null; curLv = 1; curLes = null; curPage = 'home';
+  if(g('inp-naam')) g('inp-naam').value = '';
+  if(g('inp-email')) g('inp-email').value = '';
+  setRole('student');
+initSupabase();
+  showScreen('scr-login');
+}
+
+function showScreen(id) {
+  ['scr-login','scr-student','scr-teacher','scr-beheer','scr-eigenaar','scr-les-gen'].forEach(function(s){
+    var el = g(s);
+    if(el) el.className = 'screen' + (s===id?' active':'');
+  });
+}
+
+function goStudentView() {
+  showScreen('scr-student');
+  renderHome();
+}
+
+// ════════════════════════════════════════════════════
+// STUDENT — HOME
+// ════════════════════════════════════════════════════
+function renderHome() {
+  var ar=lang==='ar'; var en=lang==='en';
+  curPage = 'home';
+  curDom = null; curLes = null;
+  updateSidebar(null);
+  var html = '<div style="max-width:700px;">';
+  html += '<h2 style="font-size:20px;font-weight:700;color:#1B2F5E;margin-bottom:4px;">Welkom, '+currentUser.naam+'! 👋</h2>';
+  html += '<p style="font-size:13px;color:#888;margin-bottom:20px;">'+(lang==="ar"?'اختر مجالاً للبدء':lang==="en"?'Choose a domain to start':'Kies een domein om te beginnen')+'</p>';
+
+  // Check if nulmeting needed
+  var allNul = DOMS.every(function(d){return nulmetingDone[d.id]!==undefined;});
+  if(!allNul) {
+    html += '<div class="card" style="border-left:3px solid #D4A847;margin-bottom:16px;">';
+    html += '<div style="display:flex;align-items:center;gap:10px;">';
+    html += '<span style="font-size:24px;">📋</span>';
+    html += '<div><div style="font-weight:600;color:#1B2F5E;font-size:14px;">Doe eerst de nulmeting</div>';
+    html += '<div style="font-size:12px;color:#888;margin-top:2px;">2 vragen per domein — bepaalt je startpunt</div></div>';
+    html += '<button class="btn-p" style="margin-left:auto;" onclick="startNulmeting()">'+(lang==="ar"?'ابدأ الاختبار →':lang==="en"?'Start test →':'Start nulmeting →')+'</button>';
+    html += '</div></div>';
+  }
+
+  html += '<div style="text-align:center;margin-bottom:20px;">';
+  html += '<button onclick="openLesGen()" style="background:#1B2F5E;color:white;border:none;border-radius:12px;padding:14px 28px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;">&#10133; Maak je eigen les</button>';
+  html += '<div style="font-size:13px;color:#888;margin-top:8px;">Genereer in 1 minuut een les voor jouw klas</div>';
+  html += '</div>';
+  html += '<div class="dom-grid">';
+  var ll = currentUser ? DB.leerlingen.find(function(l){return l.naam===currentUser.naam;}) : null;
+  DOMS.forEach(function(d) {
+    var enabled = !ll || ll.domeinen[d.id] !== false;
+    if(!enabled) return;
+    var nulOk = nulmetingDone[d.id] !== undefined;
+    var lessen = CONTENT[d.id].lessen;
+    var done = lessen.filter(function(l){return lessonDone[l.id]!==undefined;}).length;
+    var pct = Math.round(done/lessen.length*100);
+    html += '<div class="dom-tile'+(nulOk?'':' locked')+'" data-did="'+d.id+'" onclick="domClick(this)" style="background:'+d.col+';cursor:'+(nulOk?'pointer':'not-allowed')+'">';
+    html += '<div class="dom-icon">'+d.icon+'</div>';
+    html += '<h3>'+(typeof d.name==="object"?(d.name[lang]||d.name.nl):d.name)+'</h3>';
+    html += '<p>'+lessen.length+' '+(lang==="ar"?'دروس':lang==="en"?'lessons':'lessen')+(nulOk?' · '+done+'/'+lessen.length+' '+(lang==="ar"?'مكتمل':lang==="en"?'done':'gedaan'):' · '+(lang==="ar"?'ابدأ الاختبار أولاً':lang==="en"?'Start test first':'Doe eerst de nulmeting'))+'</p>';
+    if(nulOk&&pct>0){html+='<div class="dom-prog"><div class="dom-prog-fill" style="width:'+pct+'%;"></div></div>';}
+    html += '</div>';
+  });
+  html += '</div></div>';
+  g('main-area').innerHTML = html;
+}
+
+function pickDom(id) {
+  curDom = id;
+  curLv = 1;
+  curLes = 0;
+  curPage = 'lesson';
+  updateSidebar(id);
+  renderLesson();
+}
+
+function updateSidebar(domId) {
+  var domSec = g('sb-domain-section');
+  if(!domId) {
+    if(domSec) domSec.style.display='none';
+    g('sb-domain-name').textContent='';
+    g('sb-levels').innerHTML='';
+    g('sb-lessons').innerHTML='';
+    return;
+  }
+  if(domSec) domSec.style.display='block';
+  var d = DOMS.find(function(x){return x.id===domId;});
+  g('sb-domain-name').textContent = d ? d.icon+' '+(typeof (typeof d.name==="object"?(d.name[lang]||d.name.nl):d.name)==="object"?(d.name[lang]||d.name.nl):(typeof d.name==="object"?(d.name[lang]||d.name.nl):d.name)) : '';
+  // Levels
+  var lvHtml = '';
+  [1].forEach(function(lv){
+    lvHtml += '<div class="lv-pill'+(curLv===lv?' on':'')+'" data-lv="'+lv+'" onclick="setLvEl(this)">Niveau '+lv+'</div>';
+  });
+  g('sb-levels').innerHTML = lvHtml;
+  // Lessons
+  var lessen = CONTENT[domId].lessen.filter(function(l){return l.niveau===curLv;});
+  var ll = currentUser ? DB.leerlingen.find(function(l){return l.naam===currentUser.naam;}) : null;
+  var lesHtml = '';
+  lessen.forEach(function(les,i){
+    if(ll && ll.verborgenLessen && ll.verborgenLessen.indexOf(les.id)>-1) return;
+    var isDone = lessonDone[les.id] !== undefined;
+    var isLocked = i>0 && !lessonDone[lessen[i-1].id];
+    var isCur = curLes===i;
+    var cls = 'sb-item' + (isCur?' on':'') + (isDone&&!isCur?' done':'') + (isLocked?' locked':'');
+    lesHtml += '<div class="'+cls+'" data-li="'+i+'" onclick="'+(isLocked?'showLockedMsg()':'selectLesEl(this)')+'">'; 
+    lesHtml += '<div class="sb-dot'+(isDone?' done':'')+(isCur?' on':'')+(isLocked?' locked':'')+'"></div>';
+    lesHtml += '<span>'+(i+1)+'. '+(typeof les.titel==="object"?(les.titel[lang]||les.titel.nl):les.titel)+'</span>';
+    if(isLocked) lesHtml += ' 🔒';
+    lesHtml += '</div>';
+  });
+  g('sb-lessons').innerHTML = lesHtml;
+}
+
+function setLv(lv) {curLv=lv;curLes=0;updateSidebar(curDom);renderLesson();}
+function selectLes(i) {curLes=i;updateSidebar(curDom);renderLesson();}
+
+// ════════════════════════════════════════════════════
+// NULMETING
+// ════════════════════════════════════════════════════
+var nulIdx = 0;
+var nulDomQueue = [];
+var nulAnswers = {};
+
+function startNulmeting() {
+  nulDomQueue = DOMS.filter(function(d){return nulmetingDone[d.id]===undefined;}).map(function(d){return d.id;});
+  nulIdx = 0;
+  nulAnswers = {};
+  renderNulmeting();
+}
+
+function renderNulmeting() {
+  if(nulIdx >= nulDomQueue.length) {
+    // Done
+    renderHome();
+    showToast('✅ Nulmeting afgerond! Je kunt nu beginnen.');
+    return;
+  }
+  var domId = nulDomQueue[nulIdx];
+  var d = DOMS.find(function(x){return x.id===domId;});
+  var vragen = CONTENT[domId].nulmeting;
+  var html = '<div style="max-width:600px;">';
+  html += '<div style="margin-bottom:16px;">';
+  html += '<h2 style="font-size:18px;font-weight:700;color:#1B2F5E;">'+(lang==='ar'?'الاختبار التمهيدي':lang==='en'?'Baseline test':'Nulmeting')+' — '+(typeof d.name==="object"?(d.name[lang]||d.name.nl):d.name)+' '+(nulIdx+1)+'/'+nulDomQueue.length+'</h2>';
+  html += '<p style="font-size:13px;color:#888;margin-top:4px;">2 vragen om je startpunt te bepalen. Er zijn geen foute antwoorden!</p>';
+  html += '</div>';
+  vragen.forEach(function(q,i){
+    var selAns = (nulAnswers[domId]||{})[i];
+    html += '<div class="q-card">';
+    html += '<div class="q-num">Vraag '+(i+1)+'/'+vragen.length+'</div>';
+    html += '<div class="q-text">'+(typeof q.q==='object'?(q.q[lang]||q.q.nl):q.q)+'</div>';
+    html += '<div class="mc-opts">';
+    q.opts.forEach(function(opt,oi){
+      var cls='mc-opt'+(selAns===oi?' sel':'');
+      var optTxt = typeof opt==='object'?(opt[lang]||opt.nl):opt;
+      html+='<div class="'+cls+'" data-dom="'+domId+'" data-qi="'+i+'" data-oi="'+oi+'" onclick="selNulEl(this)">';
+      html+='<div class="mc-radio"></div>'+optTxt+'</div>';
+    });
+    html += '</div></div>';
+  });
+  html += '<div class="btn-row">';
+  html += '<button class="btn-p" data-dom="'+domId+'" onclick="submitNulEl(this)">Volgende domein →</button>';
+  html += '</div></div>';
+  g('main-area').innerHTML = html;
+}
+
+function selNul(domId,qi,oi){
+  if(!nulAnswers[domId]) nulAnswers[domId]={};
+  nulAnswers[domId][qi]=oi;
+  renderNulmeting();
+}
+
+function submitNul(domId){
+  var vragen = CONTENT[domId].nulmeting;
+  var ans = nulAnswers[domId]||{};
+  var correct=0;
+  vragen.forEach(function(q,i){if(ans[i]===q.correct)correct++;});
+  var score = Math.round(correct/vragen.length*100);
+  nulmetingDone[domId] = score;
+  if (supa && currentUser && currentUser.supaId) {
+    supa.from('nulmeting').insert({
+      leerling_id: currentUser.supaId,
+      domein_id: domId,
+      score: score,
+      datum: new Date().toISOString()
+    }).then(function(r){
+      if(r.error) console.error('nulmeting fout:', r.error.message);
+      else console.log('nulmeting opgeslagen:', domId, score);
+    });
+  }
+  nulIdx++;
+  renderNulmeting();
+}
+
+// ════════════════════════════════════════════════════
+// LESSON VIEW
+// ════════════════════════════════════════════════════
+function renderLesson() {
+  curPage = 'lesson';
+  if(!curDom) return;
+  var lessen = CONTENT[curDom].lessen.filter(function(l){return l.niveau===curLv;});
+  if(curLes===null||curLes===undefined) curLes=0;
+  var les = lessen[curLes];
+  if(!les) return;
+  var d = DOMS.find(function(x){return x.id===curDom;});
+  var html = '<div style="max-width:700px;">';
+  // Header
+  html += '<div class="lesson-header">';
+  html += '<a href="#" onclick="renderHome();return false;" style="font-size:12px;color:#888;text-decoration:none;">← Terug naar domeinen</a>';
+  html += '<h2 style="margin-top:6px;">'+(typeof les.titel==="object"?(les.titel[lang]||les.titel.nl):les.titel)+'</h2>';
+  html += '<p>Niveau '+curLv+' · '+(typeof d.name==="object"?(d.name[lang]||d.name.nl):d.name)+'</p></div>';
+  // Leerdoel
+  html += '<div class="lesson-goal"><strong>Leerdoel:</strong>'+(typeof les.doel==="object"?(les.doel[lang]||les.doel.nl):les.doel)+'</div>';
+  // Video
+  html += '<div class="video-wrap">';
+  html += '<div class="video-header"><div class="vl"><div class="vdot"></div><span class="vtitle">Uitlegvideo</span><span class="vbadge">Niveau '+curLv+'</span></div></div>';
+  if(les.video){
+    html += '<iframe src="'+les.video+'" style="width:100%;height:260px;border:none;display:block;" allowfullscreen></iframe>';
+  } else {
+    html += '<div class="video-placeholder"><div class="vp-icon">🎬</div><div>Geen video beschikbaar voor deze les</div><div style="font-size:11px;margin-top:4px;">Docent kan een video toevoegen via het dashboard</div></div>';
+  }
+  html += '</div>';
+  // Stappen
+  html += '<div class="steps card"><div class="card-title">📋 Stappen</div>';
+  les.stappen.forEach(function(s,i){
+    html += '<div class="step-item"><div class="step-num">'+(i+1)+'</div><div class="step-body"><h5>'+(typeof s.t==="object"?(s.t[lang]||s.t.nl):s.t)+'</h5><p>'+(typeof s.d==="object"?(s.d[lang]||s.d.nl):s.d)+'</p></div></div>';
+  });
+  html += '</div>';
+  // Inleveren
+  html += '<div class="deliv"><h4>📤 Wat lever je in?</h4><ul>';
+  les.inleveren.forEach(function(item){html+='<li>'+(typeof item==="object"?(item[lang]||item.nl):item)+'</li>';});
+  html += '</ul></div>';
+  // Upload
+  html += '<div class="upl" onclick="showUploadMsg()">&#128206; '+(lang==="ar"?'ارفع ملفك أو تقريرك هنا':lang==="en"?'Upload your file or report here':'Upload je bestand of verslag hier')+'</div>';
+  // Docenthandleiding (alleen als docent)
+  if(role==='teacher') {
+    html += renderDocentHandleiding(les);
+  }
+  // Navigatie
+  html += '<div class="btn-row">';
+  if(curLes>0) html += '<button class="btn-s" onclick="selectLes('+(curLes-1)+')">← Vorige les</button>';
+  html += '<button class="btn-p" onclick="renderVragen()">De vragen →</button>';
+  if(curLes<lessen.length-1) html += '<button class="btn-s" onclick="tryNextLesson()">'+(lang==="ar"?'الدرس التالي →':lang==="en"?'Next lesson →':'Volgende les →')+'</button>';
+  html += '</div></div>';
+  g('main-area').innerHTML = html;
+}
+
+function tryNextLesson() {
+  var lessen = CONTENT[curDom].lessen.filter(function(l){return l.niveau===curLv;});
+  var les = lessen[curLes];
+  if(!lessonDone[les.id]) {
+    alert('Maak eerst de vragen af om door te gaan naar de volgende les. Minimale score: '+passThreshold+'%');
+    return;
+  }
+  curLes++;
+  updateSidebar(curDom);
+  renderLesson();
+}
+
+function renderDocentHandleiding(les) {
+  var ar=lang==='ar'; var en=lang==='en';
+  var title = ar?'دليل المعلم':en?'Teacher guide':'Docenthandleiding';
+  var goalLbl = ar?'هدف التعلم:':en?'Learning goal:':'Leerdoel:';
+  var approachLbl = ar?'المقاربة:':en?'Approach:':'Aanpak:';
+  var approachTxt = ar?'اشرح باختصار، ثم دع الطلاب يعملون بشكل مستقل. تجول وقدم توجيهات. لا تعطِ الإجابات — شجع الطلاب على الاكتشاف بأنفسهم.':en?'Demonstrate briefly, then let students work independently. Walk around and give targeted hints. No giving answers — let students discover themselves.':'Demonstreer kort, laat dan leerlingen zelfstandig werken. Loop rond en geef gerichte hints. Geen antwoorden geven — leer leerlingen zelf te ontdekken.';
+  return '<div style="background:#EBF0F8;border:1px solid #B5D4F4;border-radius:10px;padding:14px;margin-bottom:12px;">'
+    +'<div style="font-size:13px;font-weight:500;color:#0C447C;margin-bottom:8px;">&#128203; '+title+' — '+(typeof les.titel==="object"?(les.titel[lang]||les.titel.nl):les.titel)+'</div>'
+    +'<div style="font-size:12px;color:#0C447C;background:rgba(255,255,255,0.6);padding:8px 10px;border-radius:8px;margin-bottom:8px;"><strong>'+goalLbl+'</strong> '+(typeof les.doel==="object"?(les.doel[lang]||les.doel.nl):les.doel)+'</div>'
+    +'<div style="font-size:12px;color:#555;"><strong>'+approachLbl+'</strong> '+approachTxt+'</div>'
+    +'</div>';
+}
+
+// ════════════════════════════════════════════════════
+// VRAGEN
+// ════════════════════════════════════════════════════
+function renderVragen() {
+  curPage = 'vragen';
+  if(!curDom) return;
+  var lessen = CONTENT[curDom].lessen.filter(function(l){return l.niveau===curLv;});
+  var les = lessen[curLes];
+  if(!les) return;
+  var isSubmitted = qSubmitted[les.id];
+  var score = qScores[les.id];
+  var html = '<div style="max-width:600px;">';
+  html += '<div style="margin-bottom:16px;">';
+  html += '<a href="#" onclick="renderLesson();return false;" style="font-size:12px;color:#888;text-decoration:none;">← Terug naar les</a>';
+  html += '<h2 style="margin-top:6px;font-size:18px;font-weight:700;color:#1B2F5E;">Vragen — '+(typeof les.titel==="object"?(les.titel[lang]||les.titel.nl):les.titel)+'</h2>';
+  html += '</div>';
+  // Score box if submitted
+  if(isSubmitted && score!==undefined) {
+    var pass = score>=passThreshold;
+    html += '<div class="score-box" style="background:'+(pass?'#EBF3EE':'#FCEBEB')+';">';
+    html += '<div class="score-big" style="color:'+(pass?'#0F6E56':'#A32D2D')+';">'+score+'%</div>';
+    html += '<div style="text-align:center;margin-top:8px;"><span style="display:inline-block;padding:5px 18px;border-radius:20px;font-size:14px;font-weight:700;'+(score<40?'background:#FDF0EA;border:2px solid #C8714A;color:#C8714A;':score<70?'background:#FEF8E7;border:2px solid #D4A847;color:#D4A847;':'background:#EBF3EE;border:2px solid #0F6E56;color:#0F6E56;')+'">'+(score<40?(lang==="ar"?'&#127775; مبتدئ':lang==="en"?'&#127775; Beginner':'&#127775; Beginner'):(score<70?(lang==="ar"?'&#11088; متوسط':lang==="en"?'&#11088; Intermediate':'&#11088; Gemiddeld'):(lang==="ar"?'&#127941; متقدم':lang==="en"?'&#127941; Advanced':'&#127941; Gevorderd')))+'</span></div>';
+    html += '<div class="score-lbl" style="color:'+(pass?'#0F6E56':'#A32D2D')+'">';
+    html += pass?'✓ Gehaald! Je mag door naar de volgende les.':'✗ Nog niet gehaald. Minimale score: '+passThreshold+'%';
+    html += '</div>';
+    html += '<div class="score-bar"><div class="score-fill" style="width:'+score+'%;background:'+(pass?'#3DAB8E':'#E24B4A')+'"></div></div>';
+    if(!pass) html += '<button class="retry-btn" data-lid="'+les.id+'" onclick="resetVragenEl(this)">Opnieuw proberen</button>';
+    html += '</div>';
+  }
+  // Questions
+  les.vragen.forEach(function(q,i){
+    var ans = (qAnswers[les.id]||{})[i];
+    var retry = (qRetry[les.id]||{})[i];
+    html += '<div class="q-card">';
+    html += '<div class="q-num">'+(lang==='ar'?'سؤال':lang==='en'?'Question':'Vraag')+' '+(i+1)+'/'+les.vragen.length+'</div>';
+    html += '<div class="q-text">'+(typeof q.q==='object'?(q.q[lang]||q.q.nl):q.q)+'</div>';
+    if(q.type==='mc') {
+      html += '<div class="mc-opts">';
+      q.opts.forEach(function(opt,oi){
+        var cls='mc-opt';
+        if(isSubmitted){
+          if(oi===q.correct) cls+=' ok';
+          else if(ans===oi&&oi!==q.correct) cls+=' no';
+        } else if(ans===oi) cls+=' sel';
+        var clk = isSubmitted?'':' data-lid="'+les.id+'" data-qi="'+i+'" data-oi="'+oi+'" onclick="selQClickEl(this)"';
+        html+='<div class="'+cls+'"'+clk+'><div class="mc-radio"></div>'+(typeof opt==='object'?(opt[lang]||opt.nl):opt)+'</div>';
+      });
+      html += '</div>';
+      if(isSubmitted) {
+        var ok = ans===q.correct;
+        html += '<div class="fb '+(ok?'fb-ok':'fb-no')+'">'+(ok?'✓ '+(lang==="ar"?'صحيح!':lang==="en"?'Correct!':'Correct!'):'✗ '+(lang==="ar"?'خطأ — الإجابة الصحيحة محددة بالأخضر':lang==="en"?'Wrong — correct answer shown in green':'Fout — juiste antwoord is groen'))+'</div>';
+        // Retry for wrong answers
+        if(!ok && score<passThreshold) {
+          if(retry===undefined) {
+            html += '<div style="font-size:12px;color:#888;margin-top:8px;">'+(lang==="ar"?'حاول مرة أخرى:':lang==="en"?'Try again:':'Probeer opnieuw:')+'</div>';
+            html += '<div class="mc-opts" style="margin-top:6px;">';
+            q.opts.forEach(function(opt,oi){
+              html+='<div class="mc-opt'+(retry===oi?' sel':'')+'" data-lid="'+les.id+'" data-qi="'+i+'" data-oi="'+oi+'" onclick="selRetryEl(this)">';
+              html+='<div class="mc-radio"></div>'+opt+'</div>';
+            });
+            html += '</div>';
+            html += '<button class="retry-btn" data-lid="'+les.id+'" data-qi="'+i+'" data-cor="'+q.correct+'" onclick="submitRetryEl(this)">Controleer</button>';
+          } else {
+            html += '<div class="fb '+(retry===q.correct?'fb-ok':'fb-no')+'" style="margin-top:8px;">';
+            html += retry===q.correct?'✓ '+(lang==="ar"?'صحيح الآن!':lang==="en"?'Now correct!':'Nu goed!'):'✗ '+(lang==="ar"?'لا تزال خاطئة — يمكنك المتابعة':lang==="en"?'Still wrong — but you can continue':'Nog steeds fout — maar je mag doorgaan');
+            html += '</div>';
+          }
+        }
+      }
+    } else {
+      // Open question
+      var openAns = (qAnswers[les.id]||{})[i]||'';
+      html += '<textarea class="open-ans" placeholder="Schrijf je antwoord hier..." data-lid="'+les.id+'" data-qi="'+i+'" '+(isSubmitted?'readonly':'')+' oninput="selQEl(this)">'+openAns+'</textarea>';
+      if(isSubmitted) {
+        html += '<div class="fb fb-ok">📝 '+(lang==="ar"?'الإجابة النموذجية: ':lang==="en"?'Model answer: ':'Modelantwoord: ')+(typeof q.model==='object'?(q.model[lang]||q.model.nl):q.model)+'</div>';
+      }
+    }
+    html += '</div>';
+  });
+  // Submit button
+  if(!isSubmitted) {
+    html += '<div class="btn-row"><button class="btn-p" data-lid="'+les.id+'" onclick="submitVragenEl(this)">Inleveren →</button></div>';
+  } else {
+    html += '<div class="btn-row">';
+    var lessen2 = CONTENT[curDom].lessen.filter(function(l){return l.niveau===curLv;});
+    if(curLes<lessen2.length-1 && score>=passThreshold) {
+      html += '<button class="btn-g" onclick="selectLes('+(curLes+1)+')">Volgende les →</button>';
+    }
+    html += '<button class="btn-s" onclick="renderLesson()">← Terug naar les</button>';
+    html += '</div>';
+  }
+  html += '</div>';
+  g('main-area').innerHTML = html;
+}
+
+function selQ(lesId,qi,ans){
+  if(!qAnswers[lesId]) qAnswers[lesId]={};
+  qAnswers[lesId][qi]=ans;
+  // Don't re-render for textarea to avoid losing focus
+}
+
+function selRetry(lesId,qi,oi){
+  if(!qRetry[lesId]) qRetry[lesId]={};
+  qRetry[lesId][qi]=oi;
+  renderVragen();
+}
+
+function submitRetry(lesId,qi,correct){
+  var ans = (qRetry[lesId]||{})[qi];
+  if(ans===undefined){alert('Kies eerst een antwoord.');return;}
+  renderVragen();
+}
+
+function submitVragen(lesId) {
+  var domId = lesId.split('_')[0];
+  var les = findLes(lesId);
+  if(!les) return;
+  var ans = qAnswers[lesId]||{};
+  var correct=0, total=0;
+  les.vragen.forEach(function(q,i){
+    total++;
+    if(q.type==='mc'){if(ans[i]===q.correct)correct++;}
+    else correct++; // open always counts
+  });
+  var score = Math.round(correct/total*100);
+  qScores[lesId] = score;
+  qSubmitted[lesId] = true;
+  if(score >= passThreshold) {
+    lessonDone[lesId] = score;
+    // Save to Supabase
+    if (supa && currentUser && currentUser.supaId) {
+      supa.from('voortgang').insert({
+        leerling_id: currentUser.supaId,
+        les_id: lesId,
+        score: score,
+        niveau: score < 40 ? 'Beginner' : score < 70 ? 'Intermediate' : 'Advanced',
+        datum: new Date().toISOString()
+      }).then(function(r){
+        if(r.error) console.error('voortgang fout:', r.error.message);
+        else console.log('voortgang opgeslagen:', lesId, score);
+      });
+    }
+  }
+  // Send email to docent
+  var docent = DB.docenten.find(function(d){
+    var klas = DB.klassen.find(function(k){return k.docent===d.id;});
+    return klas !== undefined;
+  });
+  if(docent) {
+    sendEmail(EJS_TPL_DOCENT, {
+      docent_naam: docent.naam,
+      student_naam: currentUser.naam,
+      les_naam: les.titel,
+      score: score,
+      to_email: docent.email || 'redouanouali@gmail.com'
+    });
+  }
+  updateSidebar(curDom);
+  renderVragen();
+  showToast('Ingediend! Score: '+score+'%' + (score>=passThreshold?' ✓':''));
+}
+
+function resetVragen(lesId) {
+  delete qAnswers[lesId];
+  delete qScores[lesId];
+  delete qSubmitted[lesId];
+  delete qRetry[lesId];
+  delete lessonDone[lesId];
+  renderVragen();
+}
+
+function findLes(lesId) {
+  var found = null;
+  DOMS.forEach(function(d){
+    CONTENT[d.id].lessen.forEach(function(l){
+      if(l.id===lesId) found=l;
+    });
+  });
+  return found;
+}
+
+// ════════════════════════════════════════════════════
+// PROGRESS
+// ════════════════════════════════════════════════════
+function showProgress() {
+  curPage = 'progress';
+  var html = '<div style="max-width:600px;">';
+  html += '<h2 style="font-size:18px;font-weight:700;color:#1B2F5E;margin-bottom:16px;">📊 Mijn voortgang</h2>';
+  // Nulmeting scores
+  html += '<div class="card"><div class="card-title">📋 Nulmeting scores</div>';
+  DOMS.forEach(function(d){
+    var score = nulmetingDone[d.id];
+    html += '<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #f5f4f1;">';
+    html += '<span>'+d.icon+'</span><span style="flex:1;font-size:13px;">'+(typeof (typeof d.name==="object"?(d.name[lang]||d.name.nl):d.name)==="object"?(d.name[lang]||d.name.nl):(typeof d.name==="object"?(d.name[lang]||d.name.nl):d.name))+'</span>';
+    var nulLvl = score===undefined?'':(score<40?(lang==="ar"?'مبتدئ':lang==="en"?'Beginner':'Beginner'):score<70?(lang==="ar"?'متوسط':lang==="en"?'Intermediate':'Gemiddeld'):(lang==="ar"?'متقدم':lang==="en"?'Advanced':'Gevorderd'));
+    var nulLvlColor = score===undefined?'':score<40?'#C8714A':score<70?'#D4A847':'#0F6E56';
+    html += score!==undefined ? '<span class="badge bg">'+score+'%</span> <span style="font-size:11px;font-weight:700;color:'+nulLvlColor+';">'+nulLvl+'</span>' : '<span class="badge by">'+(lang==="ar"?'لم يتم':lang==="en"?'Not done':'Niet gedaan')+'</span>';
+    html += '</div>';
+  });
+  html += '</div>';
+  // Lesson progress
+  html += '<div class="card"><div class="card-title">📚 Lessen</div>';
+  DOMS.forEach(function(d){
+    var lessen = CONTENT[d.id].lessen;
+    html += '<div style="margin-bottom:10px;">';
+    html += '<div style="font-size:13px;font-weight:500;color:'+DOMS.find(function(x){return x.id===d.id;}).col+';margin-bottom:4px;">'+d.icon+' '+(typeof d.name==="object"?(d.name[lang]||d.name.nl):d.name)+'</div>';
+    lessen.forEach(function(l){
+      var done = lessonDone[l.id];
+      html += '<div style="display:flex;align-items:center;gap:8px;padding:4px 0;">';
+      html += '<span style="font-size:11px;'+(done?'color:#3DAB8E;':'color:#aaa;')+'">'+( done?'✓':'○')+'</span>';
+      html += '<span style="font-size:12px;color:#555;">'+(typeof l.titel==="object"?(l.titel[lang]||l.titel.nl):l.titel)+'</span>';
+      if(done) html += '<span class="badge bg" style="margin-left:auto;">'+done+'%</span>';
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+  html += '</div>';
+  // XP
+  var totalDone = Object.keys(lessonDone).length;
+  var xp = totalDone * 100;
+  html += '<div class="card" style="text-align:center;">';
+  html += '<div class="xp-badge" style="display:inline-flex;">⭐ '+xp+' XP</div>';
+  html += '<div style="font-size:13px;color:#888;margin-top:8px;">'+totalDone+' '+(lang==="ar"?'درس مكتمل':lang==="en"?'lesson(s) done':'les(sen) afgerond')+'</div>';
+  html += '</div>';
+  html += '</div>';
+  g('main-area').innerHTML = html;
+}
+
+// ════════════════════════════════════════════════════
+// TEACHER DASHBOARD
+// ════════════════════════════════════════════════════
+function renderTeacher() {
+  var ar=lang==='ar'; var en=lang==='en';
+  var doc = currentDocent;
+  g('tb-tc-name').textContent = doc ? doc.naam : 'Docent';
+  g('tb-tc-av').textContent = doc ? doc.naam[0] : 'D';
+  var html = '<div style="max-width:900px;">';
+  html += '<h2 style="font-size:18px;font-weight:700;color:#1B2F5E;margin-bottom:16px;">'+(ar?'لوحة المعلم':en?'Teacher dashboard':'Leraardashboard')+' — '+doc.naam+'</h2>';
+
+  // Stats
+  var ll = DB.leerlingen.filter(function(l){return l.klas===doc.klas;});
+  html += '<div class="stat-grid">';
+  html += '<div class="stat"><div class="stat-n">'+ll.length+'</div><div class="stat-l">Leerlingen</div></div>';
+  var totalLessen = DOMS.reduce(function(a,d){return a+CONTENT[d.id].lessen.length;},0);
+  html += '<div class="stat"><div class="stat-n">'+totalLessen+'</div><div class="stat-l">Lessen beschikbaar</div></div>';
+  html += '<div class="stat"><div class="stat-n" style="color:#3DAB8E;">'+passThreshold+'%</div><div class="stat-l">Huidige scoregrens</div></div>';
+  html += '</div>';
+
+  // Demo: voeg jezelf toe
+  html += '<div class="demo-add-box">';
+  html += '<h3>🎯 '+(ar?'تجريبي — أضف طالباً تجريبياً':en?'Demo — Add a test student':'Demo — Voeg een testleerling toe')+'</h3>';
+  html += '<p>'+(ar?'أظهر للمشتري كيفية إضافة طالب جديد.':en?'Show the buyer how a new student is added.':'Laat de koper zien hoe een nieuwe leerling wordt toegevoegd.')+'</p>';
+  html += '<div class="form-grid">';
+  html += '<div class="inp-wrap"><label>Naam</label><input type="text" id="demo-naam" placeholder="Naam leerling"/></div>';
+  html += '<div class="inp-wrap"><label>E-mail</label><input type="email" id="demo-email" placeholder="email@school.ma"/></div>';
+  html += '</div>';
+  html += '<button onclick="addDemoLeerling()" style="padding:8px 16px;background:#D4A847;color:#1B2F5E;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;">+ Leerling toevoegen</button>';
+  html += '</div>';
+
+  // Leerlingen overzicht
+  html += mkSec('st-prog','📝 '+(ar?'الطلاب والتقدم':en?'Students & progress':'Leerlingen & voortgang'), renderLeerlingenTabel(ll, doc));
+
+  // Progression control
+  html += mkSec('prog-ctrl','🔒 '+(ar?'إدارة التقدم':en?'Progress control':'Progressiebeheer'), renderProgCtrl(ll));
+
+  // Domeinen per leerling (alleen als recht)
+  if(!doc || doc.rechten.domein) {
+    html += mkSec('dom-ctrl','🌐 '+(ar?'المجالات لكل طالب':en?'Domains per student':'Domeinen per leerling'), renderDomCtrl());
+  }
+
+  // Scoregrens (alleen als recht)
+  if(!doc || doc.rechten.score) {
+    html += mkSec('score-set','⚙️ '+(ar?'تحديد حد النجاح':en?'Set pass threshold':'Scoregrens instellen'), renderScoreGrens());
+  }
+
+  // Video links
+  html += mkSec('vid-links','🎬 '+(ar?'روابط الفيديو لكل درس':en?'Video links per lesson':'Video links per les'), renderVideoLinks());
+
+  html += '</div>';
+  try{g('teacher-body').innerHTML = html;}catch(e){g('teacher-body').innerHTML='<div style="padding:20px;color:red;font-size:13px;">Fout in docent dashboard: '+e.message+'</div>';}
+}
+
+function mkSec(id, title, body) {
+  return '<div class="t-sec" id="sec-'+id+'">'
+    +'<div class="t-sec-hdr" data-sid="'+id+'" onclick="togSecEl(this)">'
+    +'<div class="t-sec-title">'+title+'</div>'
+    +'<span class="chev" id="chev-'+id+'">▼</span>'
+    +'</div>'
+    +'<div class="t-sec-body" id="body-'+id+'">'+body+'</div>'
+    +'</div>';
+}
+
+function togSec(id) {
+  var b=g('body-'+id); var ch=g('chev-'+id);
+  if(!b) return;
+  var op=b.className.indexOf('open')>-1;
+  b.className='t-sec-body'+(op?'':' open');
+  if(ch) ch.className='chev'+(op?'':' open');
+}
+
+function renderLeerlingenTabel(ll, doc) {
+
+  var ar=lang==='ar'; var en=lang==='en';  var h='<table class="t-tbl"><thead><tr><th>'+(ar?'الاسم':en?'Name':'Naam')+'</th><th>Email</th><th>'+(ar?'الحالة':en?'Status':'Status')+'</th><th>'+(ar?'التقدم':en?'Progress':'Voortgang')+'</th><th>'+(ar?'إعادة الأسئلة':en?'Reset questions':'Reset vragen')+'</th></tr></thead><tbody>';
+  ll.forEach(function(l){
+    var done = Object.keys(lessonDone).filter(function(k){return lessonDone[k]!==undefined;}).length;
+    h+='<tr>';
+    h+='<td style="font-weight:500;">'+l.naam+'</td>';
+    h+='<td style="font-size:12px;color:#888;">'+l.email+'</td>';
+    h+=(l.code?'<td><span style="font-family:monospace;background:#f5f4f1;padding:2px 6px;border-radius:4px;font-size:11px;font-weight:600;color:#1B2F5E;">'+l.code+'</span></td>':'<td>—</td>');
+    h+='<td><span class="badge '+(l.actief?'bg':'br')+'">'+(l.actief?(ar?'نشط':en?'Active':'Actief'):(ar?'غير نشط':en?'Inactive':'Inactief'))+'</span></td>';
+    h+='<td><span style="font-family:monospace;background:#f5f4f1;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600;color:#1B2F5E;letter-spacing:1px;">'+(l.code||'—')+'</span></td>';
+    h+='<td><span class="badge bb">'+done+' lessen</span></td>';
+    var canReset = !doc || doc.rechten.reset;
+    h+='<td>';
+    h+='<button class="t-btn" style="background:#EBF0F8;color:#1B2F5E;" data-naam="'+l.naam+'" onclick="viewAsStudentEl(this)">&#128065; '+(ar?'عرض':en?'View':'Bekijk')+'</button> ';
+    h+=(canReset?'<button class="t-btn" data-naam="'+l.naam+'" onclick="resetLeerlingEl(this)">&#8635; '+(ar?'إعادة':en?'Reset':'Reset')+'</button>':'');
+    h+='</td>';
+    h+='</tr>';
+  });
+  h+='</tbody></table>';
+  return h;
+}
+
+
+// ════════════════════════════════════════════════════
+// VIEW AS STUDENT (teacher feature)
+// ════════════════════════════════════════════════════
+var viewingAsStudent = null; // naam of the student being viewed
+
+function docentNaarStudent() {
+  // Docent bekijkt platform als zichzelf maar in student modus
+  // Kiest de eerste leerling van zijn klas als proxy, of maakt tijdelijke user aan
+  var doc = currentDocent;
+  if (!doc) return;
+  
+  // Find first student in docent's class
+  var klasLeerlingen = DB.leerlingen.filter(function(l){
+    return l.klas === doc.klas && l.actief;
+  });
+  
+  if (klasLeerlingen.length > 0) {
+    // View as first student
+    viewAsStudent(klasLeerlingen[0].naam);
+  } else {
+    // No students yet - create a temp view
+    var tempNaam = doc.naam + ' (preview)';
+    var tempLL = {id:'temp', naam:tempNaam, email:doc.email, klas:doc.klas, actief:true,
+      domeinen:{ict:true,info:true,media:true,ct:true}, verborgenLessen:[], code:'0000'};
+    DB.leerlingen.push(tempLL);
+    viewAsStudent(tempNaam);
+    // Mark as temp so we can clean up
+    window._tempStudent = tempNaam;
+  }
+}
+
+function viewAsStudent(naam) {
+  viewingAsStudent = naam;
+  var ll = DB.leerlingen.find(function(l){return l.naam===naam;});
+  if(!ll){showToast('Leerling niet gevonden');return;}
+  // Temporarily set currentUser to this student
+  var prevUser = currentUser;
+  currentUser = {naam:naam};
+  g('tb-st-name').textContent = naam.split(' ')[0];
+  g('tb-st-av').textContent = naam[0].toUpperCase();
+  showScreen('scr-student');
+  // Show banner
+  setTimeout(function(){
+    var banner = document.createElement('div');
+    banner.id = 'view-banner';
+    banner.style.cssText = 'position:fixed;top:52px;left:0;right:0;background:#D4A847;color:#1B2F5E;padding:8px 16px;font-size:13px;font-weight:600;z-index:200;display:flex;align-items:center;justify-content:space-between;';
+    banner.innerHTML = '&#128065; '+(lang==="ar"?'أنت تعرض كـ':lang==="en"?'Viewing as:':'Je bekijkt als')+' <strong>'+naam+'</strong> &nbsp;&nbsp;<button onclick="backToTeacher()" style="padding:5px 12px;background:#1B2F5E;color:white;border:none;border-radius:6px;font-size:12px;cursor:pointer;font-family:inherit;">&#8592; '+(lang==="ar"?'العودة':lang==="en"?'Back':'Terug naar dashboard')+'</button>';
+    document.body.appendChild(banner);
+    // Push content down
+    var layout = document.querySelector('.app-layout');
+    if(layout) layout.style.marginTop = '36px';
+  }, 100);
+  renderHome();
+}
+
+function backToTeacher() {
+  // Clean up temp student if created
+  if (window._tempStudent) {
+    DB.leerlingen = DB.leerlingen.filter(function(l){return l.naam !== window._tempStudent;});
+    window._tempStudent = null;
+  }
+  viewingAsStudent = null;
+  var banner = g('view-banner');
+  if(banner) banner.remove();
+  var layout = document.querySelector('.app-layout');
+  if(layout) layout.style.marginTop = '0';
+  // Restore docent
+  currentUser = currentDocent;
+  showScreen('scr-teacher');
+  renderTeacher();
+}
+
+function renderProgCtrl(ll) {
+  var h='<div style="font-size:12px;color:#666;margin-bottom:10px;">Schuifregelaar per leerling om toegang tot niveau 2 te geven.</div>';
+  h+='<table class="t-tbl"><thead><tr><th>Leerling</th><th>Niveau 1 klaar</th><th>Toegang Niveau 2</th></tr></thead><tbody>';
+  ll.forEach(function(l){
+    var niv1Done = DOMS.every(function(d){
+      return CONTENT[d.id].lessen.filter(function(les){return les.niveau===1;}).every(function(les){return lessonDone[les.id]!==undefined;});
+    });
+    h+='<tr><td style="font-weight:500;">'+l.naam+'</td>';
+    h+='<td><span class="badge '+(niv1Done?'bg':'by')+'">'+(niv1Done?'✓ Ja':'Bezig')+'</span></td>';
+    h+='<td><div class="access-tog">';
+    h+='<label class="tog-sw"><input type="checkbox" id="tog-'+l.id+'" data-lbl="lbl-'+l.id+'" onchange="togAccess(this)"/><span class="tog-sl"></span></label>';
+    h+='<span class="tog-lbl" id="lbl-'+l.id+'">Geblokkeerd</span></div></td></tr>';
+  });
+  h+='</tbody></table>';
+  return h;
+}
+
+function togAccess(inp){
+  var granted=inp.checked;
+  var lbl=document.getElementById(inp.getAttribute('data-lbl'));
+  if(lbl){lbl.textContent=granted?'Toegang gegeven':'Geblokkeerd';lbl.className='tog-lbl'+(granted?' granted':'');}
+}
+
+function renderDomCtrl() {
+  var myKlassen = (typeof myKlassen !== "undefined") ? myKlassen : getMyKlassen();
+  var myDocenten = (typeof myDocenten !== "undefined") ? myDocenten : getMyDocenten();
+  var myLeerlingen = (typeof myLeerlingen !== "undefined") ? myLeerlingen : getMyLeerlingen();
+  var h='<div style="font-size:12px;color:#666;margin-bottom:10px;">Vink een domein uit om het te verbergen voor een leerling.</div>';
+  h+='<table class="t-tbl"><thead><tr><th>Leerling</th>';
+  DOMS.forEach(function(d){h+='<th style="font-size:11px;">'+d.icon+' '+(typeof (typeof d.name==="object"?(d.name[lang]||d.name.nl):d.name)==="object"?(d.name[lang]||d.name.nl):(typeof d.name==="object"?(d.name[lang]||d.name.nl):d.name))+'</th>';});
+  h+='</tr></thead><tbody>';
+  DB.leerlingen.forEach(function(l){
+    h+='<tr><td style="font-weight:500;">'+l.naam+'</td>';
+    DOMS.forEach(function(d){
+      var on=l.domeinen[d.id]!==false;
+      h+='<td><input type="checkbox"'+(on?' checked':'')+' data-lid="'+l.id+'" data-did="'+d.id+'" onchange="toggleDomeinEl(this)" style="accent-color:'+d.col+';width:16px;height:16px;cursor:pointer;"></td>';
+    });
+    h+='</tr>';
+  });
+  h+='</tbody></table>';
+  return h;
+}
+
+function toggleDomein(llId,domId,val){
+  var l=DB.leerlingen.find(function(x){return x.id===llId;});
+  if(l){l.domeinen[domId]=val;}
+  showToast((val?'✓ Domein ingeschakeld':'✗ Domein uitgeschakeld')+' voor leerling');
+}
+
+function renderScoreGrens() {
+  return '<div style="padding:4px 0;">'
+    +'<div style="font-size:13px;color:#666;margin-bottom:12px;">Stel de minimale score in die leerlingen moeten halen om door te gaan. Geldt voor de hele klas.</div>'
+    +'<div style="display:flex;align-items:center;gap:16px;">'
+    +'<input type="range" id="score-slider" min="40" max="100" step="5" value="'+passThreshold+'" style="flex:1;accent-color:#1B2F5E;" oninput="updScore(this.value)">'
+    +'<span id="score-val" style="font-size:22px;font-weight:700;color:#1B2F5E;min-width:55px;">'+passThreshold+'%</span>'
+    +'</div>'
+    +'<div style="display:flex;justify-content:space-between;font-size:11px;color:#bbb;margin-top:4px;"><span>40% (laag)</span><span>70% (standaard)</span><span>100% (streng)</span></div>'
+    +'<div style="margin-top:10px;padding:8px 12px;border-radius:8px;background:#EBF0F8;font-size:12px;color:#1B2F5E;">ℹ️ Dit geldt voor alle leerlingen in de klas.</div>'
+    +'</div>';
+}
+
+function updScore(v){passThreshold=parseInt(v);var el=g('score-val');if(el)el.textContent=v+'%';}
+
+function renderVideoLinks() {
+  var h='<div style="font-size:12px;color:#666;margin-bottom:10px;">Voeg een HeyGen video-link toe per les. De link wordt automatisch omgezet naar een embed.</div>';
+  DOMS.forEach(function(d){
+    h+='<div style="margin-bottom:12px;"><div style="font-size:13px;font-weight:500;color:'+d.col+';margin-bottom:6px;">'+d.icon+' '+(typeof d.name==="object"?(d.name[lang]||d.name.nl):d.name)+'</div>';
+    CONTENT[d.id].lessen.forEach(function(les){
+      h+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">';
+      h+='<span style="font-size:12px;min-width:160px;color:#555;">'+(typeof les.titel==="object"?(les.titel[lang]||les.titel.nl):les.titel)+'</span>';
+      h+='<input type="text" placeholder="https://app.heygen.com/videos/..." value="'+(les.video||'')+'" style="flex:1;padding:6px 10px;border:1px solid #d0cdc8;border-radius:6px;font-size:12px;" data-lid="'+les.id+'" onchange="saveVidLinkEl(this)">';
+      h+='<span id="vls-'+les.id+'" style="font-size:11px;color:#3DAB8E;min-width:16px;"></span>';
+      h+='</div>';
+    });
+    h+='</div>';
+  });
+  return h;
+}
+
+function saveVidLink(lesId,url){
+  var les=findLes(lesId);
+  if(!les) return;
+  var embed=url;
+  if(url.indexOf('heygen.com/videos/')>-1) embed=url.replace('heygen.com/videos/','heygen.com/embeds/');
+  les.video=embed;
+  var sp=g('vls-'+lesId);
+  if(sp) sp.textContent='✓';
+  showToast('Video opgeslagen voor '+les.titel);
+}
+
+function addDemoLeerling(){
+  var naam=(g('demo-naam')||{value:''}).value.trim();
+  var email=(g('demo-email')||{value:''}).value.trim();
+  if(!naam||!email){alert('Vul naam en e-mail in.');return;}
+  if(DB.leerlingen.find(function(l){return l.email===email;})){alert('E-mail bestaat al.');return;}
+  var newId='l'+(DB.leerlingen.length+1);
+  var klas=currentDocent?currentDocent.klas:'k1';
+  DB.leerlingen.push({id:newId,naam:naam,email:email,klas:klas,actief:true,domeinen:{ict:true,info:true,media:true,ct:true},verborgenLessen:[]});
+  // Send welcome email
+  sendEmail(EJS_TPL_BEHEER, {
+    docent_naam: currentDocent?currentDocent.naam:'Docent',
+    student_naam: naam,
+    to_email: 'itinshape@gmail.com',
+    klas_naam: DB.klassen.find(function(k){return k.id===klas;})||{naam:'Klas 3A'}.naam
+  });
+  showToast('✓ '+naam+' toegevoegd! Welkomstmail verstuurd.');
+  if(g('demo-naam')) g('demo-naam').value='';
+  if(g('demo-email')) g('demo-email').value='';
+  renderTeacher();
+}
+
+function resetLeerling(naam){
+  // Reset all answers for this student (in demo, resets global state)
+  qAnswers={};qScores={};qSubmitted={};qRetry={};lessonDone={};nulmetingDone={};
+  showToast('Alle vragen gereset voor '+naam);
+  renderTeacher();
+}
+
+// ════════════════════════════════════════════════════
+// BEHEERDER
+// ════════════════════════════════════════════════════
+function renderBeheer() {
+  var myKlassen = (typeof myKlassen !== "undefined") ? myKlassen : getMyKlassen();
+  var myDocenten = (typeof myDocenten !== "undefined") ? myDocenten : getMyDocenten();
+  var myLeerlingen = (typeof myLeerlingen !== "undefined") ? myLeerlingen : getMyLeerlingen();
+  var ar=lang==='ar'; var en=lang==='en';
+  var sId = currentSchool ? currentSchool.id : null;
+  // Filter data to current school only
+  var myDocenten = getMyDocenten();
+  var myKlassen = getMyKlassen();
+  var myLeerlingen = getMyLeerlingen();
+  var html='<div style="max-width:900px;">';
+  html+='<h2 style="font-size:18px;font-weight:700;color:#1B2F5E;margin-bottom:16px;">🔑 '+(ar?'لوحة الإدارة':en?'Admin panel':'Beheerderspaneel')+(currentSchool?' — '+currentSchool.naam:'')+'</h2>';
+
+  // Stats
+  html+='<div class="stat-grid">';
+  html+='<div class="stat"><div class="stat-n">'+myDocenten.length+'</div><div class="stat-l">Docenten</div></div>';
+  html+='<div class="stat"><div class="stat-n">'+myKlassen.length+'</div><div class="stat-l">Klassen</div></div>';
+  html+='<div class="stat"><div class="stat-n">'+myLeerlingen.length+'</div><div class="stat-l">Leerlingen</div></div>';
+  html+='</div>';
+
+  // Demo: voeg jezelf toe
+  html+='<div class="demo-add-box">';
+  html+='<h3>🎯 Demo — Voeg jezelf toe</h3>';
+  html+='<p>Laat de koper zien hoe nieuwe gebruikers worden aangemaakt.</p>';
+  html+='<div class="form-grid g3">';
+  html+='<div class="inp-wrap"><label>Rol</label><select id="demo-rol"><option value="leerling">Leerling</option><option value="docent">Docent</option><option value="beheerder">Beheerder</option></select></div>';
+  html+='<div class="inp-wrap"><label>Naam</label><input type="text" id="demo-bn" placeholder="Je naam"/></div>';
+  html+='<div class="inp-wrap"><label>E-mail</label><input type="email" id="demo-be" placeholder="jouw@email.com"/></div>';
+  html+='</div>';
+  html+='<button onclick="addDemoUser()" style="padding:8px 16px;background:#D4A847;color:#1B2F5E;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;">+ Toevoegen & e-mail versturen</button>';
+  html+='</div>';
+
+  // Docenten
+  html+=bSec('doc','👩‍🏫 '+(ar?'إدارة المعلمين':en?'Manage teachers':'Docenten beheren'), renderDocentenBeheer(), true);
+
+  // Klassen
+  html+=bSec('klas','🏫 '+(ar?'إدارة الفصول':en?'Manage classes':'Klassen beheren'), renderKlassenBeheer(), false);
+
+  // Leerlingen
+  html+=bSec('ll','🎓 '+(ar?'إدارة الطلاب':en?'Manage students':'Leerlingen beheren'), renderLeerlingenBeheer(), false);
+
+  html+='</div>';
+  try{g('beheer-body').innerHTML=html;}catch(e){g('beheer-body').innerHTML='<div style="padding:20px;color:red;">Fout: '+e.message+'</div>';}
+}
+
+function getMyKlassen(){var sId=currentSchool?currentSchool.id:null;return sId?DB.klassen.filter(function(k){return k.schoolId===sId;}):DB.klassen;}
+function getMyDocenten(){var sId=currentSchool?currentSchool.id:null;return sId?DB.docenten.filter(function(d){return d.schoolId===sId;}):DB.docenten;}
+function getMyLeerlingen(){var sId=currentSchool?currentSchool.id:null;return sId?DB.leerlingen.filter(function(l){return l.schoolId===sId;}):DB.leerlingen;}
+
+function bSec(id,title,body,open){
+  return '<div class="t-sec" style="margin-bottom:10px;">'
+    +'<div class="t-sec-hdr" data-sid="'+id+'" onclick="bTogSecEl(this)">'
+    +'<div class="t-sec-title">'+title+'</div>'
+    +'<span class="chev'+(open?' open':'')+'" id="bch-'+id+'">▼</span>'
+    +'</div>'
+    +'<div class="t-sec-body'+(open?' open':'')+'" id="bb-'+id+'">'+body+'</div>'
+    +'</div>';
+}
+function bTogSec(id){var b=g('bb-'+id);var ch=g('bch-'+id);if(!b)return;var op=b.className.indexOf('open')>-1;b.className='t-sec-body'+(op?'':' open');if(ch)ch.className='chev'+(op?'':' open');}
+
+function renderDocentenBeheer(){
+  var myKlassen = (typeof myKlassen !== "undefined") ? myKlassen : getMyKlassen();
+  var myDocenten = (typeof myDocenten !== "undefined") ? myDocenten : getMyDocenten();
+  var myLeerlingen = (typeof myLeerlingen !== "undefined") ? myLeerlingen : getMyLeerlingen();
+  var ar=lang==='ar'; var en=lang==='en';
+  var sId = currentSchool ? currentSchool.id : null;
+  var myDocenten = getMyDocenten();
+  var myKlassen = getMyKlassen();
+  var myLeerlingen = getMyLeerlingen();
+  var h='<div style="margin-bottom:10px;"><button class="btn-p" style="font-size:12px;" onclick="showAddDocent()">+ Docent toevoegen</button></div>';
+  h+='<div id="add-doc-form" style="display:none;background:#f9f8f6;border-radius:10px;padding:14px;margin-bottom:12px;border:1px solid #e8e5e0;">';
+  h+='<div style="font-weight:600;font-size:13px;margin-bottom:10px;">Nieuwe docent</div>';
+  h+='<div class="form-grid"><div class="inp-wrap"><label>Naam</label><input type="text" id="nd-naam" placeholder="Naam docent"/></div>';
+  h+='<div class="inp-wrap"><label>E-mail</label><input type="email" id="nd-email" placeholder="naam@school.ma"/></div>';
+  h+='<div class="inp-wrap"><label>PIN (4 cijfers)</label><input type="text" id="nd-pin" maxlength="4" placeholder="bijv. 3456"/></div>';
+  h+='<div class="inp-wrap"><label>Klas</label><select id="nd-klas">';
+  myKlassen.forEach(function(k){h+='<option value="'+k.id+'">'+k.naam+'</option>';});
+  h+='</select></div></div>';
+  h+='<div style="display:flex;gap:8px;"><button class="btn-p" style="font-size:12px;" onclick="saveDocent()">Opslaan</button>';
+  h+='<button class="btn-s" style="font-size:12px;" onclick=\"document.getElementById("add-doc-form").style.display="none"\">Annuleren</button></div>';
+  h+='</div>';
+  h+='<table class="t-tbl"><thead><tr><th>Naam</th><th>E-mail</th><th>PIN</th><th>Klas</th><th>Status</th><th>Rechten</th><th></th></tr></thead><tbody>';
+  myDocenten.forEach(function(d,i){
+    var klas=DB.klassen.find(function(k){return k.id===d.klas;})||{naam:'—'};
+    h+='<tr><td style="font-weight:500;">'+d.naam+'</td>';
+    h+='<td style="font-size:12px;color:#888;">'+d.email+'</td>';
+    h+='<td><span style="font-family:monospace;background:#f5f4f1;padding:2px 8px;border-radius:6px;">'+d.pin+'</span></td>';
+    h+='<td>'+klas.naam+'</td>';
+    h+='<td><span class="badge '+(d.actief?'bg':'br')+'">'+(d.actief?'Actief':'Inactief')+'</span></td>';
+    h+='<td><div class="rights-row">';
+    ['reset','domein','score','les'].forEach(function(r){
+      var on=d.rechten[r];
+      var lblMap={nl:{reset:'Reset',domein:'Domeinen',score:'Scoregrens',les:'Lessen'},en:{reset:'Reset',domein:'Domains',score:'Score limit',les:'Lessen'},ar:{reset:'إعادة',domein:'المجالات',score:'حد النجاح',les:'الدروس'}};
+      var lbl=(lblMap[lang]||lblMap.nl)[r];
+      h+='<span class="right-btn'+(on?' on':'')+'" data-did="'+d.id+'" data-r="'+r+'" onclick="toggleRechtEl(this)">'+(on?'✓ ':'')+lbl+'</span>';
+    });
+    h+='</div></td>';
+    h+='<td><button class="t-btn" data-idx="'+i+'" onclick="toggleDocentEl(this)">'+(ar?(d.actief?'إلغاء':'تفعيل'):(en?(d.actief?'Deactivate':'Activate'):(d.actief?'Deactiveer':'Activeer')))+'</button></td></tr>';
+  });
+  h+='</tbody></table>';
+  return h;
+}
+
+function renderKlassenBeheer(){
+  var myKlassen = (typeof myKlassen !== "undefined") ? myKlassen : getMyKlassen();
+  var myDocenten = (typeof myDocenten !== "undefined") ? myDocenten : getMyDocenten();
+  var myLeerlingen = (typeof myLeerlingen !== "undefined") ? myLeerlingen : getMyLeerlingen();
+  var ar=lang==='ar'; var en=lang==='en';
+  var sId = currentSchool ? currentSchool.id : null;
+  var myKlassen = getMyKlassen();
+  var myDocenten = getMyDocenten();
+  var myLeerlingen = getMyLeerlingen();
+  var h='<div style="margin-bottom:10px;"><button class="btn-p" style="font-size:12px;" onclick="showAddKlas()">+ '+(ar?'إنشاء فصل':en?'Create class':'Klas aanmaken')+'</button></div>';
+  h+='<div id="add-klas-form" style="display:none;background:#f9f8f6;border-radius:10px;padding:14px;margin-bottom:12px;border:1px solid #e8e5e0;">';
+  h+='<div style="font-weight:600;font-size:13px;margin-bottom:10px;">Nieuwe klas</div>';
+  h+='<div class="form-grid"><div class="inp-wrap"><label>Naam klas</label><input type="text" id="nk-naam" placeholder="bijv. Klas 3A"/></div>';
+  h+='<div class="inp-wrap"><label>Docent toewijzen</label><select id="nk-doc"><option value="">-- Kies docent --</option>';
+  DB.docenten.forEach(function(d){h+='<option value="'+d.id+'">'+d.naam+'</option>';});
+  h+='</select></div></div>';
+  h+='<div style="display:flex;gap:8px;"><button class="btn-p" style="font-size:12px;" onclick="saveKlas()">Opslaan</button>';
+  h+='<button class="btn-s" style="font-size:12px;" onclick=\"document.getElementById("add-klas-form").style.display="none"\">Annuleren</button></div></div>';
+  h+='<table class="t-tbl"><thead><tr><th>'+(ar?'الفصل':en?'Class':'Klas')+'</th><th>'+(ar?'المعلم':en?'Teacher':'Docent')+'</th><th>'+(ar?'الطلاب':en?'Students':'Leerlingen')+'</th></tr></thead><tbody>';
+  myKlassen.forEach(function(k){
+    var doc=DB.docenten.find(function(d){return d.id===k.docent;})||{naam:'—'};
+    var ll=myLeerlingen.filter(function(l){return l.klas===k.id;});
+    h+='<tr><td style="font-weight:500;">'+k.naam+'</td><td>'+doc.naam+'</td>';
+    h+='<td>';
+    if(ll.length===0){
+      h+='<span style="color:#aaa;font-size:12px;">'+(lang==="ar"?'لا يوجد طلاب':lang==="en"?'No students':'Geen leerlingen')+'</span>';
+    } else {
+      h+=ll.map(function(l){return '<span class="badge bb" style="margin:1px;font-size:11px;">'+l.naam+'</span>';}).join(' ');
+    }
+    h+='</td></tr>';
+  });
+  h+='</tbody></table>';
+  return h;
+}
+
+function renderLeerlingenBeheer(){
+  var myKlassen = (typeof myKlassen !== "undefined") ? myKlassen : getMyKlassen();
+  var myDocenten = (typeof myDocenten !== "undefined") ? myDocenten : getMyDocenten();
+  var myLeerlingen = (typeof myLeerlingen !== "undefined") ? myLeerlingen : getMyLeerlingen();
+  var ar=lang==='ar'; var en=lang==='en';
+  var sId = currentSchool ? currentSchool.id : null;
+  var myLeerlingen = getMyLeerlingen();
+  var h='<div style="display:flex;gap:8px;margin-bottom:10px;">';
+  h+='<button class="btn-p" style="font-size:12px;" onclick="showAddLL()">+ Leerling toevoegen</button>';
+  h+='<button class="btn-s" style="font-size:12px;" onclick="showCSV()">📄 CSV importeren</button>';
+  h+='</div>';
+  // Manual form
+  h+='<div id="add-ll-form" style="display:none;background:#f9f8f6;border-radius:10px;padding:14px;margin-bottom:12px;border:1px solid #e8e5e0;">';
+  h+='<div style="font-weight:600;font-size:13px;margin-bottom:10px;">Leerling toevoegen</div>';
+  h+='<div class="form-grid g3"><div class="inp-wrap"><label>Naam</label><input type="text" id="nl-naam" placeholder="Naam leerling"/></div>';
+  h+='<div class="inp-wrap"><label>E-mail</label><input type="email" id="nl-email" placeholder="naam@school.ma"/></div>';
+  h+='<div class="inp-wrap"><label>Klas</label><select id="nl-klas"><option value="">-- Kies klas --</option>';
+  myKlassen.forEach(function(k){h+='<option value="'+k.id+'">'+k.naam+'</option>';});
+  h+='</select></div></div>';
+  h+='<div style="display:flex;gap:8px;"><button class="btn-p" style="font-size:12px;" onclick="saveLL()">Opslaan</button>';
+  h+='<button class="btn-s" style="font-size:12px;" onclick=\"document.getElementById("add-ll-form").style.display="none"\">Annuleren</button></div></div>';
+  // CSV form
+  h+='<div id="csv-form" style="display:none;background:#f9f8f6;border-radius:10px;padding:14px;margin-bottom:12px;border:1px solid #e8e5e0;">';
+  h+='<div style="font-weight:600;font-size:13px;margin-bottom:6px;">CSV importeren</div>';
+  h+='<div style="font-size:12px;color:#888;margin-bottom:8px;">Formaat: naam,email,klas_naam (1 leerling per regel)</div>';
+  h+='<textarea id="csv-inp" style="width:100%;height:80px;padding:8px;border:1px solid #d0cdc8;border-radius:8px;font-size:12px;font-family:monospace;" placeholder="Amina Karimi,amina@school.ma,Klas 3A"></textarea>';
+  h+='<div style="display:flex;gap:8px;margin-top:8px;"><button class="btn-p" style="font-size:12px;" onclick="importCSV()">Importeren</button>';
+  h+='<button class="btn-s" style="font-size:12px;" onclick=\"document.getElementById("csv-form").style.display="none"\">Annuleren</button></div></div>';
+  // Table
+  h+='<table class="t-tbl"><thead><tr><th>Naam</th><th>E-mail</th><th>Klas</th><th>Status</th><th></th></tr></thead><tbody>';
+  myLeerlingen.forEach(function(l,i){
+    var klas=DB.klassen.find(function(k){return k.id===l.klas;})||{naam:'—'};
+    h+='<tr><td style="font-weight:500;">'+l.naam+'</td>';
+    h+='<td style="font-size:12px;color:#888;">'+l.email+'</td>';
+    h+=(l.code?'<td><span style="font-family:monospace;background:#f5f4f1;padding:2px 6px;border-radius:4px;font-size:11px;font-weight:600;color:#1B2F5E;">'+l.code+'</span></td>':'<td>—</td>');
+    h+='<td>'+klas.naam+'</td>';
+    h+='<td><span class="badge '+(l.actief?'bg':'br')+'">'+(l.actief?(ar?'نشط':en?'Active':'Actief'):(ar?'غير نشط':en?'Inactive':'Inactief'))+'</span></td>';
+    h+='<td><span style="font-family:monospace;background:#f5f4f1;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600;color:#1B2F5E;letter-spacing:1px;">'+(l.code||'—')+'</span></td>';
+    h+='<td>';
+    h+='<button class="t-btn" data-did="'+l.id+'" onclick="toggleLLEl(this)">'+(l.actief?(ar?'إلغاء':en?'Deactivate':'Deactiveer'):(ar?'تفعيل':en?'Activate':'Activeer'))+'</button> ';
+    h+='<button class="t-btn" style="background:#EBF0F8;color:#1B2F5E;" data-idx="'+i+'" onclick="editLLEl(this)">&#9998; '+(ar?'تعديل':en?'Edit':'Bewerken')+'</button>';
+    h+='</td></tr>';
+  });
+  h+='</tbody></table>';
+  return h;
+}
+
+// Beheer actions
+function showAddDocent(){g('add-doc-form').style.display='block';}
+function showAddKlas(){g('add-klas-form').style.display='block';}
+function showAddLL(){g('add-ll-form').style.display='block';}
+function showCSV(){g('csv-form').style.display='block';}
+
+function saveDocent(){
+  var naam=(g('nd-naam')||{value:''}).value.trim();
+  var email=(g('nd-email')||{value:''}).value.trim();
+  var pin=(g('nd-pin')||{value:''}).value.trim();
+  var klas=(g('nd-klas')||{value:''}).value;
+  if(!naam||!email||!pin){alert('Vul alle velden in.');return;}
+  if(pin.length!==4||isNaN(pin)){alert('PIN moet 4 cijfers zijn.');return;}
+  if(DB.docenten.find(function(d){return d.email===email;})){alert('E-mail bestaat al.');return;}
+  var newDocId='d'+(DB.docenten.length+1);
+  var newDocSchool = currentSchool ? currentSchool.id : 's1';
+  DB.docenten.push({id:newDocId,naam:naam,email:email,pin:pin,klas:klas,schoolId:newDocSchool,actief:true,rechten:{reset:false,domein:false,score:false,les:false}});
+  // Also update the klas.docent field
+  if(klas){
+    var klasObj=DB.klassen.find(function(k){return k.id===klas;});
+    if(klasObj && !klasObj.docent) klasObj.docent=newDocId;
+  }
+  showToast('✓ Docent '+naam+' aangemaakt met PIN '+pin);
+  renderBeheer();
+}
+
+function saveKlas(){
+  var naam=(g('nk-naam')||{value:''}).value.trim();
+  var docId=(g('nk-doc')||{value:''}).value;
+  if(!naam){alert('Geef de klas een naam.');return;}
+  var newId='k'+(DB.klassen.length+1);
+  var newKlasSchool = currentSchool ? currentSchool.id : 's1';
+  DB.klassen.push({id:newId,naam:naam,docent:docId,schoolId:newKlasSchool});
+  // Also update the docent's klas field
+  if(docId){
+    var doc=DB.docenten.find(function(d){return d.id===docId;});
+    if(doc) doc.klas=newId;
+  }
+  showToast('✓ Klas '+naam+' aangemaakt');
+  renderBeheer();
+}
+
+function genCode(){
+  var naam = (g('nl-naam')||{value:''}).value.trim();
+  var initials = naam.split(' ').map(function(w){return w[0]||'';}).join('').toUpperCase();
+  if(!initials) initials = 'LL';
+  var year = new Date().getFullYear();
+  var rand = Math.floor(100+Math.random()*900);
+  var code = initials+rand;
+  var inp = g('nl-jaar');
+  if(inp) { inp.value = code; inp.style.textTransform='uppercase'; }
+}
+
+function saveLL(){
+  var naam=(g('nl-naam')||{value:''}).value.trim();
+  var email=(g('nl-email')||{value:''}).value.trim();
+  var klas=(g('nl-klas')||{value:''}).value;
+  var code=(g('nl-jaar')||{value:''}).value.trim().toUpperCase();
+  if(!naam||!email){alert('Vul naam en e-mail in.');return;}
+  if(DB.leerlingen.find(function(l){return l.email===email;})){alert('E-mail bestaat al.');return;}
+  var schoolId = currentSchool ? currentSchool.id : 's1';
+  var klasObj = DB.klassen.find(function(k){return k.id===klas;})||{naam:'Onbekend'};
+  DB.leerlingen.push({
+    id:'l'+(DB.leerlingen.length+1),
+    naam:naam,
+    email:email,
+    code:code||'0000',
+    klas:klas,
+    schoolId:schoolId,
+    actief:true,
+    domeinen:{ict:true,info:true,media:true,ct:true},
+    verborgenLessen:[]
+  });
+  sendEmail(EJS_TPL_BEHEER,{
+    docent_naam:'Beheerder',
+    student_naam:naam,
+    to_email:'itinshape@gmail.com',
+    klas_naam:klasObj.naam
+  });
+  if (supa) {
+    supa.from('gebruikers').insert({
+      naam: naam,
+      email: email,
+      rol: 'leerling',
+      code: code,
+      school_id: schoolId,
+      klas_id: klas,
+      actief: true
+    }).then(function(r) {
+      if (r.error) console.error('Supabase leerling toevoegen fout:', r.error.message);
+      else console.log('Leerling in Supabase:', naam);
+    });
+  }
+  showToast('✓ Leerling '+naam+' toegevoegd!');
+  renderBeheer();
+}
+
+function importCSV(){
+  var input=(g('csv-inp')||{value:''}).value.trim();
+  if(!input){alert('Plak eerst CSV-data in het tekstveld.');return;}
+  var lines=input.split('\n');
+  var added=0;var errors=[];
+  lines.forEach(function(line){
+    line=line.trim();if(!line)return;
+    var parts=line.split(',');
+    if(parts.length<2){errors.push('Ongeldig formaat: '+line);return;}
+    var naam=parts[0].trim();var email=parts[1].trim();var klasNaam=parts[2]?parts[2].trim():'';
+    if(DB.leerlingen.find(function(l){return l.email===email;})){errors.push(email+' bestaat al');return;}
+    var klas=DB.klassen.find(function(k){return k.naam===klasNaam;});
+    DB.leerlingen.push({id:'l'+(DB.leerlingen.length+1),naam:naam,email:email,klas:klas?klas.id:'',actief:true,domeinen:{ict:true,info:true,media:true,ct:true},verborgenLessen:[]});
+    added++;
+  });
+  var msg=added+' leerling(en) toegevoegd.';
+  if(errors.length) msg+='\nFouten: '+errors.join(', ');
+  showToast(msg);
+  renderBeheer();
+}
+
+function toggleDocent(i){
+  var d=isNaN(i)?DB.docenten.find(function(x){return x.id===i;}):DB.docenten[parseInt(i)];
+  if(d) d.actief=!d.actief;
+  renderBeheer();
+}
+function toggleLL(i){
+  var ll=isNaN(i)?DB.leerlingen.find(function(l){return l.id===i;}):DB.leerlingen[parseInt(i)];
+  if(ll) ll.actief=!ll.actief;
+  renderBeheer();
+}
+
+function toggleRecht(idOrIdx,r){
+  var doc=isNaN(idOrIdx)?DB.docenten.find(function(d){return d.id===idOrIdx;}):DB.docenten[parseInt(idOrIdx)];
+  if(!doc){return;}
+  doc.rechten[r]=!doc.rechten[r];
+  showToast((doc.rechten[r]?'\u2713 Recht gegeven: ':'\u2717 Recht ingetrokken: ')+r);
+  renderBeheer();
+}
+
+function addDemoUser(){
+  var rol=(g('demo-rol')||{value:'leerling'}).value;
+  var naam=(g('demo-bn')||{value:''}).value.trim();
+  var email=(g('demo-be')||{value:''}).value.trim();
+  if(!naam||!email){alert('Vul naam en e-mail in.');return;}
+  if(rol==='leerling'){
+    if(DB.leerlingen.find(function(l){return l.email===email;})){alert('E-mail bestaat al.');return;}
+    DB.leerlingen.push({id:'l'+(DB.leerlingen.length+1),naam:naam,email:email,klas:'k1',actief:true,domeinen:{ict:true,info:true,media:true,ct:true},verborgenLessen:[]});
+    sendWelcomEmail(naam,email,'Leerling');
+    showToast('✓ '+naam+' toegevoegd! Welkomstmail verstuurd naar '+email);
+  } else if(rol==='docent'){
+    var pin=Math.floor(1000+Math.random()*9000).toString();
+    if(DB.docenten.find(function(d){return d.email===email;})){alert('E-mail bestaat al.');return;}
+    DB.docenten.push({id:'d'+(DB.docenten.length+1),naam:naam,email:email,pin:pin,klas:'k1',actief:true,rechten:{reset:false,domein:false,score:false,les:false}});
+    sendWelcomEmail(naam,email,'Docent');
+    showToast('✓ Docent '+naam+' toegevoegd! PIN: '+pin+'. Welkomstmail naar '+email);
+  } else {
+    DB.beheerders.push({id:'b'+(DB.beheerders.length+1),naam:naam,pin:'9999'});
+    showToast('✓ Beheerder '+naam+' toegevoegd!');
+  }
+  if(g('demo-bn')) g('demo-bn').value='';
+  if(g('demo-be')) g('demo-be').value='';
+  renderBeheer();
+}
+
+// ════════════════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════════════════
+var toastTimer=null;
+function showToast(msg){
+  var t=g('toast');
+  if(!t)return;
+  t.textContent=msg;
+  t.className='toast show';
+  if(toastTimer) clearTimeout(toastTimer);
+  toastTimer=setTimeout(function(){t.className='toast';},3500);
+}
+
+// ════════════════════════════════════════════════════
+// EIGENAAR PANEEL
+// ════════════════════════════════════════════════════
+function resetDemo() {
+  var msg = lang==='ar'?'هل أنت متأكد من إعادة تعيين العرض؟ سيتم حذف جميع البيانات المؤقتة.':lang==='en'?'Reset demo? All temporary data will be cleared.':'Demo resetten? Alle tijdelijke data wordt gewist.';
+  if(!confirm(msg)) return;
+  nulmetingDone={};lessonDone={};qAnswers={};qScores={};qSubmitted={};qRetry={};
+  DB.leerlingen=[
+    {id:'l1',naam:'Amina Karimi',email:'amina@school.ma',code:'AM2011',klas:'k1',actief:true,geboortejaar:'2011',domeinen:{ict:true,info:true,media:true,ct:true},verborgenLessen:[]},
+    {id:'l2',naam:'Youssef Benali',email:'youssef@school.ma',code:'YB2012',klas:'k1',actief:true,geboortejaar:'2011',domeinen:{ict:true,info:true,media:true,ct:true},verborgenLessen:[]},
+    {id:'l3',naam:'Fatima Zahra',email:'fatima@school.ma',code:'FZ2011',klas:'k1',actief:true,geboortejaar:'2011',domeinen:{ict:true,info:true,media:true,ct:true},verborgenLessen:[]}
+  ];
+  DB.docenten=[{id:'d1',naam:'Mr. Ben Ali',email:'benali@school.ma',pin:'1234',klas:'k1',schoolId:'s1',actief:true,rechten:{reset:false,domein:false,score:false,les:false}}];
+  DB.klassen=[{id:'k1',naam:'Klas 3A',docent:'d1',schoolId:'s1'}];
+  DB.scholen=[
+    {id:'s1',naam:'Al-Farabi School',stad:'Tanger',actief:true,plan:'Pro',since:'2024-09',pin:'9999'},
+    {id:'s2',naam:'Ibn Rushd Academie',stad:'Casablanca',actief:true,plan:'Starter',since:'2025-01',pin:'8888'},
+    {id:'s3',naam:'Averroes College',stad:'Rabat',actief:false,plan:'Pro',since:'2024-06',pin:'7777',reden:'Abonnement verlopen'}
+  ];
+  passThreshold=70;
+  var done=lang==='ar'?'تمت إعادة التعيين!':lang==='en'?'Demo reset!':'Demo gereset!';
+  showToast('&#10003; '+done);
+  renderEigenaar();
+}
+
+function renderEigenaar() {
+  var ar=lang==='ar'; var en=lang==='en';
+  var html = '<div style="max-width:900px;">';
+  html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">';
+  html += '<h2 style="font-size:18px;font-weight:700;color:#1B2F5E;">&#128081; '+(ar?'لوحة المالك — Smart Skills Morocco':en?'Owner panel — Smart Skills Morocco':'Eigenaarspaneel — Smart Skills Morocco')+'</h2>';
+  html += '<button onclick="resetDemo()" style="padding:8px 16px;background:#E24B4A;color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;">&#128260; '+(ar?'إعادة تعيين العرض':en?'Reset demo':'Reset demo')+'</button>';
+  html += '</div>';
+  html += '<p style="font-size:13px;color:#888;margin-bottom:16px;">'+(ar?'نظرة عامة على جميع المدارس التي تستخدم المنصة.':en?'Overview of all schools using the platform.':'Overzicht van alle scholen die het platform gebruiken.')+'</p>';
+
+  var actief = DB.scholen.filter(function(s){return s.actief;}).length;
+  var inactief = DB.scholen.filter(function(s){return !s.actief;}).length;
+  var totLeerlingen = DB.leerlingen.length;
+  html += '<div class="stat-grid" style="grid-template-columns:repeat(4,1fr);">';
+  html += '<div class="stat"><div class="stat-n">'+DB.scholen.length+'</div><div class="stat-l">'+(ar?'المدارس':en?'Schools':'Scholen totaal')+'</div></div>';
+  html += '<div class="stat"><div class="stat-n" style="color:#3DAB8E;">'+actief+'</div><div class="stat-l">'+(ar?'نشط':en?'Active':'Actief')+'</div></div>';
+  html += '<div class="stat"><div class="stat-n" style="color:#E24B4A;">'+inactief+'</div><div class="stat-l">'+(ar?'غير نشط':en?'Inactive':'Inactief')+'</div></div>';
+  html += '<div class="stat"><div class="stat-n">'+totLeerlingen+'</div><div class="stat-l">'+(ar?'الطلاب':en?'Students':'Leerlingen')+'</div></div>';
+  html += '</div>';
+
+  html += '<div class="demo-add-box" style="margin-bottom:14px;">';
+  html += '<h3>&#10133; '+(ar?'إضافة مدرسة جديدة':en?'Add new school':'Nieuwe school toevoegen')+'</h3>';
+  html += '<p>'+(ar?'أضف مدرسة جديدة كعميل.':en?'Add a new school as a client.':'Voeg een nieuwe school toe als klant.')+'</p>';
+  html += '<div class="form-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;">';
+  html += '<div class="inp-wrap"><label>'+(ar?'اسم المدرسة':en?'School name':'Schoolnaam')+'</label><input type="text" id="ns-naam" placeholder="'+(ar?'مثال: ابن بطوطة':en?'e.g. Ibn Battuta':'bijv. Ibn Battuta')+'"/></div>';
+  html += '<div class="inp-wrap"><label>'+(ar?'المدينة':en?'City':'Stad')+'</label><input type="text" id="ns-stad" placeholder="'+(ar?'مثال: مراكش':en?'e.g. Marrakech':'bijv. Marrakech')+'"/></div>';
+  html += '<div class="inp-wrap"><label>'+(ar?'الخطة':en?'Plan':'Plan')+'</label><select id="ns-plan"><option>Starter</option><option>Pro</option><option>Enterprise</option></select></div>';
+  html += '<div class="inp-wrap"><label>'+(ar?'رمز PIN للمدير':en?'Admin PIN':'Beheerder PIN')+'</label><input type="text" id="ns-pin" placeholder="'+(ar?'مثال: 5555':'e.g. 5555')+'..." maxlength="4"/></div>';
+  html += '</div>';
+  html += '<button onclick="addSchool()" style="padding:8px 16px;background:#D4A847;color:#1B2F5E;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;">+ '+(ar?'إضافة مدرسة':en?'Add school':'School toevoegen')+'</button>';
+  html += '</div>';
+
+  html += '<div class="card">';
+  html += '<div class="card-title">&#127978; '+(ar?'جميع المدارس':en?'All schools':'Alle scholen')+'</div>';
+  html += '<table class="t-tbl"><thead><tr>';
+  html += '<th>'+(ar?'المدرسة':en?'School':'School')+'</th>';
+  html += '<th>'+(ar?'المدينة':en?'City':'Stad')+'</th>';
+  html += '<th>Plan</th>';
+  html += '<th>'+(ar?'منذ':en?'Since':'Klant since')+'</th>';
+  html += '<th>'+(ar?'الحالة':en?'Status':'Status')+'</th>';
+  html += '<th>PIN</th>';
+  html += '<th>'+(ar?'إجراءات':en?'Actions':'Acties')+'</th>';
+  html += '</tr></thead><tbody>';
+  DB.scholen.forEach(function(s,i){
+    var rowBg = s.actief ? '' : 'background:#FFF5F5;';
+    html += '<tr style="'+rowBg+'">';
+    html += '<td style="font-weight:500;">'+s.naam+'</td>';
+    html += '<td>'+s.stad+'</td>';
+    html += '<td><span class="badge '+(s.plan==='Pro'?'bb':s.plan==='Enterprise'?'bg':'by')+'">'+s.plan+'</span></td>';
+    html += '<td style="font-size:12px;color:#888;">'+s.since+'</td>';
+    html += '<td>';
+    if(s.actief) {
+      html += '<span class="badge bg">&#10003; '+(ar?'نشط':en?'Active':'Actief')+'</span>';
+    } else {
+      html += '<span class="badge br">&#10007; '+(ar?'غير نشط':en?'Inactive':'Inactief')+'</span>';
+      if(s.reden) html += '<div style="font-size:11px;color:#A32D2D;margin-top:2px;">'+s.reden+'</div>';
+    }
+    html += '</td>';
+    html += '<td><span style="font-family:monospace;background:#f5f4f1;padding:2px 8px;border-radius:6px;font-size:12px;">'+s.pin+'</span></td>';
+    html += '<td style="white-space:nowrap;">';
+    if(s.actief) {
+      html += '<button class="t-btn" style="background:#FCEBEB;color:#A32D2D;border-color:#F5B5B5;" data-idx="'+i+'" onclick="deactiveerSchool(this)">'+(ar?'إلغاء التفعيل':en?'Deactivate':'Deactiveren')+'</button>';
+    } else {
+      html += '<button class="t-btn" style="background:#EBF3EE;color:#0F6E56;border-color:#A5D6B5;" data-idx="'+i+'" onclick="activeerSchool(this)">'+(ar?'إعادة التفعيل':en?'Reactivate':'Heractiveren')+'</button>';
+    }
+    html += '</td></tr>';
+  });
+  html += '</tbody></table>';
+  html += '</div>';
+  html += '<div class="notice n-blue" style="margin-top:10px;font-size:12px;">&#8505;&#65039; '+(ar?'عند إلغاء التفعيل، لا يمكن للمعلمين تسجيل الدخول. يمكن للطلاب رؤية تقدمهم فقط.':en?'When deactivated, teachers cannot log in. Students can still view their progress.':'Bij deactivering kunnen docenten niet meer inloggen. Leerlingen kunnen hun voortgang nog wel bekijken.')+'</div>';
+  html += '</div>';
+  g('eigenaar-body').innerHTML = html;
+}
+
+function deactiveerSchool(el) {
+  var i = parseInt(el.dataset.idx);
+  var school = DB.scholen[i];
+  var reden = prompt('Reden voor deactivering (bijv. "Abonnement verlopen"):');
+  if(reden === null) return;
+  DB.scholen[i].actief = false;
+  DB.scholen[i].reden = reden || 'Gedeactiveerd door eigenaar';
+  showToast('School '+school.naam+' is gedeactiveerd.');
+  renderEigenaar();
+}
+
+function activeerSchool(el) {
+  var i = parseInt(el.dataset.idx);
+  DB.scholen[i].actief = true;
+  delete DB.scholen[i].reden;
+  showToast('School '+DB.scholen[i].naam+' is hergeactiveerd!');
+  renderEigenaar();
+}
+
+function addSchool() {
+  var naam = (g('ns-naam')||{value:''}).value.trim();
+  var stad = (g('ns-stad')||{value:''}).value.trim();
+  var plan = (g('ns-plan')||{value:'Starter'}).value;
+  var pin  = (g('ns-pin')||{value:''}).value.trim();
+  if(!naam||!stad||!pin){alert('Vul naam, stad en PIN in.');return;}
+  if(pin.length!==4||isNaN(pin)){alert('PIN moet 4 cijfers zijn.');return;}
+  var id = 's'+(DB.scholen.length+1);
+  var now = new Date();
+  DB.scholen.push({id:id, naam:naam, stad:stad, actief:true, plan:plan, since:now.getFullYear()+'-'+(String(now.getMonth()+1).padStart(2,'0')), pin:pin});
+  showToast('✓ School '+naam+' toegevoegd!');
+  if(g('ns-naam')) g('ns-naam').value='';
+  if(g('ns-stad')) g('ns-stad').value='';
+  if(g('ns-pin'))  g('ns-pin').value='';
+  renderEigenaar();
+}
+
+function showProgressOnly() {
+  g('sidebar').style.display='none';
+  g('main-area').innerHTML = '<div style="max-width:600px;text-align:center;padding:40px 20px;">'
+    +'<div style="font-size:48px;margin-bottom:16px;">🔒</div>'
+    +'<h2 style="color:#1B2F5E;margin-bottom:8px;">Toegang tijdelijk beperkt</h2>'
+    +'<p style="color:#666;font-size:14px;line-height:1.6;">Het abonnement van jouw school is verlopen. Je kunt je voortgang nog bekijken, maar geen nieuwe lessen volgen.</p>'
+    +'<button class="btn-p" style="margin-top:20px;" onclick="showProgress()">Bekijk mijn voortgang</button>'
+    +'</div>';
+}
+
+// ════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════
+setRole('student');
+initSupabase();
+
+
+function genereerLes() {
+  var groep = (g('lg-groep')||{value:'7'}).value;
+  var onderwerp = (g('lg-onderwerp')||{value:''}).value.trim();
+  var taal = (g('lg-taal')||{value:'nl'}).value;
+  if (!onderwerp) { onderwerp = 'digitale vaardigheden'; }
+
+  var T = {
+    nl: {
+      doel: 'Leerlingen begrijpen wat ' + onderwerp + ' is en kunnen er kritisch over nadenken.',
+      intro: 'Vraag aan de klas: Wie kent ' + onderwerp + ' al? Laat 2-3 leerlingen reageren. Schrijf het onderwerp op het bord en bespreek wat ze al weten.',
+      uitleg: onderwerp + ' is een steeds belangrijker onderwerp. Goed om te begrijpen wat het betekent en hoe het werkt. Er zijn voordelen en aandachtspunten om op te letten. Denk aan voorbeelden uit het dagelijks leven: hoe kom jij in aanraking met dit onderwerp?',
+      opdracht: '1. Lees samen het materiaal over ' + onderwerp + '.\n2. Bespreek in tweetallen: wat vind jij hiervan?\n3. Schrijf 3 dingen op die je hebt geleerd.\n4. Deel je bevindingen met de klas.',
+      diff: 'Ondersteuning: geef een begrippenlijst en sta samenwerken toe.\n\nVerdieping: laat een eigen mening formuleren en onderbouwen met voorbeelden.',
+      refl: '1. Wat is het belangrijkste dat je leerde over ' + onderwerp + '?\n2. Hoe ga jij dit gebruiken in je eigen leven?\n3. Welke vraag heb jij nog?'
+    },
+    en: {
+      doel: 'Students understand what ' + onderwerp + ' is and can think critically about it.',
+      intro: 'Ask: Who already knows about ' + onderwerp + '? Let 2-3 students respond. Write the topic on the board and discuss what they already know.',
+      uitleg: onderwerp + ' is an increasingly important topic. It is good to understand what it means and how it works. There are both benefits and points to watch out for.',
+      opdracht: '1. Read the material about ' + onderwerp + ' together.\n2. Discuss in pairs: what do you think?\n3. Write down 3 things you learned.\n4. Share your findings with the class.',
+      diff: 'Support: provide a glossary and allow collaboration.\n\nChallenge: have students formulate and support their own opinion with examples.',
+      refl: '1. What is the most important thing you learned about ' + onderwerp + '?\n2. How will you use this in your own life?\n3. What question do you still have?'
+    },
+    ar: {
+      doel: 'يفهم الطلاب ما هو ' + onderwerp + ' ويتعلمون التفكير النقدي حوله.',
+      intro: 'اسأل الفصل: من يعرف ' + onderwerp + '؟ دع 2-3 طلاب يجيبون. اكتب الموضوع على السبورة وناقش ما يعرفونه.',
+      uitleg: onderwerp + ' موضوع مهم ومتزايد الاهمية. من الجيد فهم ما يعنيه وكيف يعمل. هناك مزايا ونقاط يجب الانتباه اليها.',
+      opdracht: '1. اقرأ المواد حول ' + onderwerp + ' مع زملائك.\n2. ناقش مع زميل: ما رايك؟\n3. اكتب 3 اشياء تعلمتها.\n4. شارك ما توصلت اليه مع الفصل.',
+      diff: 'الدعم: اعط قائمة مصطلحات واسمح بالتعاون.\n\nالتحدي: اطلب صياغة راي خاص ودعمه بامثلة.',
+      refl: '1. ما اهم شيء تعلمته عن ' + onderwerp + '?\n2. كيف ستستخدم هذا في حياتك?\n3. ما السؤال الذي لا يزال لديك?'
+    }
+  };
+
+  var L = T[taal] || T.nl;
+  var dir = taal === 'ar' ? 'rtl' : 'ltr';
+  var lbls = {
+    nl: {doel:'🎯 Lesdoel', intro:'🚀 Introductie', uitleg:'📖 Uitleg', opdracht:'✏️ Opdracht', diff:'⚖️ Differentiatie', refl:'💭 Reflectie'},
+    en: {doel:'🎯 Learning goal', intro:'🚀 Introduction', uitleg:'📖 Explanation', opdracht:'✏️ Assignment', diff:'⚖️ Differentiation', refl:'💭 Reflection'},
+    ar: {doel:'🎯 هدف الدرس', intro:'🚀 مقدمة', uitleg:'📖 شرح', opdracht:'✏️ نشاط', diff:'⚖️ التمييز', refl:'💭 تأمل'}
+  };
+  var lbl = lbls[taal] || lbls.nl;
+
+  if (g('lg-titel')) g('lg-titel').textContent = 'Les over ' + onderwerp + ' — Groep ' + groep;
+  if (g('lg-meta')) g('lg-meta').innerHTML = '<div>Groep: <span style="color:#D4A847;font-weight:600;">' + groep + '</span></div><div>' + onderwerp + '</div><div>45 min</div>';
+
+  var ids = ['doel','intro','uitleg','opdracht','diff','refl'];
+  ids.forEach(function(id) {
+    var lblEl = g('lg-lbl-' + id);
+    var txtEl = g('lg-' + id);
+    if (lblEl) lblEl.textContent = lbl[id];
+    if (txtEl) {
+      txtEl.textContent = L[id];
+      if (txtEl.parentElement) txtEl.parentElement.setAttribute('dir', dir);
+    }
+  });
+
+  var out = g('lg-output');
+  if (out) { out.style.display = 'block'; out.scrollIntoView({behavior:'smooth', block:'start'}); }
+}
+
+
+</script>
+
+<div class="screen" id="scr-les-gen">
+  <div class="topbar">
+    <div class="tb-brand">Smart <span class="sk">Skills</span> <span class="mo">Morocco</span><span class="tb-badge"> — Les Generator</span></div>
+    <div class="tb-r"><button class="tb-btn" onclick="sluitLesGen()">&#8592; Terug</button></div>
+  </div>
+  <div style="max-width:680px;margin:0 auto;padding:36px 20px 60px;">
+    <h1 style="font-size:22px;font-weight:800;color:#1B2F5E;margin-bottom:6px;text-align:center;" id="lg-h1">&#10133; Maak je eigen les</h1>
+    <p style="font-size:13px;color:#888;text-align:center;margin-bottom:24px;" id="lg-sub">Vul in en genereer direct een les voor jouw klas</p>
+    <div style="background:white;border-radius:12px;border:1px solid #E8E5E0;padding:24px;margin-bottom:20px;">
+      <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:12px;margin-bottom:16px;">
+        <div><label style="display:block;font-size:11px;font-weight:700;color:#1B2F5E;margin-bottom:5px;text-transform:uppercase;" id="lg-lbl-groep">Groep</label>
+          <select id="lg-groep" style="width:100%;padding:9px 10px;border:1.5px solid #E8E5E0;border-radius:8px;font-size:14px;font-family:inherit;">
+            <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option selected>7</option><option>8</option>
+          </select></div>
+        <div><label style="display:block;font-size:11px;font-weight:700;color:#1B2F5E;margin-bottom:5px;text-transform:uppercase;" id="lg-lbl-onderwerp">Onderwerp</label>
+          <input type="text" id="lg-onderwerp" placeholder="bijv. nepnieuws, AI, veiligheid..." style="width:100%;padding:9px 10px;border:1.5px solid #E8E5E0;border-radius:8px;font-size:14px;font-family:inherit;outline:none;"/></div>
+        <div><label style="display:block;font-size:11px;font-weight:700;color:#1B2F5E;margin-bottom:5px;text-transform:uppercase;" id="lg-lbl-taal">Taal</label>
+          <select id="lg-taal" style="width:100%;padding:9px 10px;border:1.5px solid #E8E5E0;border-radius:8px;font-size:14px;font-family:inherit;">
+            <option value="nl">Nederlands</option><option value="en">English</option><option value="ar">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</option>
+          </select></div>
+      </div>
+      <button onclick="genereerLes()" style="width:100%;padding:13px;background:#1B2F5E;color:white;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;">&#10024; <span id="lg-btn-txt">Genereer les</span></button>
+    </div>
+    <div id="lg-output" style="display:none;">
+      <div style="background:#1B2F5E;color:white;border-radius:12px 12px 0 0;padding:18px 22px;">
+        <h2 id="lg-titel" style="font-size:17px;font-weight:700;margin-bottom:6px;"></h2>
+        <div id="lg-meta" style="font-size:12px;color:rgba(255,255,255,0.7);display:flex;gap:14px;"></div>
+      </div>
+      <div style="background:white;border:1px solid #E8E5E0;border-top:none;border-radius:0 0 12px 12px;margin-bottom:14px;">
+        <div style="padding:16px 22px;border-bottom:1px solid #F0EDE8;border-left:4px solid #0F6E56;"><div id="lg-lbl-doel" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#0F6E56;margin-bottom:5px;">Lesdoel</div><div id="lg-doel" style="font-size:14px;line-height:1.7;color:#333;"></div></div>
+        <div style="padding:16px 22px;border-bottom:1px solid #F0EDE8;border-left:4px solid #D4A847;"><div id="lg-lbl-intro" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#926A00;margin-bottom:5px;">Introductie</div><div id="lg-intro" style="font-size:14px;line-height:1.7;color:#333;"></div></div>
+        <div style="padding:16px 22px;border-bottom:1px solid #F0EDE8;border-left:4px solid #1B2F5E;"><div id="lg-lbl-uitleg" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#1B2F5E;margin-bottom:5px;">Uitleg</div><div id="lg-uitleg" style="font-size:14px;line-height:1.7;color:#333;"></div></div>
+        <div style="padding:16px 22px;border-bottom:1px solid #F0EDE8;border-left:4px solid #C8714A;"><div id="lg-lbl-opdracht" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#C8714A;margin-bottom:5px;">Opdracht</div><div id="lg-opdracht" style="font-size:14px;line-height:1.7;color:#333;"></div></div>
+        <div style="padding:16px 22px;border-bottom:1px solid #F0EDE8;border-left:4px solid #7B5EA7;"><div id="lg-lbl-diff" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#7B5EA7;margin-bottom:5px;">Differentiatie</div><div id="lg-diff" style="font-size:14px;line-height:1.7;color:#333;"></div></div>
+        <div style="padding:16px 22px;border-left:4px solid #2E7D6B;"><div id="lg-lbl-refl" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#2E7D6B;margin-bottom:5px;">Reflectie</div><div id="lg-refl" style="font-size:14px;line-height:1.7;color:#333;"></div></div>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button onclick="kopieerLesGen()" style="flex:1;padding:10px;background:#0F6E56;color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">&#128203; <span id="lg-copy-txt">Kopieer</span></button>
+        <button onclick="window.print()" style="flex:1;padding:10px;background:white;color:#1B2F5E;border:1.5px solid #E8E5E0;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">&#128424; Afdrukken</button>
+        <button onclick="genereerLes()" style="flex:1;padding:10px;background:white;color:#1B2F5E;border:1.5px solid #E8E5E0;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">&#128260; Nieuw</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
