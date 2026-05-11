@@ -1,0 +1,2025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>SmartSkills Morocco — Digital Learning for Every Child</title>
+<meta name="description" content="The digital literacy learning platform for primary and secondary schools in Morocco. Gamified, certified, multilingual. Meet Noura & Anwar!"/>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+/* ═══ LANGUAGE SYSTEM ═══ */
+[data-lang="ar"] { font-family: 'Cairo', sans-serif !important; direction: rtl; }
+[data-lang="ar"] body { font-family: 'Cairo', sans-serif; }
+.lang-hidden { display: none !important; }
+.lang-btn { display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border-radius:20px;font-size:.78rem;font-weight:800;cursor:pointer;border:1.5px solid transparent;transition:all .2s;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7); }
+.lang-btn.active { background:var(--yellow);color:var(--dark);border-color:transparent; }
+.lang-btn:hover:not(.active) { background:rgba(255,255,255,.18);color:white; }
+.lang-switcher { display:flex;gap:6px;align-items:center; }
+/* Arabic RTL adjustments */
+html[dir="rtl"] .nav-inner { flex-direction:row-reverse; }
+html[dir="rtl"] .nav-links { flex-direction:row-reverse; }
+html[dir="rtl"] .sec-head { text-align:right; }
+html[dir="rtl"] .sp { margin-left:0; margin-right:0; }
+html[dir="rtl"] .stag { font-family:'Cairo',sans-serif; letter-spacing:0; }
+html[dir="rtl"] h1, html[dir="rtl"] h2, html[dir="rtl"] h3, html[dir="rtl"] h4 { font-family:'Cairo',sans-serif !important; }
+html[dir="rtl"] .sh { font-family:'Cairo',sans-serif !important; }
+html[dir="rtl"] .hero h1 { font-family:'Cairo',sans-serif !important; }
+html[dir="rtl"] .phase-title, html[dir="rtl"] .why-title, html[dir="rtl"] .char-name { font-family:'Cairo',sans-serif !important; }
+html[dir="rtl"] .vf-item { flex-direction:row-reverse; }
+html[dir="rtl"] .hk-bubble { text-align:right; }
+html[dir="rtl"] .hk-bubble.right { margin-left:0; margin-right:auto; }
+html[dir="rtl"] .hk-bubble.left { margin-right:0; margin-left:auto; }
+</style>
+<style>
+/* ═══════════════════════════════════
+   TOKENS — from the REAL platform
+═══════════════════════════════════ */
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  /* exact platform colors */
+  --u1:#1A6EFF; --u1l:#E3F2FD;
+  --u2:#00C853; --u2l:#E8F5E9;
+  --u3:#FF6B2B; --u3l:#FFF3E0;
+  --u4:#9B27AF; --u4l:#F3E5F5;
+  --yellow:#FFD600;
+  --dark:#1A1A2E; --navy:#0A3FCC;
+  /* site tokens */
+  --bg:#F5F7FF;
+  --white:#ffffff;
+  --text:#1a1a2e;
+  --muted:#5a5a72;
+  --subtle:#9090a8;
+  --border:#e4e6f0;
+  --fd:'Fredoka One',cursive;
+  --fb:'Nunito',sans-serif;
+  --r:14px; --rl:20px; --rs:8px;
+  --sh:0 4px 20px rgba(10,31,90,0.09);
+  --shm:0 12px 40px rgba(10,31,90,0.13);
+  --shl:0 24px 60px rgba(10,31,90,0.17);
+  --trans:all 0.22s cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fb);color:var(--text);background:var(--bg);overflow-x:hidden;font-size:16px;line-height:1.6;}
+
+/* ═══ SCROLL REVEALS ═══ */
+.rev{opacity:0;transform:translateY(24px);transition:opacity 0.55s ease,transform 0.55s ease;}
+.rev.in{opacity:1;transform:none;}
+.rev-l{opacity:0;transform:translateX(-24px);transition:opacity 0.55s ease,transform 0.55s ease;}
+.rev-l.in{opacity:1;transform:none;}
+.rev-r{opacity:0;transform:translateX(24px);transition:opacity 0.55s ease,transform 0.55s ease;}
+.rev-r.in{opacity:1;transform:none;}
+.d1{transition-delay:.08s;} .d2{transition-delay:.16s;} .d3{transition-delay:.24s;} .d4{transition-delay:.32s;}
+
+/* ═══ NAV ═══ */
+nav{position:sticky;top:0;z-index:300;background:rgba(10,22,60,0.96);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,0.06);}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo img{height:38px;width:auto;border-radius:5px;}
+.nav-links{display:flex;gap:2px;align-items:center;list-style:none;}
+.nav-links a{font-size:0.875rem;font-weight:700;color:rgba(255,255,255,0.62);padding:7px 12px;border-radius:var(--rs);transition:var(--trans);text-decoration:none;}
+.nav-links a:hover{color:white;background:rgba(255,255,255,0.08);}
+.nav-cta{background:var(--yellow)!important;color:var(--dark)!important;font-weight:900!important;border-radius:var(--rs)!important;}
+.nav-cta:hover{background:#e6c000!important;transform:translateY(-1px);}
+.ham{display:none;background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;padding:4px;}
+#mob{display:none;position:fixed;inset:64px 0 0;background:rgba(10,22,60,0.97);backdrop-filter:blur(12px);z-index:290;padding:20px 24px;overflow-y:auto;}
+#mob.open{display:flex;flex-direction:column;gap:4px;}
+#mob a{display:block;padding:14px 0;font-size:1rem;font-weight:800;color:rgba(255,255,255,0.75);border-bottom:1px solid rgba(255,255,255,0.06);text-decoration:none;}
+#mob a:hover{color:white;}
+
+/* ═══ HERO — REFINED ═══ */
+.hero{background:linear-gradient(160deg,#04091f 0%,#071540 55%,#0a2a8a 100%);min-height:100vh;display:flex;flex-direction:column;position:relative;overflow:hidden;}
+/* subtle grain overlay */
+.hero::after{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;opacity:.4;}
+/* glow orbs */
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;}
+.o1{width:600px;height:600px;background:rgba(26,110,255,0.14);top:-200px;right:-150px;}
+.o2{width:400px;height:400px;background:rgba(255,214,0,0.07);bottom:60px;left:-100px;}
+.o3{width:300px;height:300px;background:rgba(77,240,168,0.08);top:40%;right:20%;}
+/* no star field - removed */
+.stars{display:none;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+.hero-body{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:110px 32px 56px;max-width:1040px;margin:0 auto;width:100%;}
+
+/* pill */
+.hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.75);font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:8px 18px;border-radius:40px;margin-bottom:2rem;animation:fadeUp .5s ease both;backdrop-filter:blur(8px);}
+
+/* headline */
+.hero h1{font-family:'Nunito',sans-serif;font-size:clamp(2.6rem,5.5vw,4.4rem);line-height:1.1;color:white;margin-bottom:1.2rem;animation:fadeUp .6s .1s ease both;font-weight:900;letter-spacing:-0.5px;}
+.hero h1 .c1{color:var(--yellow);}
+.hero h1 .c2{color:#4DF0A8;}
+
+/* sub */
+.hero-sub{font-size:1.08rem;color:rgba(255,255,255,.62);max-width:520px;margin:0 auto 0;line-height:1.9;font-weight:500;animation:fadeUp .6s .2s ease both;}
+
+/* AVATARS — large, premium */
+.hero-avatars{display:flex;gap:3.5rem;justify-content:center;margin:3rem 0 2.5rem;animation:fadeUp .7s .25s ease both;}
+.av-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;cursor:default;}
+.av-img{width:130px;height:130px;border-radius:50%;object-fit:cover;border:none;box-shadow:0 0 0 3px rgba(255,255,255,.12),0 20px 50px rgba(0,0,0,.5);transition:transform .3s ease;}
+.av-wrap:first-child .av-img{box-shadow:0 0 0 3px var(--yellow),0 0 0 6px rgba(255,214,0,.18),0 20px 50px rgba(0,0,0,.5);}
+.av-wrap:last-child .av-img{box-shadow:0 0 0 3px var(--u3),0 0 0 6px rgba(255,107,43,.18),0 20px 50px rgba(0,0,0,.5);}
+.av-wrap:hover .av-img{transform:translateY(-6px) scale(1.04);}
+.av-name{font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;color:white;letter-spacing:.02em;}
+.av-role{font-size:.7rem;font-weight:600;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;}
+
+/* BUTTONS — premium */
+.hero-btns{display:flex;gap:.85rem;justify-content:center;flex-wrap:wrap;margin-bottom:3.5rem;animation:fadeUp .6s .35s ease both;}
+.hero-btn-primary{display:inline-flex;align-items:center;gap:9px;background:var(--yellow);color:#1a1a2e;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;padding:15px 32px;border-radius:14px;border:none;cursor:pointer;text-decoration:none;transition:all .25s ease;letter-spacing:.01em;}
+.hero-btn-primary:hover{background:#ffe033;transform:translateY(-2px);box-shadow:0 12px 32px rgba(255,214,0,.35);}
+.hero-btn-secondary{display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.88);font-family:'Nunito',sans-serif;font-weight:700;font-size:.95rem;padding:15px 32px;border-radius:14px;border:1px solid rgba(255,255,255,.18);cursor:pointer;text-decoration:none;transition:all .25s ease;backdrop-filter:blur(8px);}
+.hero-btn-secondary:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.3);transform:translateY(-2px);}
+
+/* PHASES — larger, more visual */
+.hero-preview{position:relative;width:100%;max-width:860px;margin:0 auto;animation:fadeUp .7s .45s ease both;}
+.hprev-label{font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:14px;text-align:center;}
+.hprev-inner{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:20px;display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.hprev-inner::-webkit-scrollbar{display:none;}
+.hprev-phase{flex:1;min-width:140px;border-radius:14px;padding:20px 14px 16px;text-align:center;transition:all .22s ease;cursor:default;position:relative;}
+.hprev-phase:hover{transform:translateY(-4px);}
+.hprev-phase::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:28px;height:3px;border-radius:2px;opacity:0;transition:opacity .2s;}
+.hprev-phase:hover::after{opacity:1;}
+.hp-icon{font-size:0;display:block;margin-bottom:10px;width:40px;height:40px;border-radius:10px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;}
+.hp-icon svg{width:22px;height:22px;}
+.hp-num{font-size:.58rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:4px;}
+.hp-name{font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:800;color:white;margin-bottom:3px;}
+.hp-sub{font-size:.68rem;font-weight:600;color:rgba(255,255,255,.45);line-height:1.4;}
+
+/* STATS BAR */
+.hero-stats{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.06);background:rgba(0,0,0,.22);display:flex;justify-content:center;flex-wrap:wrap;backdrop-filter:blur(10px);}
+.hstat{text-align:center;padding:22px 40px;border-right:1px solid rgba(255,255,255,.05);}
+.hstat:last-child{border-right:none;}
+.hs-n{font-family:'Nunito',sans-serif;font-size:2rem;font-weight:900;color:white;line-height:1;}
+.hs-l{font-size:.68rem;font-weight:700;color:rgba(255,255,255,.35);margin-top:4px;text-transform:uppercase;letter-spacing:.08em;}
+
+/* ═══ SHARED SECTION ═══ */
+section{padding:88px 24px;}
+.si{max-width:1200px;margin:0 auto;}
+.sec-head{margin-bottom:52px;}
+.stag{display:inline-block;font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.13em;padding:4px 12px;border-radius:20px;margin-bottom:.7rem;}
+.stag-blue{color:var(--u1);background:var(--u1l);border:1px solid rgba(26,110,255,.2);}
+.stag-green{color:#0a7a34;background:var(--u2l);border:1px solid rgba(0,200,83,.2);}
+.stag-gold{color:#7a5200;background:#FFF8E7;border:1px solid rgba(212,168,71,.28);}
+.stag-purple{color:#6b1487;background:var(--u4l);border:1px solid rgba(155,39,175,.2);}
+.stag-orange{color:#8b3400;background:var(--u3l);border:1px solid rgba(255,107,43,.2);}
+.sh{font-family:var(--fd);font-size:clamp(1.9rem,3.5vw,2.8rem);color:var(--text);line-height:1.18;margin-bottom:.7rem;}
+.sp{font-size:.95rem;color:var(--muted);max-width:520px;line-height:1.85;font-weight:600;}
+.sw{color:white!important;} .spw{color:rgba(255,255,255,.58)!important;}
+.center{text-align:center;} .center .sp{margin:0 auto;}
+
+/* ═══ BUTTONS ═══ */
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--fb);font-weight:800;font-size:.95rem;padding:13px 26px;border-radius:12px;border:none;cursor:pointer;transition:var(--trans);text-decoration:none;}
+.btn-yellow{background:var(--yellow);color:var(--dark);}
+.btn-yellow:hover{background:#e6c000;transform:translateY(-2px);box-shadow:0 10px 28px rgba(255,214,0,.35);}
+.btn-blue{background:var(--u1);color:white;}
+.btn-blue:hover{background:#1355cc;transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,110,255,.3);}
+.btn-green{background:var(--u2);color:white;}
+.btn-green:hover{background:#00a844;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,200,83,.3);}
+.btn-ghost{background:transparent;border:2px solid rgba(255,255,255,.35);color:white;}
+.btn-ghost:hover{border-color:white;background:rgba(255,255,255,.07);transform:translateY(-1px);}
+.btn-out{background:white;border:2px solid var(--border);color:var(--text);}
+.btn-out:hover{border-color:var(--u1);color:var(--u1);transform:translateY(-1px);}
+.btn-lg{padding:16px 36px;font-size:1.02rem;}
+.btn-sm{padding:8px 16px;font-size:.82rem;}
+
+/* ═══ TRUST BAR ═══ */
+.trust{background:white;border-bottom:1px solid var(--border);padding:14px 24px;}
+.trust-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;}
+.ti{display:flex;align-items:center;gap:7px;font-size:.8rem;font-weight:700;color:var(--muted);}
+
+/* ═══ PRIMARY PLATFORM SHOWCASE ═══ */
+.primary-section{background:white;}
+.primary-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center;}
+
+/* Real platform UI recreation */
+.platform-demo{border-radius:var(--rl);overflow:hidden;box-shadow:var(--shl);border:1px solid rgba(10,63,204,.15);}
+.pd-topbar{background:rgba(0,0,0,.85);padding:10px 16px;display:flex;align-items:center;gap:8px;}
+.pd-dots{display:flex;gap:5px;}
+.pd-dot{width:11px;height:11px;border-radius:50%;}
+.pd-brand{font-family:var(--fd);font-size:.9rem;color:white;margin-left:8px;display:flex;align-items:center;gap:6px;}
+.pd-brand span{color:var(--yellow);}
+.pd-screen{background:linear-gradient(135deg,#0A1628 0%,#0A3FCC 50%,#1A1A2E 100%);padding:20px;}
+/* avatars row */
+.pd-avs{display:flex;justify-content:center;gap:20px;margin-bottom:14px;}
+.pd-av{text-align:center;}
+.pd-av img{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid var(--yellow);}
+.pd-av.anwar img{border-color:var(--u3);}
+.pd-av-name{font-size:.62rem;font-weight:800;color:rgba(255,255,255,.8);margin-top:3px;}
+/* welcome banner */
+.pd-banner{background:rgba(255,255,255,.12);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:12px;border:1px solid rgba(255,255,255,.1);}
+.pd-banner img{width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--yellow);}
+.pd-banner-text h3{font-family:var(--fd);font-size:1rem;color:white;}
+.pd-banner-text p{font-size:.65rem;color:rgba(255,255,255,.6);font-weight:700;}
+.pd-stars{display:flex;gap:5px;margin-top:4px;}
+.pd-star{background:var(--yellow);color:var(--dark);border-radius:10px;padding:2px 8px;font-size:.62rem;font-weight:900;}
+.pd-star.pink{background:#E91E7A;color:white;}
+/* unit grid */
+.pd-unit-title{font-family:var(--fd);font-size:.85rem;color:white;margin-bottom:8px;text-align:center;}
+.pd-units{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.pd-unit{border-radius:14px;padding:12px 8px;text-align:center;cursor:pointer;transition:transform .2s;position:relative;}
+.pd-unit:hover{transform:translateY(-2px);}
+.pd-unit-num{font-size:1.8rem;margin-bottom:4px;}
+.pd-unit-name{font-family:var(--fd);font-size:.75rem;color:white;margin-bottom:2px;}
+.pd-unit-sub{font-size:.57rem;color:rgba(255,255,255,.7);font-weight:700;}
+.pd-unit-lock{position:absolute;top:7px;right:7px;font-size:.7rem;opacity:.6;}
+/* badges strip */
+.pd-badges-title{font-family:var(--fd);font-size:.82rem;color:white;margin-bottom:6px;}
+.pd-badges{display:flex;gap:8px;flex-wrap:wrap;}
+.pd-badge{text-align:center;flex:1;min-width:44px;}
+.pd-badge-icon{font-size:1.4rem;display:block;margin-bottom:2px;}
+.pd-badge-icon.dim{opacity:.28;}
+.pd-badge-lbl{font-size:.55rem;font-weight:800;color:rgba(255,255,255,.6);}
+
+/* ═══ PHASES SECTION ═══ */
+.phases-section{background:linear-gradient(160deg,#060d24,#091847,#0A3FCC);}
+.phases-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;}
+.phase-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);padding:1.4rem 1rem;text-align:center;transition:var(--trans);position:relative;overflow:hidden;}
+.phase-card:hover{background:rgba(255,255,255,.12);transform:translateY(-5px);}
+.phase-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.ph1::before{background:var(--u1);}
+.ph2::before{background:var(--u2);}
+.ph3::before{background:var(--u3);}
+.ph4::before{background:var(--u4);}
+.ph5::before{background:var(--yellow);}
+.phase-icon{font-size:2rem;display:block;margin-bottom:.6rem;}
+.phase-num{font-size:.62rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.3rem;}
+.phase-title{font-family:var(--fd);font-size:1.1rem;color:white;margin-bottom:.35rem;}
+.phase-desc{font-size:.8rem;color:rgba(255,255,255,.52);line-height:1.6;font-weight:600;}
+.phase-badge{display:inline-flex;align-items:center;gap:4px;border-radius:20px;padding:3px 10px;font-size:.65rem;font-weight:900;margin-top:.5rem;}
+
+/* ═══ NOURA & ANWAR SECTION ═══ */
+.chars-section{background:var(--bg);}
+.chars-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+.char-card{border-radius:var(--rl);overflow:hidden;box-shadow:var(--shm);transition:var(--trans);}
+.char-card:hover{transform:translateY(-5px);box-shadow:var(--shl);}
+.char-top{padding:2rem;text-align:center;position:relative;}
+.ct-noura{background:linear-gradient(135deg,#0A1628,#0A3FCC);}
+.ct-anwar{background:linear-gradient(135deg,#2d0a00,var(--u3));}
+.char-avatar{width:110px;height:110px;border-radius:50%;object-fit:cover;border:4px solid var(--yellow);box-shadow:0 0 0 6px rgba(255,214,0,.2),0 12px 32px rgba(0,0,0,.4);margin:0 auto 1rem;display:block;}
+.char-card.anwar .char-avatar{border-color:var(--u3);box-shadow:0 0 0 6px rgba(255,107,43,.25),0 12px 32px rgba(0,0,0,.4);}
+.char-name{font-family:var(--fd);font-size:1.8rem;color:white;margin-bottom:.3rem;}
+.char-role{font-size:.8rem;font-weight:800;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;}
+.char-speech{background:rgba(255,255,255,.12);border-radius:12px;padding:12px 16px;font-size:.88rem;font-weight:700;color:rgba(255,255,255,.85);line-height:1.6;position:relative;}
+.char-speech::before{content:'💬';margin-right:6px;}
+.char-body{background:white;padding:1.5rem;}
+.char-traits{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1rem;}
+.trait{font-size:.73rem;font-weight:800;padding:5px 11px;border-radius:20px;}
+.t-blue{background:var(--u1l);color:var(--u1);}
+.t-orange{background:var(--u3l);color:#8b3400;}
+.char-desc{font-size:.87rem;color:var(--muted);line-height:1.72;font-weight:600;}
+
+/* ═══ WHY ═══ */
+.why-bg{background:white;}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;}
+.why-card{border:1.5px solid var(--border);border-radius:var(--r);padding:1.6rem;transition:var(--trans);background:white;}
+.why-card:hover{border-color:var(--u1);box-shadow:0 6px 24px rgba(26,110,255,.08);transform:translateY(-3px);}
+.wico{width:46px;height:46px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin-bottom:.9rem;}
+.wi-b{background:var(--u1l);} .wi-g{background:var(--u2l);} .wi-y{background:#FFF8E7;} .wi-p{background:var(--u4l);} .wi-o{background:var(--u3l);} .wi-n{background:#f0fdf4;}
+.why-title{font-family:var(--fd);font-size:1.05rem;color:var(--text);margin-bottom:.35rem;}
+.why-desc{font-size:.84rem;color:var(--muted);line-height:1.72;font-weight:600;}
+
+/* ═══ VIDEO SECTION ═══ */
+.video-section{background:linear-gradient(160deg,#060d24,#091847);}
+.video-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
+.video-frame{border-radius:var(--rl);overflow:hidden;box-shadow:var(--shl);background:var(--dark);aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;border:2px solid rgba(255,255,255,.08);}
+.video-play-btn{width:72px;height:72px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 0 0 12px rgba(255,214,0,.2),0 16px 40px rgba(0,0,0,.4);transition:var(--trans);animation:pulse 2.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 12px rgba(255,214,0,.2),0 16px 40px rgba(0,0,0,.4);}50%{box-shadow:0 0 0 20px rgba(255,214,0,.1),0 16px 40px rgba(0,0,0,.4);}}
+.video-frame:hover .video-play-btn{transform:scale(1.1);}
+.video-overlay-text{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,.8),transparent);padding:20px;text-align:center;}
+.video-cta-title{font-family:var(--fd);font-size:1.1rem;color:white;margin-bottom:4px;}
+.video-cta-sub{font-size:.78rem;color:rgba(255,255,255,.6);font-weight:700;}
+.video-features{display:flex;flex-direction:column;gap:1.1rem;}
+.vf-item{display:flex;gap:1rem;align-items:flex-start;}
+.vf-icon{width:44px;height:44px;flex-shrink:0;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);}
+.vf-title{font-size:.92rem;font-weight:800;color:white;margin-bottom:2px;}
+.vf-desc{font-size:.8rem;color:rgba(255,255,255,.5);font-weight:600;line-height:1.55;}
+
+/* ═══ SECONDARY SECTION ═══ */
+.secondary-section{background:var(--bg);}
+.sec-card{background:white;border-radius:var(--rl);border:1.5px solid var(--border);box-shadow:var(--sh);overflow:hidden;}
+.sc-header{background:linear-gradient(135deg,#1B2F5E,#2d4d8e);padding:2rem;display:flex;align-items:center;gap:1.5rem;}
+.sc-icon{font-size:2.4rem;}
+.sc-header-text h3{font-family:var(--fd);font-size:1.6rem;color:white;}
+.sc-header-text p{font-size:.85rem;color:rgba(255,255,255,.65);font-weight:600;margin-top:3px;}
+.sc-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.85);font-size:.68rem;font-weight:900;padding:4px 10px;border-radius:20px;margin-top:8px;}
+.sc-body{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;padding:2rem;}
+.sc-feature{display:flex;flex-direction:column;gap:.5rem;}
+.sc-ficon{font-size:1.4rem;}
+.sc-ftitle{font-family:var(--fd);font-size:1rem;color:var(--text);}
+.sc-fdesc{font-size:.82rem;color:var(--muted);line-height:1.65;font-weight:600;}
+.sc-footer{background:var(--bg);border-top:1px solid var(--border);padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.sc-foot-text{font-size:.84rem;color:var(--muted);font-weight:600;}
+
+/* ═══ WORKBOOKS ═══ */
+.wb-section{background:white;}
+/* Real workbook style from actual file */
+.wb-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.75rem;}
+.wb-book{border-radius:var(--rl);overflow:hidden;box-shadow:var(--shm);transition:var(--trans);}
+.wb-book:hover{transform:translateY(-5px);box-shadow:var(--shl);}
+.wb-cover{position:relative;overflow:hidden;}
+/* Book 1 cover — navy gradient like real cover */
+.wbc-1{background:linear-gradient(135deg,#0f2a8a 0%,#1a3fbf 50%,#2952d4 100%);}
+.wbc-2{background:linear-gradient(135deg,#7a5200 0%,#D4A847 100%);}
+.wb-cover-inner{padding:28px 24px 20px;min-height:200px;position:relative;}
+/* grid dots pattern like real workbook */
+.wb-cover-inner::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);background-size:24px 24px;}
+.wb-cover-badge{background:var(--yellow);color:var(--dark);font-size:.68rem;font-weight:900;padding:4px 12px;border-radius:20px;display:inline-block;position:relative;z-index:1;margin-bottom:10px;}
+.wb-cover-age{position:absolute;top:16px;right:16px;background:var(--yellow);color:var(--dark);font-size:.65rem;font-weight:900;padding:6px 10px;border-radius:10px;text-align:center;z-index:1;line-height:1.3;}
+.wb-cover-title{font-family:var(--fd);font-size:3rem;color:white;line-height:1;position:relative;z-index:1;margin-bottom:4px;}
+.wb-cover-title span{color:var(--yellow);}
+.wb-cover-subtitle{background:white;color:var(--navy,#0A3FCC);font-weight:900;font-size:.9rem;padding:5px 14px;border-radius:14px;display:inline-block;position:relative;z-index:1;margin-bottom:12px;}
+.wb-cover-avs{display:flex;gap:12px;position:relative;z-index:1;}
+.wb-cover-av{background:rgba(255,255,255,.12);border-radius:12px;width:72px;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:8px;border:1px solid rgba(255,255,255,.2);}
+.wb-av-emoji{font-size:2rem;}
+.wb-av-name{font-family:var(--fd);font-size:.75rem;color:var(--yellow);}
+.wb-cover-phases{display:flex;gap:6px;position:relative;z-index:1;margin-top:10px;flex-wrap:wrap;}
+.wcp{padding:5px 11px;border-radius:14px;font-weight:800;font-size:.65rem;color:white;}
+.wcp-1{background:var(--u1);}
+.wcp-2{background:var(--u2);}
+.wcp-3{background:var(--u3);}
+.wcp-4{background:var(--u4);}
+.wcp-5{background:#c7a800;}
+/* book body */
+.wb-body-content{background:white;padding:1.5rem;}
+.wb-school{font-size:.65rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:var(--subtle);margin-bottom:3px;}
+.wb-title{font-family:var(--fd);font-size:1.15rem;color:var(--text);margin-bottom:.35rem;}
+.wb-desc{font-size:.83rem;color:var(--muted);line-height:1.65;font-weight:600;margin-bottom:.9rem;}
+.wb-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1rem;}
+.wb-tag{font-size:.65rem;font-weight:800;padding:3px 8px;border-radius:6px;background:var(--u1l);color:var(--u1);}
+.wb-tag.green{background:var(--u2l);color:#0a7a34;}
+.wb-footer{display:flex;align-items:center;justify-content:space-between;gap:.75rem;}
+
+/* ═══ LANG STRIP ═══ */
+.lang-strip{background:var(--yellow);padding:36px 24px;}
+.lang-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;}
+.lang-text h3{font-family:var(--fd);font-size:1.55rem;color:var(--dark);}
+.lang-text p{font-size:.87rem;color:rgba(26,26,46,.65);font-weight:700;margin-top:4px;}
+.lang-flags{display:flex;gap:1rem;flex-wrap:wrap;}
+.lflag{background:white;border-radius:10px;padding:10px 18px;display:flex;align-items:center;gap:8px;font-weight:800;font-size:.87rem;color:var(--dark);box-shadow:0 2px 10px rgba(0,0,0,.08);transition:var(--trans);}
+.lflag:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.12);}
+.lf-sup{font-size:.62rem;color:var(--u1);margin-left:3px;font-weight:900;}
+.lf-sup.sec{color:var(--muted);}
+
+/* ═══ PRICING ═══ */
+.pricing-bg{background:var(--bg);}
+.lic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.75rem;max-width:980px;margin:0 auto;}
+.lic{background:white;border:2px solid var(--border);border-radius:var(--rl);padding:2rem;position:relative;transition:var(--trans);box-shadow:var(--sh);}
+.lic:hover{transform:translateY(-5px);box-shadow:var(--shl);}
+.lic.feat{border-color:var(--yellow);border-width:2.5px;box-shadow:0 0 0 5px rgba(255,214,0,.1);}
+.feat-pill{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--yellow);color:var(--dark);font-size:.68rem;font-weight:900;padding:5px 16px;border-radius:20px;white-space:nowrap;box-shadow:0 4px 12px rgba(255,214,0,.3);}
+.lic-ico{font-size:1.9rem;margin-bottom:.9rem;}
+.lic-name{font-family:var(--fd);font-size:1.5rem;color:var(--text);margin-bottom:.3rem;}
+.lic-price{font-family:var(--fd);font-size:2.4rem;color:var(--text);line-height:1.1;}
+.lic-price span{font-size:.88rem;font-family:var(--fb);color:var(--subtle);font-weight:600;}
+.lic-clarify{font-size:.75rem;font-weight:700;color:var(--u3);margin-bottom:.8rem;display:block;}
+.lic-desc{font-size:.83rem;color:var(--muted);margin-bottom:1.4rem;font-weight:600;line-height:1.6;}
+.lic-ul{list-style:none;margin-bottom:1.6rem;display:flex;flex-direction:column;gap:7px;}
+.lic-ul li{font-size:.83rem;color:var(--muted);display:flex;align-items:flex-start;gap:8px;font-weight:600;}
+.lic-ul li::before{content:'✓';color:var(--u2);font-weight:900;flex-shrink:0;}
+.lic-ul li.no::before{content:'—';color:var(--border);font-weight:700;}
+.lic-ul li.no{color:var(--border);}
+.btn-lic{display:block;width:100%;padding:14px;border-radius:var(--rs);font-weight:800;font-size:.93rem;cursor:pointer;font-family:var(--fb);border:none;text-align:center;transition:var(--trans);}
+.b-yellow{background:var(--yellow);color:var(--dark);}
+.b-yellow:hover{background:#e6c000;transform:translateY(-1px);box-shadow:0 6px 18px rgba(255,214,0,.3);}
+.b-blue{background:var(--u1);color:white;}
+.b-blue:hover{background:#1355cc;transform:translateY(-1px);}
+.b-out{background:transparent;border:2px solid var(--border);color:var(--text);}
+.b-out:hover{border-color:var(--u1);color:var(--u1);}
+/* compare table */
+.ctable{width:100%;border-collapse:collapse;margin-top:2.5rem;background:white;border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);}
+.ctable th{background:var(--dark);color:white;font-size:.77rem;font-weight:800;padding:13px 16px;text-align:left;}
+.ctable th.c{text-align:center;}
+.ctable td{padding:11px 16px;font-size:.82rem;font-weight:600;border-bottom:1px solid var(--border);color:var(--muted);}
+.ctable td.c{text-align:center;}
+.ctable tr:last-child td{border-bottom:none;}
+.ctable tr:hover td{background:var(--bg);}
+.cyes{color:var(--u2);font-size:1.05rem;font-weight:900;}
+.cno{color:var(--border);font-size:1rem;}
+.cpart{color:#D4A847;font-size:1rem;font-weight:900;}
+.pay-row{margin-top:1.5rem;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);font-weight:600;}
+.pchip{background:white;border:1.5px solid var(--border);border-radius:7px;padding:5px 11px;font-size:.74rem;font-weight:700;color:var(--muted);box-shadow:var(--sh);}
+
+/* ═══ NEWSLETTER ═══ */
+.nl-section{background:linear-gradient(160deg,#060d24,#091847,#0A3FCC);}
+.nl-inner{max-width:580px;margin:0 auto;text-align:center;}
+.nl-form{display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center;margin-top:1.75rem;}
+.nl-inp{flex:1;min-width:230px;padding:14px 18px;border-radius:var(--rs);border:2px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:white;font-size:.9rem;font-family:var(--fb);font-weight:700;outline:none;transition:border-color .2s;}
+.nl-inp:focus{border-color:var(--yellow);}
+.nl-inp::placeholder{color:rgba(255,255,255,.3);font-weight:600;}
+.nl-note{font-size:.7rem;color:rgba(255,255,255,.25);margin-top:.75rem;font-weight:700;}
+#nl-ok{display:none;color:#4DF0A8;font-weight:800;margin-top:.6rem;font-size:.88rem;}
+
+/* ═══ CONTACT ═══ */
+.contact-section{background:white;}
+.con-grid{display:grid;grid-template-columns:1fr 1.35fr;gap:3rem;align-items:start;}
+.con-info{display:flex;flex-direction:column;gap:1.4rem;}
+.ci{display:flex;gap:.9rem;align-items:flex-start;}
+.ci-ico{width:44px;height:44px;flex-shrink:0;background:var(--u1l);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+.ci h4{font-size:.88rem;font-weight:800;color:var(--text);margin-bottom:1px;}
+.ci p{font-size:.83rem;color:var(--muted);font-weight:600;}
+.ci a{color:var(--u1);font-weight:700;text-decoration:none;}
+.ci a:hover{text-decoration:underline;}
+.dom-box{background:var(--bg);border-radius:var(--rs);padding:1.1rem;border:1.5px solid var(--border);}
+.dom-box h4{font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--text);margin-bottom:.7rem;}
+.drow{display:flex;align-items:center;gap:7px;padding:6px 0;border-bottom:1px solid var(--border);font-size:.79rem;}
+.drow:last-child{border-bottom:none;}
+.ddot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.durl{font-weight:800;color:var(--text);}
+.dlbl{color:var(--subtle);font-size:.72rem;font-weight:600;}
+/* tabs */
+.con-tabs{display:flex;gap:7px;margin-bottom:1.5rem;flex-wrap:wrap;}
+.ctab{padding:8px 18px;border-radius:20px;font-size:.82rem;font-weight:800;cursor:pointer;border:2px solid var(--border);background:white;color:var(--muted);font-family:var(--fb);transition:var(--trans);}
+.ctab.on,.ctab:hover{background:var(--u1);color:white;border-color:var(--u1);}
+/* form */
+.cf-wrap{background:var(--bg);border-radius:var(--rl);padding:1.75rem;border:1.5px solid var(--border);}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;}
+.cf-grp{margin-bottom:.9rem;}
+.cflbl{display:block;font-size:.74rem;font-weight:900;color:var(--text);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em;}
+.cfinp{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:.88rem;font-family:var(--fb);font-weight:600;color:var(--text);outline:none;transition:border-color .2s;background:white;}
+.cfinp:focus{border-color:var(--u1);box-shadow:0 0 0 3px rgba(26,110,255,.08);}
+.cfinp.err{border-color:var(--u3);}
+textarea.cfinp{resize:vertical;min-height:88px;}
+.btn-submit{padding:13px 26px;background:var(--u1);color:white;border:none;border-radius:var(--rs);font-size:.93rem;font-weight:800;cursor:pointer;font-family:var(--fb);transition:var(--trans);display:inline-flex;align-items:center;gap:7px;}
+.btn-submit:hover{background:#1355cc;transform:translateY(-1px);box-shadow:0 6px 18px rgba(26,110,255,.3);}
+.cf-succ{display:none;background:#E8F5E9;border:1.5px solid #a5d6a7;border-radius:var(--rs);padding:13px;font-size:.86rem;font-weight:700;color:#1b5e20;margin-top:.9rem;text-align:center;}
+
+/* ═══ FOOTER ═══ */
+footer{background:#060d24;color:rgba(255,255,255,.5);padding:4rem 24px 2rem;}
+.ft{max-width:1200px;margin:0 auto;}
+.ft-top{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr 1fr;gap:2.5rem;margin-bottom:2.5rem;}
+.ft-brand-logo{display:flex;align-items:center;gap:9px;margin-bottom:.7rem;text-decoration:none;}
+.ft-brand-logo img{height:32px;border-radius:4px;filter:brightness(0) invert(1);opacity:.75;}
+.ft-tagline{font-size:.8rem;color:rgba(255,255,255,.33);line-height:1.7;font-weight:600;max-width:220px;margin-bottom:1.3rem;}
+.ft-socials{display:flex;gap:7px;flex-wrap:wrap;}
+.fsoc{width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:var(--trans);text-decoration:none;}
+.fsoc:hover{background:rgba(255,255,255,.12);transform:translateY(-2px);}
+.ft-col h5{font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.25);margin-bottom:.9rem;}
+.ft-col ul{list-style:none;display:flex;flex-direction:column;gap:.45rem;}
+.ft-col a{color:rgba(255,255,255,.48);font-size:.82rem;font-weight:700;transition:color .15s;text-decoration:none;}
+.ft-col a:hover{color:white;}
+.ft-div{border:none;border-top:1px solid rgba(255,255,255,.06);margin-bottom:1.4rem;}
+.ft-bot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem;}
+.ft-copy{font-size:.74rem;color:rgba(255,255,255,.2);font-weight:600;}
+.ft-chips{display:flex;gap:5px;flex-wrap:wrap;}
+.fchip{font-size:.66rem;font-weight:700;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:5px;padding:2px 7px;color:rgba(255,255,255,.25);}
+.ft-legal{display:flex;gap:1.2rem;flex-wrap:wrap;}
+.ft-legal a{font-size:.72rem;color:rgba(255,255,255,.22);font-weight:600;text-decoration:none;}
+.ft-legal a:hover{color:rgba(255,255,255,.55);}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:1024px){
+  .primary-grid,.video-grid,.con-grid{grid-template-columns:1fr;}
+  .chars-grid{grid-template-columns:1fr;}
+  .wb-grid{grid-template-columns:1fr;}
+  .phases-grid{grid-template-columns:repeat(3,1fr);}
+  .why-grid{grid-template-columns:1fr 1fr;}
+  .sc-body{grid-template-columns:1fr 1fr;}
+  .ft-top{grid-template-columns:1fr 1fr 1fr;}
+  .lic-grid{grid-template-columns:1fr;max-width:440px;}
+}
+@media(max-width:680px){
+  .nav-links{display:none;}.ham{display:block;}
+  section{padding:64px 20px;}
+  .hero-body{padding:80px 20px 40px;}
+  .hero h1{font-size:2.6rem;}
+  .phases-grid{grid-template-columns:1fr 1fr;}
+  .why-grid{grid-template-columns:1fr;}
+  .sc-body{grid-template-columns:1fr;}
+  .ft-top{grid-template-columns:1fr 1fr;}
+  .hero-avatars{gap:2rem;}
+  .av-img{width:100px;height:100px;}
+  .hprev-phase{min-width:110px;padding:10px 12px;}
+  .cf-row{grid-template-columns:1fr;}
+  .hstat{padding:14px 20px;}
+}
+@media(max-width:420px){
+  .ft-top{grid-template-columns:1fr;}
+  .phases-grid{grid-template-columns:1fr;}
+  .hero h1{font-size:2rem;}
+  .chars-grid{grid-template-columns:1fr;}
+  .hk-grid{grid-template-columns:1fr;}
+  .hk-challenge-grid{grid-template-columns:1fr;}
+}
+
+/* ═══ HEARTFELT CONVERSATION SECTION ═══ */
+.hartgesprek-section{background:linear-gradient(160deg,#fafbff 0%,#f0f4ff 50%,#fafbff 100%);padding:96px 24px;position:relative;overflow:hidden;}
+.hartgesprek-section::before{content:'';position:absolute;inset:0;background-image:radial-gradient(ellipse at 20% 50%,rgba(26,110,255,.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(255,214,0,.06) 0%,transparent 50%);pointer-events:none;}
+.hk-intro{text-align:center;max-width:720px;margin:0 auto 60px;position:relative;}
+.hk-heart{font-size:3rem;display:block;margin-bottom:12px;animation:heartbeat 2s ease-in-out infinite;}
+@keyframes heartbeat{0%,100%{transform:scale(1);}14%{transform:scale(1.15);}28%{transform:scale(1);}}
+.hk-quote{background:#fffbea;border-left:3px solid var(--yellow);border-radius:0 14px 14px 0;padding:16px 20px;text-align:left;margin:1.5rem 0;font-style:italic;font-size:.95rem;color:#3a3a5c;line-height:1.8;font-weight:600;}
+html[dir="rtl"] .hk-quote{border-left:none;border-right:3px solid var(--yellow);border-radius:14px 0 0 14px;text-align:right;}
+
+/* Challenge grid */
+.hk-challenge-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin:2.5rem 0;}
+.hk-challenge-card{border-radius:var(--r);padding:1.5rem;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.08);}
+.hkc-before{background:#fff5f5;border-color:rgba(220,30,30,.2);}
+.hkc-after{background:#f0fdf4;border-color:rgba(0,200,83,.2);}
+.hkc-label{font-size:.65rem;font-weight:900;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.8rem;display:flex;align-items:center;gap:6px;}
+.hkc-label-before{color:#ff6b6b;}
+.hkc-label-after{color:#4DF0A8;}
+.hkc-title{font-family:var(--fd);font-size:1.1rem;color:var(--text);margin-bottom:.5rem;}
+html[dir="rtl"] .hkc-title{font-family:'Cairo',sans-serif !important;}
+.hkc-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.5rem;}
+.hkc-list li{font-size:.84rem;color:var(--muted);font-weight:600;display:flex;align-items:flex-start;gap:8px;line-height:1.5;}
+html[dir="rtl"] .hkc-list li{flex-direction:row-reverse;text-align:right;}
+.hkc-list li::before{content:'✗';color:#ff6b6b;font-weight:900;flex-shrink:0;margin-top:1px;}
+.hkc-after .hkc-list li::before{content:'✓';color:#4DF0A8;}
+
+/* Perspective cards */
+.hk-perspectives{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin:2.5rem 0;}
+@media(max-width:768px){.hk-perspectives{grid-template-columns:1fr;} .hk-challenge-grid{grid-template-columns:1fr;}}
+.hk-persp{background:white;border:1.5px solid var(--border);border-radius:var(--r);padding:1.4rem;transition:var(--trans);box-shadow:var(--sh);}
+.hk-persp:hover{background:#f8f9ff;transform:translateY(-3px);box-shadow:var(--shm);}
+.hk-persp-ico{font-size:1.8rem;margin-bottom:.7rem;}
+.hk-persp-role{font-size:.65rem;font-weight:900;text-transform:uppercase;letter-spacing:.12em;color:var(--yellow);margin-bottom:.4rem;}
+.hk-persp-title{font-family:var(--fd);font-size:1rem;color:var(--text);margin-bottom:.5rem;}
+html[dir="rtl"] .hk-persp-title{font-family:'Cairo',sans-serif !important;}
+.hk-persp-text{font-size:.82rem;color:var(--muted);line-height:1.72;font-weight:600;}
+
+/* Conversation bubbles */
+.hk-convo{max-width:780px;margin:0 auto 2rem;display:flex;flex-direction:column;gap:1rem;}
+.hk-bubble{max-width:75%;padding:1rem 1.2rem;border-radius:18px;font-size:.88rem;line-height:1.7;font-weight:600;position:relative;}
+.hk-bubble.left{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.8);margin-right:auto;border-bottom-left-radius:4px;}
+.hk-bubble.right{background:linear-gradient(135deg,var(--u1),#0A3FCC);color:white;margin-left:auto;border-bottom-right-radius:4px;}
+.hk-bubble-author{font-size:.62rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;opacity:.6;}
+.hk-divider{text-align:center;color:rgba(255,255,255,.2);font-size:.75rem;font-weight:700;letter-spacing:.08em;margin:1rem 0;}
+
+/* Video hero strip */
+.video-hero-section{background:#000;padding:0;}
+.vh-inner{max-width:1100px;margin:0 auto;padding:60px 24px;}
+.vh-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:3rem;align-items:center;}
+@media(max-width:768px){.vh-grid{grid-template-columns:1fr;}}
+.vh-embed{border-radius:var(--rl);overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.6);border:2px solid rgba(255,255,255,.1);aspect-ratio:16/9;background:#111;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;}
+.vh-embed:hover .video-play-btn{transform:scale(1.1);}
+.vh-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,107,43,.15);border:1px solid rgba(255,107,43,.3);color:#ff8c5a;font-size:.68rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:1rem;}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="nav-inner">
+    <a href="#top" class="nav-logo">
+      <img src="/mnt/user-data/uploads/4ef53d5e-9c91-4c97-9f44-348d849867dc.jpg" alt="SmartSkills Morocco"/>
+    </a>
+    <ul class="nav-links" id="nl">
+      <li><a href="#platform">Platform</a></li>
+      <li><a href="#noura-anwar">Noura & Anwar</a></li>
+      <li><a href="#workbooks">Workbooks</a></li>
+      <li><a href="#workshops">Workshops</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#contact" class="nav-cta">Request Demo 🎓</a></li>
+    </ul>
+    <div class="lang-switcher" id="langSwitcher" style="display:none">
+      <button class="lang-btn active" onclick="setLang('nl',this)">🇳🇱 NL</button>
+      <button class="lang-btn" onclick="setLang('en',this)">🇬🇧 EN</button>
+      <button class="lang-btn" onclick="setLang('fr',this)">🇫🇷 FR</button>
+      <button class="lang-btn" onclick="setLang('ar',this)">🇲🇦 عربي</button>
+    </div>
+    <button class="ham" onclick="toggleMob()" aria-label="Menu">☰</button>
+  </div>
+</nav>
+<div id="mob">
+  <a href="#platform" onclick="toggleMob()">🎒 Platform</a>
+  <a href="#noura-anwar" onclick="toggleMob()">🌟 Noura & Anwar</a>
+  <a href="#workbooks" onclick="toggleMob()">📓 Workbooks</a>
+  <a href="#workshops" onclick="toggleMob()">🎓 Workshops</a>
+  <a href="#pricing" onclick="toggleMob()">💡 Pricing</a>
+  <a href="#contact" onclick="toggleMob()">📬 Contact</a>
+  <a href="#contact" onclick="toggleMob()" style="color:var(--yellow);">🎓 Request Demo</a>
+</div>
+
+<!-- ═══ HERO — REFINED ═══ -->
+<div class="hero" id="top">
+  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+
+  <div class="hero-body">
+
+    <!-- Pill -->
+    <div class="hero-pill" data-lang-content="nl">🇲🇦 Digitaal Leren voor Marokko</div>
+    <div class="hero-pill lang-hidden" data-lang-content="en">🇲🇦 Digital Literacy · Morocco</div>
+    <div class="hero-pill lang-hidden" data-lang-content="fr">🇲🇦 Apprentissage Numérique · Maroc</div>
+    <div class="hero-pill lang-hidden" data-lang-content="ar" style="font-family:'Cairo',sans-serif;letter-spacing:0;">🇲🇦 الكفاءة الرقمية · المغرب</div>
+
+    <!-- Headline -->
+    <h1 data-lang-content="nl">Waar <span class="c1">kinderen</span><br>leren digitaal te <span class="c2">schitteren</span></h1>
+    <h1 class="lang-hidden" data-lang-content="en">Where <span class="c1">children</span><br>learn to <span class="c2">shine</span> digitally</h1>
+    <h1 class="lang-hidden" data-lang-content="fr">Là où les <span class="c1">enfants</span><br>apprennent à <span class="c2">briller</span></h1>
+    <h1 class="lang-hidden" data-lang-content="ar" style="font-family:'Cairo',sans-serif;"><span class="c1">أطفال</span> يتعلمون<br>ليتألقوا <span class="c2">رقمياً</span></h1>
+
+    <!-- Sub -->
+    <p class="hero-sub" data-lang-content="nl">Een gamified platform voor digitale geletterdheid — voor basisscholen en middelbare scholen in Marokko, begeleid door Noura &amp; Anwar.</p>
+    <p class="hero-sub lang-hidden" data-lang-content="en">A gamified digital literacy platform for primary and secondary schools in Morocco — guided by Noura &amp; Anwar.</p>
+    <p class="hero-sub lang-hidden" data-lang-content="fr">Une plateforme d'alphabétisation numérique gamifiée pour les écoles au Maroc — guidée par Noura &amp; Anwar.</p>
+    <p class="hero-sub lang-hidden" data-lang-content="ar" style="font-family:'Cairo',sans-serif;">منصة رقمية تفاعلية للمدارس في المغرب — بإرشاد نورة وأنور.</p>
+
+    <!-- AVATARS — large & premium -->
+    <div class="hero-avatars">
+      <div class="av-wrap">
+        <img src="https://i.imgur.com/Hf1eXnZ.png" class="av-img" alt="Noura"
+             onerror="this.style.background='var(--u1)';this.style.display='flex';this.style.alignItems='center';this.style.justifyContent='center';this.style.fontSize='3.5rem';this.outerHTML='<div class=av-img style=background:var(--u1);display:flex;align-items:center;justify-content:center;font-size:3.5rem;>👧🏽</div>'"/>
+        <div class="av-name">Noura</div>
+        <div class="av-role">Digital Guide</div>
+      </div>
+      <div class="av-wrap">
+        <img src="https://i.imgur.com/SXSxLnn.png" class="av-img" alt="Anwar"
+             onerror="this.outerHTML='<div class=av-img style=background:var(--u3);display:flex;align-items:center;justify-content:center;font-size:3.5rem;>👦🏽</div>'"/>
+        <div class="av-name">Anwar</div>
+        <div class="av-role">Learning Buddy</div>
+      </div>
+    </div>
+
+    <!-- BUTTONS — premium -->
+    <div class="hero-btns">
+      <a href="https://www.smartskillsmorocco.online" target="_blank" rel="noopener" class="hero-btn-primary" data-lang-content="nl">Open het Platform</a>
+      <a href="https://www.smartskillsmorocco.online" target="_blank" rel="noopener" class="hero-btn-primary lang-hidden" data-lang-content="en">Open the Platform</a>
+      <a href="https://www.smartskillsmorocco.online" target="_blank" rel="noopener" class="hero-btn-primary lang-hidden" data-lang-content="fr">Ouvrir la Plateforme</a>
+      <a href="https://www.smartskillsmorocco.online" target="_blank" rel="noopener" class="hero-btn-primary lang-hidden" style="font-family:'Cairo',sans-serif;" data-lang-content="ar">فتح المنصة</a>
+      <a href="#contact" class="hero-btn-secondary" data-lang-content="nl">Demo aanvragen</a>
+      <a href="#contact" class="hero-btn-secondary lang-hidden" data-lang-content="en">Request a Demo</a>
+      <a href="#contact" class="hero-btn-secondary lang-hidden" data-lang-content="fr">Demander une Démo</a>
+      <a href="#contact" class="hero-btn-secondary lang-hidden" style="font-family:'Cairo',sans-serif;" data-lang-content="ar">طلب عرض</a>
+    </div>
+
+    <!-- 5 PHASES — larger, cleaner -->
+    <div class="hero-preview">
+      <div class="hprev-label">5 phases · every unit · every child</div>
+      <div class="hprev-inner">
+
+        <div class="hprev-phase" style="background:rgba(26,110,255,.16);border:1px solid rgba(26,110,255,.28);">
+          <div class="hp-icon" style="background:rgba(26,110,255,.3);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#7eb8ff" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="hp-num">Phase 1</div>
+          <div class="hp-name">Activate</div>
+          <div class="hp-sub">Talk with Noura</div>
+        </div>
+
+        <div class="hprev-phase" style="background:rgba(0,200,83,.14);border:1px solid rgba(0,200,83,.26);">
+          <div class="hp-icon" style="background:rgba(0,200,83,.28);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#4DF0A8" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="hp-num">Phase 2</div>
+          <div class="hp-name">Learn</div>
+          <div class="hp-sub">Explore content</div>
+        </div>
+
+        <div class="hprev-phase" style="background:rgba(255,107,43,.14);border:1px solid rgba(255,107,43,.26);">
+          <div class="hp-icon" style="background:rgba(255,107,43,.28);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ffad85" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </div>
+          <div class="hp-num">Phase 3</div>
+          <div class="hp-name">Practice</div>
+          <div class="hp-sub">Apply skills</div>
+        </div>
+
+        <div class="hprev-phase" style="background:rgba(155,39,175,.14);border:1px solid rgba(155,39,175,.26);">
+          <div class="hp-icon" style="background:rgba(155,39,175,.28);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#d986f9" stroke-width="2" stroke-linecap="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div class="hp-num">Phase 4</div>
+          <div class="hp-name">Test</div>
+          <div class="hp-sub">Show what you know</div>
+        </div>
+
+        <div class="hprev-phase" style="background:rgba(255,214,0,.12);border:1px solid rgba(255,214,0,.28);">
+          <div class="hp-icon" style="background:rgba(255,214,0,.22);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ffd600" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+          </div>
+          <div class="hp-num">Phase 5</div>
+          <div class="hp-name">Certificate</div>
+          <div class="hp-sub">Earn your badge</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Stats bar -->
+  <div class="hero-stats">
+    <div class="hstat"><div class="hs-n">2</div><div class="hs-l">Learning Platforms</div></div>
+    <div class="hstat"><div class="hs-n">4+</div><div class="hs-l">Units per Platform</div></div>
+    <div class="hstat"><div class="hs-n">5</div><div class="hs-l">Phases per Unit</div></div>
+    <div class="hstat"><div class="hs-n">3</div><div class="hs-l">Languages</div></div>
+    <div class="hstat"><div class="hs-n">🏅</div><div class="hs-l">Certified</div></div>
+  </div>
+</div>
+
+<!-- ═══ TRUST BAR ═══ -->
+<div class="trust">
+  <div class="trust-inner">
+    <div class="ti rev d1">🇲🇦 Built for Morocco</div>
+    <div class="ti rev d2">🌍 English · العربية · Français</div>
+    <div class="ti rev d3">🔒 Safe for Schools</div>
+    <div class="ti rev d4">🏅 Certified Completion</div>
+    <div class="ti rev d1">🎮 Gamified Learning</div>
+    <div class="ti rev d2">📓 Print Workbooks Included</div>
+  </div>
+</div>
+
+<!-- ═══ VIDEO HERO — DIRECT AFTER HERO ═══ -->
+<section id="demo-video" style="background:linear-gradient(160deg,#f0f4ff 0%,#e8f0fe 50%,#f5f7ff 100%);padding:72px 24px;">
+<div style="max-width:1100px;margin:0 auto;">
+  <div class="vh-grid">
+    <div class="rev-l">
+      <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(26,110,255,.1);border:1px solid rgba(26,110,255,.25);color:var(--u1);font-size:.68rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:1rem;">🎬 Platform Demo</div>
+      <!-- NL -->
+      <h2 class="sh" data-lang-content="nl">Bekijk SmartSkills in actie</h2>
+      <p class="sp" style="margin-bottom:1.5rem;" data-lang-content="nl">Kijk hoe Noura een leerling door een complete les begeleidt — van het eerste gesprek tot het certificaatscherm. Dit is digitaal leren zoals het hoort: veilig, gamified en in de taal van het kind.</p>
+      <!-- EN -->
+      <h2 class="sh lang-hidden" data-lang-content="en">See SmartSkills in action</h2>
+      <p class="sp lang-hidden" style="margin-bottom:1.5rem;" data-lang-content="en">Watch Noura guide a student through a complete lesson — from first conversation to certificate screen. Digital learning as it should be: safe, gamified and in the child's own language.</p>
+      <!-- FR -->
+      <h2 class="sh lang-hidden" data-lang-content="fr">Découvrez SmartSkills en action</h2>
+      <p class="sp lang-hidden" style="margin-bottom:1.5rem;" data-lang-content="fr">Regardez Noura guider un élève à travers une leçon complète — de la première conversation à l'écran du certificat. L'apprentissage numérique comme il se doit : sûr, ludique et dans la langue de l'enfant.</p>
+      <!-- AR -->
+      <h2 class="sh sw lang-hidden" data-lang-content="ar" style="font-family:'Cairo',sans-serif;">شاهد SmartSkills في العمل</h2>
+      <p class="sp spw lang-hidden" style="margin-bottom:1.5rem;font-family:'Cairo',sans-serif;" data-lang-content="ar">شاهد نورة وهي ترشد الطالب خلال درس كامل — من أول محادثة حتى شاشة الشهادة. التعلم الرقمي كما ينبغي أن يكون: آمن وممتع وبلغة الطفل.</p>
+      <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.5rem;">
+        <a href="#contact" class="btn btn-yellow btn-lg" data-lang-content="nl">🎓 Demo aanvragen</a>
+        <a href="#contact" class="btn btn-yellow btn-lg lang-hidden" data-lang-content="en">🎓 Request a Demo</a>
+        <a href="#contact" class="btn btn-yellow btn-lg lang-hidden" data-lang-content="fr">🎓 Demander une Démo</a>
+        <a href="#contact" class="btn btn-yellow btn-lg lang-hidden" style="font-family:'Cairo',sans-serif;" data-lang-content="ar">🎓 طلب عرض توضيحي</a>
+        <a href="#hartgesprek" class="btn btn-out">
+          <span data-lang-content="nl">💬 Ons verhaal</span>
+          <span class="lang-hidden" data-lang-content="en">💬 Our story</span>
+          <span class="lang-hidden" data-lang-content="fr">💬 Notre histoire</span>
+          <span class="lang-hidden" data-lang-content="ar" style="font-family:'Cairo',sans-serif;">💬 قصتنا</span>
+        </a>
+      </div>
+    </div>
+    <div class="rev-r">
+      <div class="vh-embed" onclick="openVideoModal()">
+        <div style="text-align:center;padding:32px;z-index:1;position:relative;">
+          <div style="font-size:3.5rem;margin-bottom:16px;">🎬</div>
+          <div style="font-family:var(--fd);font-size:1.1rem;color:rgba(255,255,255,.55);margin-bottom:24px;" data-lang-content="nl">Platform Walkthrough</div>
+          <div class="video-play-btn">▶</div>
+        </div>
+        <div class="video-overlay-text">
+          <div class="video-cta-title" data-lang-content="nl">Bekijk de volledige demo</div>
+          <div class="video-cta-title lang-hidden" data-lang-content="en">Watch the full demo</div>
+          <div class="video-cta-title lang-hidden" data-lang-content="fr">Voir la démo complète</div>
+          <div class="video-cta-title lang-hidden" style="font-family:'Cairo',sans-serif;" data-lang-content="ar">شاهد العرض الكامل</div>
+          <div class="video-cta-sub">~3 min · HeyGen demo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ HART GESPREK — DIGITALE GELETTERDHEID ═══ -->
+<section id="hartgesprek" class="hartgesprek-section">
+<div class="si">
+
+  <!-- INTRO -->
+  <div class="hk-intro rev">
+    <span class="hk-heart">❤️</span>
+    <!-- NL -->
+    <span class="stag" style="color:#b8860b;background:rgba(255,214,0,.15);border:1px solid rgba(255,214,0,.4);" data-lang-content="nl">Een hartgesprek</span>
+    <span class="stag lang-hidden" style="color:#b8860b;background:rgba(255,214,0,.15);border:1px solid rgba(255,214,0,.4);" data-lang-content="en">A heart-to-heart</span>
+    <span class="stag lang-hidden" style="color:var(--yellow);background:rgba(255,214,0,.1);border:1px solid rgba(255,214,0,.25);" data-lang-content="fr">Une conversation du cœur</span>
+    <span class="stag lang-hidden" style="color:var(--yellow);background:rgba(255,214,0,.1);border:1px solid rgba(255,214,0,.25);font-family:'Cairo',sans-serif;" data-lang-content="ar">حديث من القلب</span>
+
+    <h2 class="sh" style="margin-top:.6rem;" data-lang-content="nl">Meer dan een scherm kunnen bedienen</h2>
+    <h2 class="sh lang-hidden" style="margin-top:.6rem;" data-lang-content="en">More than just using a screen</h2>
+    <h2 class="sh lang-hidden" style="margin-top:.6rem;" data-lang-content="fr">Plus que savoir utiliser un écran</h2>
+    <h2 class="sh sw lang-hidden" style="margin-top:.6rem;font-family:'Cairo',sans-serif;" data-lang-content="ar">أكثر من مجرد استخدام الشاشة</h2>
+
+    <p class="sp" style="max-width:680px;margin:1rem auto 0;" data-lang-content="nl">Er is een groot verschil tussen een apparaat kunnen gebruiken en echt digitaal geletterd zijn. Dit gesprek gaat over wat dat verschil betekent — voor scholen in Marokko, voor ouders, voor leerkrachten en voor de kinderen die de toekomst dragen.</p>
+    <p class="sp lang-hidden" style="max-width:680px;margin:1rem auto 0;" data-lang-content="en">There is a big difference between being able to use a device and being truly digitally literate. This conversation is about what that difference means — for schools in Morocco, for parents, for teachers, and for the children who carry the future.</p>
+    <p class="sp lang-hidden" style="max-width:680px;margin:1rem auto 0;" data-lang-content="fr">Il y a une grande différence entre savoir utiliser un appareil et être vraiment alphabétisé numériquement. Cette conversation porte sur ce que cette différence signifie — pour les écoles au Maroc, pour les parents, les enseignants et les enfants qui portent l'avenir.</p>
+    <p class="sp spw lang-hidden" style="max-width:680px;margin:1rem auto 0;font-family:'Cairo',sans-serif;" data-lang-content="ar">هناك فرق كبير بين القدرة على استخدام جهاز والتمتع بالكفاءة الرقمية الحقيقية. هذا الحديث يتناول ما يعنيه هذا الفرق — للمدارس في المغرب، للآباء، للمعلمين، وللأطفال الذين يحملون المستقبل.</p>
+  </div>
+
+  <!-- PERSONAL STORY -->
+  <div class="rev" style="max-width:780px;margin:0 auto 3rem;">
+    <div style="text-align:center;margin-bottom:1.5rem;">
+      <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--u1),var(--yellow));display:inline-flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 0 0 4px rgba(255,214,0,.2);">👤</div>
+      <div style="font-family:var(--fd);font-size:.9rem;color:var(--u1);margin-top:8px;" data-lang-content="nl">Van de oprichter</div>
+      <div style="font-family:var(--fd);font-size:.9rem;color:var(--u1);margin-top:8px;" class="lang-hidden" data-lang-content="en">From the founder</div>
+      <div style="font-family:var(--fd);font-size:.9rem;color:var(--yellow);margin-top:8px;lang-hidden" data-lang-content="fr">Du fondateur</div>
+      <div style="font-family:'Cairo',sans-serif;font-size:.9rem;color:var(--yellow);margin-top:8px;lang-hidden" data-lang-content="ar">من المؤسس</div>
+    </div>
+    <!-- NL -->
+    <div data-lang-content="nl">
+      <div class="hk-quote">"Ik heb zelf op school gezeten in Marokko. Ik heb met eigen ogen gezien hoe gemotiveerd kinderen zijn, hoe slim ze zijn — maar ook hoe groot de kloof is als de tools ontbreken. Later, in Nederland, kreeg ik een opleiding die twee werelden voor mij opende. Die combinatie — de Marokkaanse schoolervaring én de Europese digitale omgeving — geeft mij een unieke blik. En die wil ik gebruiken om iets terug te geven."</div>
+      <div class="hk-quote" style="border-color:var(--u2);background:rgba(0,200,83,.07);">"Digitaal geletterd zijn is niet hetzelfde als Instagrammen of TikTok kijken. Het gaat om begrijpen: hoe werkt informatie? Wat is betrouwbaar? Hoe bescherm ik mezelf? Hoe gebruik ik technologie om te groeien, te leren, te creëren? Dát geeft een kind kracht voor de rest van zijn leven."</div>
+    </div>
+    <!-- EN -->
+    <div class="lang-hidden" data-lang-content="en">
+      <div class="hk-quote">"I went to school in Morocco myself. I saw with my own eyes how motivated children are, how smart they are — but also how wide the gap becomes when the tools are missing. Later, in the Netherlands, I received an education that opened two worlds for me. That combination — the Moroccan school experience and the European digital environment — gives me a unique perspective. And I want to use it to give something back."</div>
+      <div class="hk-quote" style="border-color:var(--u2);background:rgba(0,200,83,.07);">"Being digitally literate is not the same as scrolling Instagram or watching TikTok. It's about understanding: how does information work? What is reliable? How do I protect myself? How do I use technology to grow, learn, and create? That gives a child power for the rest of their life."</div>
+    </div>
+    <!-- FR -->
+    <div class="lang-hidden" data-lang-content="fr">
+      <div class="hk-quote">"J'ai moi-même été scolarisé au Maroc. J'ai vu de mes propres yeux à quel point les enfants sont motivés, à quel point ils sont intelligents — mais aussi à quel point le fossé se creuse quand les outils manquent. Plus tard, aux Pays-Bas, j'ai reçu une éducation qui m'a ouvert deux mondes. Cette combinaison — l'expérience scolaire marocaine et l'environnement numérique européen — me donne une perspective unique. Et je veux l'utiliser pour redonner quelque chose."</div>
+      <div class="hk-quote" style="border-color:var(--u2);background:rgba(0,200,83,.07);">"Être alphabétisé numériquement n'est pas la même chose que scroller sur Instagram ou regarder TikTok. Il s'agit de comprendre : comment fonctionne l'information ? Qu'est-ce qui est fiable ? Comment me protéger ? Comment utiliser la technologie pour grandir, apprendre, créer ? C'est ce qui donne à un enfant le pouvoir pour le reste de sa vie."</div>
+    </div>
+    <!-- AR -->
+    <div class="lang-hidden" data-lang-content="ar" style="font-family:'Cairo',sans-serif;">
+      <div class="hk-quote" style="border-right:3px solid var(--yellow);border-left:none;border-radius:14px 0 0 14px;text-align:right;">"لقد درست في المدرسة بالمغرب. رأيت بأم عيني مدى تحفز الأطفال، ومدى ذكائهم — لكنني رأيت أيضاً كم يتسع الفجوة حين تغيب الأدوات. لاحقاً، في هولندا، تلقيت تعليماً فتح لي عالمين. هذا المزيج — التجربة المدرسية المغربية والبيئة الرقمية الأوروبية — منحني منظوراً فريداً. وأريد استخدامه لأعطي شيئاً في المقابل."</div>
+      <div class="hk-quote" style="border-color:var(--u2);background:rgba(0,200,83,.07);border-right:3px solid var(--u2);border-left:none;border-radius:14px 0 0 14px;text-align:right;">"الكفاءة الرقمية ليست مجرد التمرير على إنستغرام أو مشاهدة تيك توك. الأمر يتعلق بالفهم: كيف تعمل المعلومات؟ ما الذي يمكن الوثوق به؟ كيف أحمي نفسي؟ كيف أستخدم التكنولوجيا للنمو والتعلم والإبداع؟ هذا ما يمنح الطفل قوة تدوم طوال حياته."</div>
+    </div>
+  </div>
+
+  <!-- BEFORE / AFTER -->
+  <div class="rev">
+    <div style="text-align:center;margin-bottom:1.5rem;">
+      <span class="stag stag-orange" data-lang-content="nl">Het verschil in de praktijk</span>
+      <span class="stag stag-orange lang-hidden" data-lang-content="en">The difference in practice</span>
+      <span class="stag stag-orange lang-hidden" data-lang-content="fr">La différence en pratique</span>
+      <span class="stag stag-orange lang-hidden" style="font-family:'Cairo',sans-serif;" data-lang-content="ar">الفرق في الممارسة</span>
+      <h3 class="sh" style="font-size:1.6rem;margin-top:.4rem;" data-lang-content="nl">Devices gebruiken vs. digitaal geletterd zijn</h3>
+      <h3 class="sh lang-hidden" style="font-size:1.6rem;margin-top:.4rem;" data-lang-content="en">Using devices vs. digital literacy</h3>
+      <h3 class="sh lang-hidden" style="font-size:1.6rem;margin-top:.4rem;" data-lang-content="fr">Utiliser des appareils vs. être alphabétisé numériquement</h3>
+      <h3 class="sh sw lang-hidden" style="font-size:1.6rem;margin-top:.4rem;font-family:'Cairo',sans-serif;" data-lang-content="ar">استخدام الأجهزة مقابل الكفاءة الرقمية</h3>
+    </div>
+    <div class="hk-challenge-grid">
+      <!-- BEFORE — NL -->
+      <div class="hk-challenge-card hkc-before" data-lang-content="nl">
+        <div class="hkc-label hkc-label-before">❌ Zonder digitale geletterdheid</div>
+        <div class="hkc-title">Een kind dat alleen apparaten gebruikt</div>
+        <ul class="hkc-list">
+          <li>Gelooft alles wat online staat</li>
+          <li>Deelt persoonlijke data zonder het te beseffen</li>
+          <li>Wordt doelwit van online gevaren</li>
+          <li>Kan niet kritisch nadenken over AI-content</li>
+          <li>Raakt verslaafd aan passieve consumptie</li>
+          <li>Heeft geen digitale stem of identiteit</li>
+        </ul>
+      </div>
+      <!-- AFTER — NL -->
+      <div class="hk-challenge-card hkc-after" data-lang-content="nl">
+        <div class="hkc-label hkc-label-after">✅ Met digitale geletterdheid</div>
+        <div class="hkc-title">Een kind dat digitaal geletterd is</div>
+        <ul class="hkc-list">
+          <li>Toetst informatie kritisch</li>
+          <li>Beschermt zijn privacy bewust</li>
+          <li>Herkent gevaren en vraagt hulp</li>
+          <li>Begrijpt hoe AI en algoritmes werken</li>
+          <li>Creëert, communiceert en werkt samen</li>
+          <li>Bouwt aan een positieve digitale toekomst</li>
+        </ul>
+      </div>
+      <!-- BEFORE — EN -->
+      <div class="hk-challenge-card hkc-before lang-hidden" data-lang-content="en">
+        <div class="hkc-label hkc-label-before">❌ Without digital literacy</div>
+        <div class="hkc-title">A child who only uses devices</div>
+        <ul class="hkc-list">
+          <li>Believes everything they see online</li>
+          <li>Shares personal data without realising</li>
+          <li>Becomes a target for online dangers</li>
+          <li>Cannot think critically about AI content</li>
+          <li>Gets addicted to passive consumption</li>
+          <li>Has no digital voice or identity</li>
+        </ul>
+      </div>
+      <div class="hk-challenge-card hkc-after lang-hidden" data-lang-content="en">
+        <div class="hkc-label hkc-label-after">✅ With digital literacy</div>
+        <div class="hkc-title">A digitally literate child</div>
+        <ul class="hkc-list">
+          <li>Evaluates information critically</li>
+          <li>Protects their privacy consciously</li>
+          <li>Recognises dangers and asks for help</li>
+          <li>Understands how AI and algorithms work</li>
+          <li>Creates, communicates and collaborates</li>
+          <li>Builds a positive digital future</li>
+        </ul>
+      </div>
+      <!-- FR -->
+      <div class="hk-challenge-card hkc-before lang-hidden" data-lang-content="fr">
+        <div class="hkc-label hkc-label-before">❌ Sans alphabétisation numérique</div>
+        <div class="hkc-title">Un enfant qui utilise seulement des appareils</div>
+        <ul class="hkc-list">
+          <li>Croit tout ce qu'il voit en ligne</li>
+          <li>Partage des données personnelles sans le savoir</li>
+          <li>Devient cible des dangers en ligne</li>
+          <li>Ne peut pas réfléchir à l'IA de manière critique</li>
+          <li>Devient dépendant de la consommation passive</li>
+          <li>N'a pas de voix ni d'identité numérique</li>
+        </ul>
+      </div>
+      <div class="hk-challenge-card hkc-after lang-hidden" data-lang-content="fr">
+        <div class="hkc-label hkc-label-after">✅ Avec l'alphabétisation numérique</div>
+        <div class="hkc-title">Un enfant alphabétisé numériquement</div>
+        <ul class="hkc-list">
+          <li>Évalue l'information de manière critique</li>
+          <li>Protège consciemment sa vie privée</li>
+          <li>Reconnaît les dangers et demande de l'aide</li>
+          <li>Comprend comment l'IA et les algorithmes fonctionnent</li>
+          <li>Crée, communique et collabore</li>
+          <li>Construit un avenir numérique positif</li>
+        </ul>
+      </div>
+      <!-- AR -->
+      <div class="hk-challenge-card hkc-before lang-hidden" data-lang-content="ar" style="font-family:'Cairo',sans-serif;text-align:right;">
+        <div class="hkc-label hkc-label-before" style="justify-content:flex-end;">❌ بدون الكفاءة الرقمية</div>
+        <div class="hkc-title">طفل يستخدم الأجهزة فقط</div>
+        <ul class="hkc-list" style="text-align:right;">
+          <li style="flex-direction:row-reverse;">يصدق كل ما يراه على الإنترنت</li>
+          <li style="flex-direction:row-reverse;">يشارك بياناته الشخصية دون أن يدرك</li>
+          <li style="flex-direction:row-reverse;">يصبح هدفاً للمخاطر الرقمية</li>
+          <li style="flex-direction:row-reverse;">لا يستطيع التفكير النقدي في محتوى الذكاء الاصطناعي</li>
+          <li style="flex-direction:row-reverse;">يدمن على الاستهلاك السلبي</li>
+          <li style="flex-direction:row-reverse;">لا صوت رقمي ولا هوية رقمية له</li>
+        </ul>
+      </div>
+      <div class="hk-challenge-card hkc-after lang-hidden" data-lang-content="ar" style="font-family:'Cairo',sans-serif;text-align:right;">
+        <div class="hkc-label hkc-label-after" style="justify-content:flex-end;">✅ مع الكفاءة الرقمية</div>
+        <div class="hkc-title">طفل يتمتع بالكفاءة الرقمية</div>
+        <ul class="hkc-list" style="text-align:right;">
+          <li style="flex-direction:row-reverse;">يقيّم المعلومات بتفكير نقدي</li>
+          <li style="flex-direction:row-reverse;">يحمي خصوصيته بوعي</li>
+          <li style="flex-direction:row-reverse;">يتعرف على المخاطر ويطلب المساعدة</li>
+          <li style="flex-direction:row-reverse;">يفهم كيف تعمل الذكاء الاصطناعي والخوارزميات</li>
+          <li style="flex-direction:row-reverse;">يبدع ويتواصل ويتعاون</li>
+          <li style="flex-direction:row-reverse;">يبني مستقبلاً رقمياً إيجابياً</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERSPECTIVES -->
+  <div class="rev" style="margin-top:3rem;">
+    <div style="text-align:center;margin-bottom:2rem;">
+      <span class="stag stag-blue" data-lang-content="nl">Vier perspectieven</span>
+      <span class="stag stag-blue lang-hidden" data-lang-content="en">Four perspectives</span>
+      <span class="stag stag-blue lang-hidden" data-lang-content="fr">Quatre perspectives</span>
+      <span class="stag stag-blue lang-hidden" style="font-family:'Cairo',sans-serif;" data-lang-content="ar">أربع وجهات نظر</span>
+      <h3 class="sh" style="font-size:1.5rem;margin-top:.4rem;" data-lang-content="nl">Wat zij ervaren in de digitale tijd</h3>
+      <h3 class="sh lang-hidden" style="font-size:1.5rem;margin-top:.4rem;" data-lang-content="en">What they experience in the digital age</h3>
+      <h3 class="sh lang-hidden" style="font-size:1.5rem;margin-top:.4rem;" data-lang-content="fr">Ce qu'ils vivent à l'ère numérique</h3>
+      <h3 class="sh sw lang-hidden" style="font-size:1.5rem;margin-top:.4rem;font-family:'Cairo',sans-serif;" data-lang-content="ar">ما يعيشونه في العصر الرقمي</h3>
+    </div>
+    <div class="hk-perspectives">
+      <!-- Directors NL -->
+      <div class="hk-persp rev d1" data-lang-content="nl">
+        <div class="hk-persp-ico">🏫</div>
+        <div class="hk-persp-role">Directeuren</div>
+        <div class="hk-persp-title">Tussen druk en verantwoordelijkheid</div>
+        <div class="hk-persp-text">"Ouders verwachten dat we meegaan met de digitale tijd. Maar welk programma is veilig? Welk is in het Arabisch beschikbaar? Welk past bij onze school, onze leerlingen, ons budget?" Directeuren in Marokko staan onder druk — van ouders, van het ministerie, van de markt. Ze hebben een betrouwbare partner nodig, geen willekeurige app.</div>
+      </div>
+      <!-- Teachers NL -->
+      <div class="hk-persp rev d2" data-lang-content="nl">
+        <div class="hk-persp-ico">👩‍🏫</div>
+        <div class="hk-persp-role">Leerkrachten</div>
+        <div class="hk-persp-title">Enthousiast, maar zonder kompas</div>
+        <div class="hk-persp-text">"Ik wil mijn leerlingen iets bijbrengen. Maar ik heb zelf nooit geleerd hoe ik digitale geletterdheid moet onderwijzen. En de tools die ik vind, zijn in het Engels — of ze werken gewoon niet goed op onze apparaten." Leerkrachten willen het goede doen. Ze hebben een platform nodig dat hen begeleidt, niet belast.</div>
+      </div>
+      <!-- Children NL -->
+      <div class="hk-persp rev d3" data-lang-content="nl">
+        <div class="hk-persp-ico">🧒</div>
+        <div class="hk-persp-role">Kinderen & ouders</div>
+        <div class="hk-persp-title">De toekomst begint nu</div>
+        <div class="hk-persp-text">"Mijn kind heeft elke dag zijn telefoon in zijn hand. Maar ik weet niet wat hij ziet, wat hij deelt, wat hij gelooft." Ouders in Marokko zijn bezorgd maar voelen zich machteloos. Een kind dat digitaal geletterd is, brengt die kennis naar huis — en beschermt zichzelf én zijn familie.</div>
+      </div>
+      <!-- Directors EN -->
+      <div class="hk-persp rev d1 lang-hidden" data-lang-content="en">
+        <div class="hk-persp-ico">🏫</div>
+        <div class="hk-persp-role">Directors</div>
+        <div class="hk-persp-title">Between pressure and responsibility</div>
+        <div class="hk-persp-text">"Parents expect us to keep up with the digital age. But which programme is safe? Which is available in Arabic? Which fits our school, our students, our budget?" Directors in Morocco face pressure from parents, the ministry, the market. They need a reliable partner, not a random app.</div>
+      </div>
+      <div class="hk-persp rev d2 lang-hidden" data-lang-content="en">
+        <div class="hk-persp-ico">👩‍🏫</div>
+        <div class="hk-persp-role">Teachers</div>
+        <div class="hk-persp-title">Motivated, but without a compass</div>
+        <div class="hk-persp-text">"I want to teach my students something real. But I was never trained to teach digital literacy. And the tools I find are in English — or they simply don't work well on our devices." Teachers want to do the right thing. They need a platform that guides them, not burdens them.</div>
+      </div>
+      <div class="hk-persp rev d3 lang-hidden" data-lang-content="en">
+        <div class="hk-persp-ico">🧒</div>
+        <div class="hk-persp-role">Children & parents</div>
+        <div class="hk-persp-title">The future starts now</div>
+        <div class="hk-persp-text">"My child has their phone in their hand every day. But I don't know what they're seeing, what they're sharing, what they believe." Parents in Morocco are worried but feel powerless. A digitally literate child brings that knowledge home — protecting themselves and their family.</div>
+      </div>
+      <!-- FR -->
+      <div class="hk-persp rev d1 lang-hidden" data-lang-content="fr">
+        <div class="hk-persp-ico">🏫</div>
+        <div class="hk-persp-role">Directeurs</div>
+        <div class="hk-persp-title">Entre pression et responsabilité</div>
+        <div class="hk-persp-text">"Les parents attendent que nous suivions l'ère numérique. Mais quel programme est sûr ? Lequel est disponible en arabe ? Lequel correspond à notre école, nos élèves, notre budget ?" Les directeurs au Maroc font face à des pressions multiples. Ils ont besoin d'un partenaire fiable, pas d'une application aléatoire.</div>
+      </div>
+      <div class="hk-persp rev d2 lang-hidden" data-lang-content="fr">
+        <div class="hk-persp-ico">👩‍🏫</div>
+        <div class="hk-persp-role">Enseignants</div>
+        <div class="hk-persp-title">Motivés, mais sans boussole</div>
+        <div class="hk-persp-text">"Je veux enseigner quelque chose de concret à mes élèves. Mais je n'ai jamais été formé pour enseigner l'alphabétisation numérique. Et les outils que je trouve sont en anglais — ou ils ne fonctionnent tout simplement pas bien sur nos appareils."</div>
+      </div>
+      <div class="hk-persp rev d3 lang-hidden" data-lang-content="fr">
+        <div class="hk-persp-ico">🧒</div>
+        <div class="hk-persp-role">Enfants & parents</div>
+        <div class="hk-persp-title">L'avenir commence maintenant</div>
+        <div class="hk-persp-text">"Mon enfant a son téléphone en main tous les jours. Mais je ne sais pas ce qu'il voit, ce qu'il partage, ce qu'il croit." Les parents au Maroc sont inquiets mais se sentent impuissants. Un enfant alphabétisé numériquement ramène ce savoir à la maison.</div>
+      </div>
+      <!-- AR -->
+      <div class="hk-persp rev d1 lang-hidden" data-lang-content="ar" style="font-family:'Cairo',sans-serif;text-align:right;">
+        <div class="hk-persp-ico">🏫</div>
+        <div class="hk-persp-role" style="text-align:right;">المديرون</div>
+        <div class="hk-persp-title">بين الضغط والمسؤولية</div>
+        <div class="hk-persp-text">"يتوقع الآباء منا مواكبة العصر الرقمي. لكن أي برنامج آمن؟ أيها متوفر باللغة العربية؟ أيها يناسب مدرستنا وطلابنا وميزانيتنا؟" يواجه مديرو المدارس في المغرب ضغوطاً متعددة. إنهم بحاجة إلى شريك موثوق، لا مجرد تطبيق عشوائي.</div>
+      </div>
+      <div class="hk-persp rev d2 lang-hidden" data-lang-content="ar" style="font-family:'Cairo',sans-serif;text-align:right;">
+        <div class="hk-persp-ico">👩‍🏫</div>
+        <div class="hk-persp-role" style="text-align:right;">المعلمون</div>
+        <div class="hk-persp-title">متحمسون لكن بلا بوصلة</div>
+        <div class="hk-persp-text">"أريد تعليم طلابي شيئاً حقيقياً. لكنني لم أتلقَّ تدريباً على تعليم الكفاءة الرقمية قط. والأدوات التي أجدها بالإنجليزية — أو أنها لا تعمل جيداً على أجهزتنا." المعلمون يريدون أن يفعلوا الشيء الصواب. إنهم بحاجة إلى منصة ترشدهم، لا تُثقل كاهلهم.</div>
+      </div>
+      <div class="hk-persp rev d3 lang-hidden" data-lang-content="ar" style="font-family:'Cairo',sans-serif;text-align:right;">
+        <div class="hk-persp-ico">🧒</div>
+        <div class="hk-persp-role" style="text-align:right;">الأطفال والآباء</div>
+        <div class="hk-persp-title">المستقبل يبدأ الآن</div>
+        <div class="hk-persp-text">"طفلي يمسك هاتفه كل يوم. لكنني لا أعرف ماذا يرى، وماذا يشارك، وماذا يصدق." الآباء في المغرب قلقون لكنهم يشعرون بالعجز. الطفل الذي يتمتع بالكفاءة الرقمية يحمل هذه المعرفة إلى المنزل — ليحمي نفسه وعائلته.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="rev" style="text-align:center;margin-top:3rem;padding:2.5rem;background:white;border:1.5px solid var(--border);border-radius:var(--rl);max-width:700px;margin-left:auto;margin-right:auto;box-shadow:var(--shm);">
+    <div style="font-size:2rem;margin-bottom:.7rem;">🌉</div>
+    <h3 class="sh" style="font-size:1.4rem;" data-lang-content="nl">Twee werelden verbinden</h3>
+    <h3 class="sh lang-hidden" style="font-size:1.4rem;" data-lang-content="en">Bridging two worlds</h3>
+    <h3 class="sh lang-hidden" style="font-size:1.4rem;" data-lang-content="fr">Relier deux mondes</h3>
+    <h3 class="sh sw lang-hidden" style="font-size:1.4rem;font-family:'Cairo',sans-serif;" data-lang-content="ar">جسر بين عالمين</h3>
+    <p class="sp" style="margin:1rem auto 1.5rem;" data-lang-content="nl">SmartSkills Morocco is niet zomaar een edtech product. Het is een brug — tussen Marokko en Nederland, tussen traditie en technologie, tussen de kinderen van vandaag en de wereld van morgen. Gebouwd met liefde. Aangeboden vanuit het hart.</p>
+    <p class="sp lang-hidden" style="margin:1rem auto 1.5rem;" data-lang-content="en">SmartSkills Morocco is not just an edtech product. It's a bridge — between Morocco and the Netherlands, between tradition and technology, between today's children and tomorrow's world. Built with love. Offered from the heart.</p>
+    <p class="sp spw lang-hidden" style="margin:1rem auto 1.5rem;" data-lang-content="fr">SmartSkills Morocco n'est pas qu'un produit edtech. C'est un pont — entre le Maroc et les Pays-Bas, entre tradition et technologie, entre les enfants d'aujourd'hui et le monde de demain. Construit avec amour. Offert avec le cœur.</p>
+    <p class="sp spw lang-hidden" style="margin:1rem auto 1.5rem;font-family:'Cairo',sans-serif;" data-lang-content="ar">SmartSkills Morocco ليست مجرد منتج تقني تعليمي. إنها جسر — بين المغرب وهولندا، بين التقاليد والتكنولوجيا، بين أطفال اليوم وعالم الغد. بُنيت بمحبة. وقُدِّمت من القلب.</p>
+    <a href="#contact" class="btn btn-yellow btn-lg" data-lang-content="nl">💛 Neem contact op</a>
+    <a href="#contact" class="btn btn-yellow btn-lg lang-hidden" data-lang-content="en">💛 Get in touch</a>
+    <a href="#contact" class="btn btn-yellow btn-lg lang-hidden" data-lang-content="fr">💛 Nous contacter</a>
+    <a href="#contact" class="btn btn-yellow btn-lg lang-hidden" style="font-family:'Cairo',sans-serif;" data-lang-content="ar">💛 تواصل معنا</a>
+  </div>
+
+</div>
+</section>
+<section id="platform" class="primary-section">
+<div class="si">
+  <div class="primary-grid">
+    <!-- text left -->
+    <div class="rev-l">
+      <span class="stag stag-blue">Primary School Platform</span>
+      <h2 class="sh">A complete learning world for every child</h2>
+      <p class="sp" style="margin-bottom:1.5rem;">The primary school platform is our most complete product — live, gamified and ready for your classroom. Students work through 4 units, earn stars and badges, and finish each unit with a digital certificate.</p>
+      <div style="display:flex;flex-direction:column;gap:.9rem;margin-bottom:2rem;">
+        <div style="display:flex;gap:.75rem;align-items:flex-start;">
+          <div style="width:38px;height:38px;flex-shrink:0;background:var(--u1l);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;">🎮</div>
+          <div><strong style="font-size:.9rem;color:var(--text);display:block;margin-bottom:1px;">Gamified from start to finish</strong><span style="font-size:.83rem;color:var(--muted);font-weight:600;">Stars, badges, levels — students compete with themselves to learn more.</span></div>
+        </div>
+        <div style="display:flex;gap:.75rem;align-items:flex-start;">
+          <div style="width:38px;height:38px;flex-shrink:0;background:var(--u2l);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;">📱</div>
+          <div><strong style="font-size:.9rem;color:var(--text);display:block;margin-bottom:1px;">Works on any device</strong><span style="font-size:.83rem;color:var(--muted);font-weight:600;">Phone, tablet or computer — no app download needed, runs in the browser.</span></div>
+        </div>
+        <div style="display:flex;gap:.75rem;align-items:flex-start;">
+          <div style="width:38px;height:38px;flex-shrink:0;background:var(--u3l);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;">📲</div>
+          <div><strong style="font-size:.9rem;color:var(--text);display:block;margin-bottom:1px;">QR-code enrolment</strong><span style="font-size:.83rem;color:var(--muted);font-weight:600;">Teachers share a QR code — students scan and join. No email required.</span></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+        <a href="https://www.smartskillsmorocco.online" target="_blank" rel="noopener" class="btn btn-blue">Open Platform →</a>
+        <a href="#contact" class="btn btn-out">Request Demo</a>
+      </div>
+    </div>
+
+    <!-- REAL platform UI mockup -->
+    <div class="rev-r">
+      <div class="platform-demo">
+        <div class="pd-topbar">
+          <div class="pd-dots">
+            <div class="pd-dot" style="background:#ff5f57;"></div>
+            <div class="pd-dot" style="background:#febc2e;"></div>
+            <div class="pd-dot" style="background:#28c840;"></div>
+          </div>
+          <div class="pd-brand">Digital <span>Devices</span> — Primary</div>
+        </div>
+        <div class="pd-screen">
+          <!-- avatars -->
+          <div class="pd-avs">
+            <div class="pd-av">
+              <img src="https://i.imgur.com/Hf1eXnZ.png" alt="Noura" onerror="this.outerHTML='<div style=width:52px;height:52px;border-radius:50%;background:var(--u1);display:flex;align-items:center;justify-content:center;font-size:1.4rem;>👧🏽</div>'"/>
+              <div class="pd-av-name">Noura</div>
+            </div>
+            <div class="pd-av anwar">
+              <img src="https://i.imgur.com/SXSxLnn.png" alt="Anwar" onerror="this.outerHTML='<div style=width:52px;height:52px;border-radius:50%;background:var(--u3);display:flex;align-items:center;justify-content:center;font-size:1.4rem;>👦🏽</div>'"/>
+              <div class="pd-av-name">Anwar</div>
+            </div>
+          </div>
+          <!-- welcome banner -->
+          <div class="pd-banner">
+            <img src="https://i.imgur.com/Hf1eXnZ.png" alt="Noura" onerror="this.outerHTML='<div style=width:40px;height:40px;border-radius:50%;background:var(--u1);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;>👧🏽</div>'"/>
+            <div class="pd-banner-text">
+              <h3>Hello, Fatima! 🌟</h3>
+              <p>Choose your book and start learning!</p>
+              <div class="pd-stars">
+                <span class="pd-star">⭐ 47 stars</span>
+                <span class="pd-star pink">🏅 3 badges</span>
+              </div>
+            </div>
+          </div>
+          <!-- units grid -->
+          <div class="pd-unit-title">📘 Digital Devices — Your Books</div>
+          <div class="pd-units">
+            <div class="pd-unit" style="background:linear-gradient(135deg,#1A6EFF,#4A8FFF);">
+              <div class="pd-unit-num">📱</div>
+              <div class="pd-unit-name">Book 1</div>
+              <div class="pd-unit-sub">Discover ✓</div>
+            </div>
+            <div class="pd-unit" style="background:linear-gradient(135deg,#00C853,#4ADE80);">
+              <div class="pd-unit-num">🌐</div>
+              <div class="pd-unit-name">Book 2</div>
+              <div class="pd-unit-sub">Explore 🔥</div>
+              <div class="pd-unit-lock"></div>
+            </div>
+            <div class="pd-unit" style="background:rgba(255,255,255,.12);opacity:.5;">
+              <div class="pd-unit-num">🔒</div>
+              <div class="pd-unit-name">Book 3</div>
+              <div class="pd-unit-sub">Locked</div>
+            </div>
+          </div>
+          <!-- progress -->
+          <div style="background:rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;margin-bottom:10px;">
+            <div style="font-size:.62rem;font-weight:800;color:rgba(255,255,255,.5);margin-bottom:5px;">BOOK 2 PROGRESS — UNIT 3 / 4</div>
+            <div style="background:rgba(255,255,255,.15);border-radius:8px;height:9px;overflow:hidden;">
+              <div style="height:100%;border-radius:8px;background:var(--yellow);width:62%;transition:width .5s;"></div>
+            </div>
+            <div style="font-size:.6rem;color:rgba(255,255,255,.5);margin-top:4px;font-weight:700;">62% complete · 3 of 5 phases done</div>
+          </div>
+          <!-- badges -->
+          <div class="pd-badges-title">🏅 My Badges</div>
+          <div class="pd-badges">
+            <div class="pd-badge"><span class="pd-badge-icon">🥉</span><div class="pd-badge-lbl">Explorer</div></div>
+            <div class="pd-badge"><span class="pd-badge-icon">🥈</span><div class="pd-badge-lbl">Adventurer</div></div>
+            <div class="pd-badge"><span class="pd-badge-icon">🥇</span><div class="pd-badge-lbl">Hero</div></div>
+            <div class="pd-badge"><span class="pd-badge-icon dim">🏆</span><div class="pd-badge-lbl">Champion</div></div>
+            <div class="pd-badge"><span class="pd-badge-icon dim">🔥</span><div class="pd-badge-lbl">Streak</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ 5 PHASES ═══ -->
+<section class="phases-section">
+<div class="si">
+  <div class="sec-head center rev">
+    <span class="stag stag-green" style="color:#4DF0A8;background:rgba(77,240,168,.12);border-color:rgba(77,240,168,.2);">Learning Journey</span>
+    <h2 class="sh sw">5 phases per unit — from spark to certificate</h2>
+    <p class="sp spw">Every unit follows the same proven learning path — so students always know what to expect and teachers can plan ahead.</p>
+  </div>
+  <div class="phases-grid">
+    <div class="phase-card ph1 rev d1">
+      <span class="phase-icon">💬</span>
+      <div class="phase-num" style="color:rgba(26,110,255,.7);">Phase 1</div>
+      <div class="phase-title">Activate</div>
+      <p class="phase-desc">Noura starts a conversation. Students share what they already know and get curious about the topic.</p>
+      <span class="phase-badge" style="background:rgba(26,110,255,.2);color:#7db6ff;">Chat with Noura ⭐</span>
+    </div>
+    <div class="phase-card ph2 rev d2">
+      <span class="phase-icon">📱</span>
+      <div class="phase-num" style="color:rgba(0,200,83,.7);">Phase 2</div>
+      <div class="phase-title">Learn</div>
+      <p class="phase-desc">Interactive cards, visuals and videos teach the lesson content. Students tap and explore at their own pace.</p>
+      <span class="phase-badge" style="background:rgba(0,200,83,.18);color:#4DF0A8;">Explore & Discover ⭐</span>
+    </div>
+    <div class="phase-card ph3 rev d3">
+      <span class="phase-icon">✏️</span>
+      <div class="phase-num" style="color:rgba(255,107,43,.7);">Phase 3</div>
+      <div class="phase-title">Practice</div>
+      <p class="phase-desc">Students apply what they learned through matching games, quizzes and creative assignments.</p>
+      <span class="phase-badge" style="background:rgba(255,107,43,.18);color:#ffad85;">Apply Skills ⭐</span>
+    </div>
+    <div class="phase-card ph4 rev d4">
+      <span class="phase-icon">🧠</span>
+      <div class="phase-num" style="color:rgba(155,39,175,.7);">Phase 4</div>
+      <div class="phase-title">Test</div>
+      <p class="phase-desc">A structured knowledge check with instant feedback — students see their score and can try again to improve.</p>
+      <span class="phase-badge" style="background:rgba(155,39,175,.18);color:#d986f9;">Knowledge Check ⭐</span>
+    </div>
+    <div class="phase-card ph5 rev d1">
+      <span class="phase-icon">🏅</span>
+      <div class="phase-num" style="color:rgba(255,214,0,.7);">Phase 5</div>
+      <div class="phase-title">Certificate</div>
+      <p class="phase-desc">Students who complete all phases earn a digital badge and a personalised certificate they can share and print.</p>
+      <span class="phase-badge" style="background:rgba(255,214,0,.18);color:var(--yellow);">Earn Badge 🏆</span>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ NOURA & ANWAR ═══ -->
+<section id="noura-anwar" class="chars-section">
+<div class="si">
+  <div class="sec-head center rev">
+    <span class="stag stag-blue">Meet the Guides</span>
+    <h2 class="sh">Noura & Anwar — your children's digital guides</h2>
+    <p class="sp">Every child has a guide who makes learning personal, warm and motivating. Noura leads with curiosity. Anwar brings the energy.</p>
+  </div>
+  <div class="chars-grid">
+    <div class="char-card noura rev-l">
+      <div class="char-top ct-noura">
+        <img src="https://i.imgur.com/Hf1eXnZ.png" class="char-avatar" alt="Noura" onerror="this.outerHTML='<div class=char-avatar style=background:var(--u1);display:flex;align-items:center;justify-content:center;font-size:3.5rem;>👧🏽</div>'"/>
+        <div class="char-name">Noura</div>
+        <div class="char-role">AI Chat Guide · Primary Platform</div>
+        <div class="char-speech">"Hi! I'm Noura 👋 Let's discover the digital world together — one question at a time!"</div>
+      </div>
+      <div class="char-body">
+        <div class="char-traits">
+          <span class="trait t-blue">💬 Starts every unit</span>
+          <span class="trait t-blue">🌟 Motivates students</span>
+          <span class="trait t-blue">🧠 Asks smart questions</span>
+          <span class="trait t-blue">🌍 Speaks 3 languages</span>
+        </div>
+        <p class="char-desc">Noura opens every lesson with a chat that activates prior knowledge and builds excitement. She guides students through the Activate phase and keeps learning feeling personal — like talking to a smart, friendly classmate who already knows all the answers.</p>
+      </div>
+    </div>
+    <div class="char-card anwar rev-r">
+      <div class="char-top ct-anwar">
+        <img src="https://i.imgur.com/SXSxLnn.png" class="char-avatar" alt="Anwar" onerror="this.outerHTML='<div class=char-avatar style=background:var(--u3);border-color:var(--u3);display:flex;align-items:center;justify-content:center;font-size:3.5rem;>👦🏽</div>'"/>
+        <div class="char-name">Anwar</div>
+        <div class="char-role">Learning Buddy · All Phases</div>
+        <div class="char-speech">"Yalla! 🚀 Let's go — I'll be right here with you. Every star you earn, we earn together!"</div>
+      </div>
+      <div class="char-body">
+        <div class="char-traits">
+          <span class="trait t-orange">🚀 Celebrates progress</span>
+          <span class="trait t-orange">⭐ Stars & badges</span>
+          <span class="trait t-orange">🎮 Keeps energy high</span>
+          <span class="trait t-orange">🏅 Awards certificates</span>
+        </div>
+        <p class="char-desc">Anwar is the hype kid — always there when a student earns a badge, completes a phase or finishes a test. He celebrates with them and reminds them how far they've come. Anwar is present throughout the workbooks too, giving encouragement, hints and challenge prompts.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ WHY US ═══ -->
+<section class="why-bg">
+<div class="si">
+  <div class="sec-head center rev">
+    <span class="stag stag-green">Why Schools Choose Us</span>
+    <h2 class="sh">Built different. Built for Morocco.</h2>
+    <p class="sp">We didn't translate a Western platform. We built SmartSkills Morocco from the ground up — for Moroccan children, teachers and schools.</p>
+  </div>
+  <div class="why-grid">
+    <div class="why-card rev d1"><div class="wico wi-b">🇲🇦</div><h4 class="why-title">Morocco-first content</h4><p class="why-desc">Every unit, activity and workbook is designed for the Moroccan school context — culturally relevant, in English with Arabic and French support.</p></div>
+    <div class="why-card rev d2"><div class="wico wi-g">🎮</div><h4 class="why-title">Gamified & motivating</h4><p class="why-desc">Stars, badges, levels and certificates keep children engaged — no more passive worksheets. The platform feels like a game that teaches real skills.</p></div>
+    <div class="why-card rev d3"><div class="wico wi-y">🏅</div><h4 class="why-title">Certified digital skills</h4><p class="why-desc">Students earn real certificates upon completing each unit — proof for parents, schools and future employers that digital skills were formally developed.</p></div>
+    <div class="why-card rev d1"><div class="wico wi-p">📊</div><h4 class="why-title">Teacher dashboards</h4><p class="why-desc">Teachers see exactly where every student stands — which units are complete, which domains need attention, who needs support.</p></div>
+    <div class="why-card rev d2"><div class="wico wi-o">📲</div><h4 class="why-title">No barriers to entry</h4><p class="why-desc">Primary students join via QR code — no email, no signup form. Get an entire class online in under 2 minutes with one scan.</p></div>
+    <div class="why-card rev d3"><div class="wico wi-n">🌍</div><h4 class="why-title">Truly multilingual</h4><p class="why-desc">English as the main language of instruction, with Arabic and French support — reflecting how Moroccan schools actually work.</p></div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ VIDEO / DEMO ═══ -->
+<section class="video-section">
+<div class="si">
+  <div class="video-grid">
+    <div class="rev-l">
+      <span class="stag" style="color:var(--yellow);background:rgba(255,214,0,.12);border-color:rgba(255,214,0,.25);">Platform Demo</span>
+      <h2 class="sh sw">See it in action</h2>
+      <p class="sp spw" style="margin-bottom:2rem;">Watch Noura guide a student through an entire unit — from the first chat all the way to the certificate screen. The whole thing takes about 20 minutes in class.</p>
+      <div class="video-features">
+        <div class="vf-item">
+          <div class="vf-icon">💬</div>
+          <div><div class="vf-title">Noura chat — live</div><div class="vf-desc">See how the Activate phase works with a real AI conversation between Noura and a student.</div></div>
+        </div>
+        <div class="vf-item">
+          <div class="vf-icon">🎮</div>
+          <div><div class="vf-title">Game mechanics in action</div><div class="vf-desc">Stars popping, badges unlocking, progress bars filling — watch how motivation builds naturally.</div></div>
+        </div>
+        <div class="vf-item">
+          <div class="vf-icon">🏅</div>
+          <div><div class="vf-title">Certificate moment</div><div class="vf-desc">The unit completion screen with personalised certificate — the moment every student works towards.</div></div>
+        </div>
+        <div class="vf-item rev d3">
+          <div class="vf-icon">📊</div>
+          <div><div class="vf-title">Teacher view</div><div class="vf-desc">See the teacher dashboard update in real time as students complete phases.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="rev-r">
+      <div class="video-frame" onclick="openVideoModal()">
+        <div style="text-align:center;padding:24px;">
+          <div style="font-size:4rem;margin-bottom:12px;">🎬</div>
+          <div style="font-family:var(--fd);font-size:1.2rem;color:rgba(255,255,255,.6);margin-bottom:20px;">Platform Walkthrough</div>
+          <div class="video-play-btn">▶</div>
+        </div>
+        <div class="video-overlay-text">
+          <div class="video-cta-title">Watch the full demo</div>
+          <div class="video-cta-sub">~3 minutes · Add your HeyGen video link</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:1.2rem;">
+        <a href="#contact" class="btn btn-yellow">🎓 Request a Live Demo Instead</a>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ SECONDARY ═══ -->
+<section class="secondary-section">
+<div class="si">
+  <div class="sec-head rev">
+    <span class="stag stag-purple">Secondary School Platform</span>
+    <h2 class="sh">Growing with your students</h2>
+    <p class="sp">The primary platform is our star product. The secondary platform extends the same digital literacy mission for older students — deeper curriculum, teacher tools and AI lesson generation.</p>
+  </div>
+  <div class="sec-card rev">
+    <div class="sc-header">
+      <span class="sc-icon">🏫</span>
+      <div class="sc-header-text">
+        <h3>Secondary School Platform</h3>
+        <p>Ages 12–18 · Deeper digital literacy · Teacher & admin tools</p>
+        <span class="sc-badge">● Live at www.smartskillsmorocco.online</span>
+      </div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-feature"><span class="sc-ficon">✨</span><div class="sc-ftitle">AI Lesson Generator</div><p class="sc-fdesc">Create full lesson plans in seconds — learning goal, intro, task, differentiation and reflection, in English, Arabic or French.</p></div>
+      <div class="sc-feature"><span class="sc-ficon">📊</span><div class="sc-ftitle">Progress Dashboards</div><p class="sc-fdesc">Per-domain progress reports for every class — teachers see which topics need more time and which students need support.</p></div>
+      <div class="sc-feature"><span class="sc-ficon">👥</span><div class="sc-ftitle">Class Management</div><p class="sc-fdesc">Multiple classes, teacher and admin roles, student accounts and QR enrolment — all in one clean dashboard.</p></div>
+    </div>
+    <div class="sc-footer">
+      <span class="sc-foot-text">Same 5-phase structure · Same digital literacy focus · Extended for secondary age</span>
+      <a href="https://www.smartskillsmorocco.online" target="_blank" rel="noopener" class="btn btn-blue btn-sm">Open Secondary Platform →</a>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ WORKBOOKS ═══ -->
+<section id="workbooks" class="wb-section">
+<div class="si">
+  <div class="sec-head rev">
+    <span class="stag stag-orange">Digital Workbooks</span>
+    <h2 class="sh">The classroom comes alive</h2>
+    <p class="sp">Professionally designed, print-ready workbooks that match the platform's units and phases — Noura and Anwar guide students through every page.</p>
+  </div>
+  <div class="wb-grid">
+    <!-- BOOK 1 — real cover recreation -->
+    <div class="wb-book rev-l">
+      <div class="wb-cover wbc-1">
+        <div class="wb-cover-inner">
+          <span class="wb-cover-badge">SSM Digital Devices</span>
+          <div class="wb-cover-age">Ages<br>8–10<br>⭐</div>
+          <div class="wb-cover-title">Digital<br><span>Devices</span></div>
+          <div class="wb-cover-subtitle">★ Discover — Level 1 ★</div>
+          <div class="wb-cover-avs">
+            <div class="wb-cover-av">
+              <img src="https://i.imgur.com/Hf1eXnZ.png" style="width:48px;height:48px;border-radius:50%;object-fit:cover;" onerror="this.outerHTML='<div style=font-size:1.8rem;>👧🏽</div>'"/>
+              <div class="wb-av-name">Noura</div>
+            </div>
+            <div class="wb-cover-av">
+              <img src="https://i.imgur.com/SXSxLnn.png" style="width:48px;height:48px;border-radius:50%;object-fit:cover;" onerror="this.outerHTML='<div style=font-size:1.8rem;>👦🏽</div>'"/>
+              <div class="wb-av-name">Anwar</div>
+            </div>
+          </div>
+          <div class="wb-cover-phases">
+            <span class="wcp wcp-1">💬 Activate</span>
+            <span class="wcp wcp-2">📱 Learn</span>
+            <span class="wcp wcp-3">✏️ Practice</span>
+            <span class="wcp wcp-4">🧠 Test</span>
+            <span class="wcp wcp-5">🏅 Certificate</span>
+          </div>
+        </div>
+      </div>
+      <div class="wb-body-content">
+        <div class="wb-school">Primary School · Ages 8–10</div>
+        <h3 class="wb-title">Digital Devices · Discover</h3>
+        <p class="wb-desc">What are digital devices? How do they work? Students discover hardware, software and responsible use — guided by Noura & Anwar across 4 complete units.</p>
+        <div class="wb-tags"><span class="wb-tag">Level 1</span><span class="wb-tag green">4 Units</span><span class="wb-tag">EN · AR · FR</span><span class="wb-tag">Print-ready</span></div>
+        <div class="wb-footer">
+          <button class="btn btn-blue btn-sm" onclick="alert('Add your Level 1 workbook download link here')">📥 View Workbook</button>
+          <span style="font-size:.72rem;color:var(--u2);font-weight:800;">✓ Complete & available</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOOK 2 — real cover recreation -->
+    <div class="wb-book rev-r">
+      <div class="wb-cover wbc-2">
+        <div class="wb-cover-inner" style="background-image:radial-gradient(circle,rgba(255,255,255,.06) 1px,transparent 1px);background-size:24px 24px;">
+          <span class="wb-cover-badge" style="background:var(--dark);color:var(--yellow);">SSM Digital Devices</span>
+          <div class="wb-cover-age" style="background:var(--dark);color:var(--yellow);">Ages<br>10–12<br>⭐</div>
+          <div class="wb-cover-title" style="color:var(--dark);">Digital<br><span style="color:var(--dark);">Devices</span></div>
+          <div class="wb-cover-subtitle" style="background:var(--dark);color:var(--yellow);">★ Explore — Level 2 ★</div>
+          <div class="wb-cover-avs">
+            <div class="wb-cover-av" style="background:rgba(0,0,0,.15);border-color:rgba(0,0,0,.2);">
+              <img src="https://i.imgur.com/Hf1eXnZ.png" style="width:48px;height:48px;border-radius:50%;object-fit:cover;" onerror="this.outerHTML='<div style=font-size:1.8rem;>👧🏽</div>'"/>
+              <div class="wb-av-name" style="color:var(--dark);">Noura</div>
+            </div>
+            <div class="wb-cover-av" style="background:rgba(0,0,0,.15);border-color:rgba(0,0,0,.2);">
+              <img src="https://i.imgur.com/SXSxLnn.png" style="width:48px;height:48px;border-radius:50%;object-fit:cover;" onerror="this.outerHTML='<div style=font-size:1.8rem;>👦🏽</div>'"/>
+              <div class="wb-av-name" style="color:var(--dark);">Anwar</div>
+            </div>
+          </div>
+          <div class="wb-cover-phases">
+            <span class="wcp" style="background:rgba(0,0,0,.3);">💬 Activate</span>
+            <span class="wcp" style="background:rgba(0,0,0,.3);">📱 Learn</span>
+            <span class="wcp" style="background:rgba(0,0,0,.3);">✏️ Practice</span>
+            <span class="wcp" style="background:rgba(0,0,0,.3);">🧠 Test</span>
+            <span class="wcp" style="background:rgba(0,0,0,.3);">🏅 Certificate</span>
+          </div>
+        </div>
+      </div>
+      <div class="wb-body-content">
+        <div class="wb-school">Primary School · Ages 10–12</div>
+        <h3 class="wb-title">Digital Devices · Explore</h3>
+        <p class="wb-desc">Level 2 deepens the skills — hardware vs software, digital citizenship, online safety and responsible behaviour. Same 5 phases, richer content.</p>
+        <div class="wb-tags"><span class="wb-tag">Level 2</span><span class="wb-tag green">4 Units</span><span class="wb-tag">English</span><span class="wb-tag">Print-ready</span></div>
+        <div class="wb-footer">
+          <button class="btn btn-blue btn-sm" onclick="alert('Add your Level 2 workbook link here (Book2_Digital_Explore_Level2.html)')">📥 View Workbook</button>
+          <span style="font-size:.72rem;color:var(--u2);font-weight:800;">✓ Complete & available</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- coming soon -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.5rem;" class="rev">
+    <div style="background:white;border-radius:var(--r);border:2px dashed var(--border);padding:1.5rem;display:flex;align-items:center;gap:1rem;opacity:.7;">
+      <div style="font-size:2rem;">🔒</div>
+      <div><div style="font-family:var(--fd);font-size:1rem;color:var(--text);">Online Safety Workbook</div><div style="font-size:.8rem;color:var(--muted);font-weight:600;">Secondary School · Ages 12–15 · Coming soon</div></div>
+    </div>
+    <div style="background:white;border-radius:var(--r);border:2px dashed var(--border);padding:1.5rem;display:flex;align-items:center;gap:1rem;opacity:.7;">
+      <div style="font-size:2rem;">🔒</div>
+      <div><div style="font-family:var(--fd);font-size:1rem;color:var(--text);">AI & the Future Workbook</div><div style="font-size:.8rem;color:var(--muted);font-weight:600;">Secondary School · Ages 15–18 · Coming soon</div></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ LANGUAGE ═══ -->
+<div class="lang-strip">
+  <div class="lang-inner">
+    <div class="lang-text rev-l">
+      <h3>Available in 3 languages</h3>
+      <p>Supporting the linguistic reality of Moroccan schools and the diaspora community.</p>
+    </div>
+    <div class="lang-flags rev-r">
+      <div class="lflag">🇬🇧 English<span class="lf-sup">Primary</span></div>
+      <div class="lflag">🇲🇦 العربية<span class="lf-sup sec">2nd</span></div>
+      <div class="lflag">🇫🇷 Français<span class="lf-sup sec">2nd</span></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ WORKSHOPS & TEACHER TRAINING ═══ -->
+<section id="workshops" style="background:linear-gradient(160deg,#060d24 0%,#0e1b3d 60%,#071428 100%);padding:88px 24px;position:relative;overflow:hidden;">
+<div style="position:absolute;inset:0;background-image:radial-gradient(ellipse at 10% 60%,rgba(255,214,0,.06) 0%,transparent 55%),radial-gradient(ellipse at 90% 20%,rgba(26,110,255,.07) 0%,transparent 50%);pointer-events:none;"></div>
+<div style="max-width:1200px;margin:0 auto;position:relative;">
+  <div style="text-align:center;margin-bottom:52px;">
+    <span style="display:inline-block;font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.13em;padding:4px 12px;border-radius:20px;color:#ffd600;background:rgba(255,214,0,.1);border:1px solid rgba(255,214,0,.25);margin-bottom:.8rem;">Teacher Training</span>
+    <h2 style="font-family:'Fredoka One',cursive;font-size:clamp(1.9rem,3.5vw,2.8rem);color:white;line-height:1.18;margin-bottom:.7rem;">Workshops for Schools &amp; Teachers</h2>
+    <p style="font-size:.95rem;color:rgba(255,255,255,.58);max-width:580px;margin:0 auto;line-height:1.85;font-weight:600;">We come to your school. We train your teachers. We build the bridge between the platform and the classroom — together, from the heart.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-bottom:3rem;">
+
+    <!-- Workshop 1 -->
+    <div style="background:rgba(255,255,255,.05);border:1.5px solid rgba(26,110,255,.3);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:all .22s;">
+      <div style="background:linear-gradient(135deg,rgba(26,110,255,.28),rgba(26,110,255,.08));padding:1.5rem 1.5rem 1rem;border-bottom:1px solid rgba(26,110,255,.2);">
+        <div style="font-size:2rem;margin-bottom:.5rem;">🎯</div>
+        <div style="font-size:.62rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:#7eb3ff;margin-bottom:.3rem;">Workshop 1</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:white;line-height:1.3;">Introduction to Digital Literacy</div>
+      </div>
+      <div style="padding:1.2rem 1.5rem 1.5rem;flex:1;display:flex;flex-direction:column;">
+        <p style="font-size:.83rem;color:rgba(255,255,255,.58);line-height:1.72;font-weight:600;margin-bottom:1rem;">A hands-on half-day session for your entire teaching team. We explain what digital literacy really means — beyond devices and social media — and how SmartSkills Morocco fits into your school's mission.</p>
+        <ul style="list-style:none;padding:0;margin:0 0 1.2rem;display:flex;flex-direction:column;gap:.45rem;flex:1;">
+          <li style="font-size:.82rem;color:rgba(255,255,255,.65);font-weight:600;display:flex;gap:8px;"><span style="color:#4DF0A8;flex-shrink:0;">✓</span>Half day · up to 30 teachers</li>
+          <li style="font-size:.82rem;color:rgba(255,255,255,.65);font-weight:600;display:flex;gap:8px;"><span style="color:#4DF0A8;flex-shrink:0;">✓</span>Live platform walkthrough</li>
+          <li style="font-size:.82rem;color:rgba(255,255,255,.65);font-weight:600;display:flex;gap:8px;"><span style="color:#4DF0A8;flex-shrink:0;">✓</span>Q&amp;A and classroom strategy</li>
+          <li style="font-size:.82rem;color:rgba(255,255,255,.65);font-weight:600;display:flex;gap:8px;"><span style="color:#4DF0A8;flex-shrink:0;">✓</span>Materials included</li>
+        </ul>
+        <button onclick="openQuoteModal('Workshop 1 — Introduction to Digital Literacy')" style="width:100%;background:#1A6EFF;color:white;border:none;border-radius:10px;padding:12px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;">Request a Quote →</button>
+      </div>
+    </div>
+
+    <!-- Workshop 2 — popular -->
+    <div style="background:rgba(255,255,255,.05);border:1.5px solid rgba(255,214,0,.35);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:all .22s;position:relative;">
+      <div style="position:absolute;top:14px;right:14px;background:#ffd600;color:#1a1a2e;font-size:.62rem;font-weight:900;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.08em;z-index:1;">Most popular</div>
+      <div style="background:linear-gradient(135deg,rgba(255,214,0,.2),rgba(255,214,0,.07));padding:1.5rem 1.5rem 1rem;border-bottom:1px solid rgba(255,214,0,.2);">
+        <div style="font-size:2rem;margin-bottom:.5rem;">🚀</div>
+        <div style="font-size:.62rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:#ffd600;margin-bottom:.3rem;">Workshop 2</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:white;line-height:1.3;">Deep Dive: Classroom Implementation</div>
+      </div>
+      <div style="padding:1.2rem 1.5rem 1.5rem;flex:1;display:flex;flex-direction:column;">
+        <p style="font-size:.83rem;color:rgba(255,255,255,.58);line-height:1.72;font-weight:600;margin-bottom:1rem;">A full-day immersive training where teachers learn to integrate SmartSkills into their weekly schedule. Practical, hands-on and tailored to your school's context — public or private.</p>
+        <ul style="list-style:none;padding:0;margin:0 0 1.2rem;display:flex;flex-direction:column;gap:.45rem;flex:1;">
+          <li style="font-size:.82rem;color:rgba(255,255,255,.65);font-weight:600;display:flex;gap:8px;"><span style="color:#ffd600;flex-shrink:0;">✓</span>Full day · up to 30 teachers</li>
+          <li style="font-size:.82rem;color:rgba(255,255,255,.65);font-weight:600;display:flex;gap:8px;"><span style="color:#ffd600;flex-shrink:0;">✓</span>Lesson planning per grade</li>
+          <li style="font-size:.82rem;color:rgba(255,255,255,.65);font-weight:600;display:flex;gap:8px;"><span style="color:#ffd600;flex-shrink:0;">✓</span>Platform setup &amp; dashboard training</li>
+          <li style="font-size:.82rem;color:rgba(255,255,255,.65);font-weight:600;display:flex;gap:8px;"><span style="color:#ffd600;flex-shrink:0;">✓</span>Workbook integration included</li>
+          <li style="font-size:.82rem;color:rgba(255,255,255,.65);font-weight:600;display:flex;gap:8px;"><span style="color:#ffd600;flex-shrink:0;">✓</span>30-day follow-up support</li>
+        </ul>
+        <button onclick="openQuoteModal('Workshop 2 — Classroom Implementation')" style="width:100%;background:#ffd600;color:#1a1a2e;border:none;border-radius:10px;padding:12px;font-family:'Nunito',sans-serif;font-weight:900;font-size:.88rem;cursor:pointer;">Request a Quote →</button>
+      </div>
+    </div>
+
+    <!-- Workshop 3 -->
+    <div style="background:rgba(255,255,255,.05);border:1.5px solid rgba(155,39,175,.3);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:all .22s;">
+      <div style="background:linear-gradient(135deg,rgba(155,39,175,.22),rgba(155,39,175,.07));padding:1.5rem 1.5rem 1rem;border-bottom:1px solid rgba(155,39,175,.2);">
+        <div style="font-size:2rem;margin-bottom:.5rem;">🏫</div>
+        <div style="font-size:.62rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:#ce93d8;margin-bottom:.3rem;">Workshop 3</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:white;line-height:1.3;">School Leadership Programme</div>
+      </div>
+      <div style="padding:1.2rem 1.5rem 1.5rem;flex:1;display:flex;flex-direction:column;">
+        <p style="font-size:.83rem;color:rgba(255,255,255,.58);line-height:1.72;font-weight:600;margin-bottom:1rem;">A strategic programme for directors and school leaders. Build a school-wide digital literacy roadmap that lasts beyond one academic year.</p>
+        <ul style="list-style:none;padding:0;margin:0 0 1.2rem;display:flex;flex-direction:column;gap:.45rem;flex:1;">
+          <li style="font-size:.82rem;color:rgba(255,255,255,.65);font-weight:600;display:flex;gap:8px;"><span style="color:#ce93d8;flex-shrink:0;">✓</span>Half day · directors &amp; coordinators</li>
+          <li style="font-size:.82rem;color:rgba(255,255,255,.65);font-weight:600;display:flex;gap:8px;"><span style="color:#ce93d8;flex-shrink:0;">✓</span>Digital literacy policy framework</li>
+          <li style="font-size:.82rem;color:rgba(255,255,255,.65);font-weight:600;display:flex;gap:8px;"><span style="color:#ce93d8;flex-shrink:0;">✓</span>Budget &amp; rollout planning</li>
+          <li style="font-size:.82rem;color:rgba(255,255,255,.65);font-weight:600;display:flex;gap:8px;"><span style="color:#ce93d8;flex-shrink:0;">✓</span>Can be combined with Workshop 2</li>
+        </ul>
+        <button onclick="openQuoteModal('Workshop 3 — School Leadership Programme')" style="width:100%;background:rgba(155,39,175,.85);color:white;border:none;border-radius:10px;padding:12px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;">Request a Quote →</button>
+      </div>
+    </div>
+
+  </div>
+  <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:20px;padding:2.5rem;text-align:center;max-width:680px;margin:0 auto;">
+    <div style="font-size:1.8rem;margin-bottom:.6rem;">💛</div>
+    <h3 style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:white;margin-bottom:.5rem;">Every school is different</h3>
+    <p style="font-size:.85rem;color:rgba(255,255,255,.5);font-weight:600;line-height:1.7;margin-bottom:1.2rem;">Pricing depends on your location, number of teachers, and which workshops you combine. We always start with a conversation — no obligation, just an honest talk about what your school needs.</p>
+    <button onclick="openQuoteModal('General Workshop Enquiry')" style="display:inline-flex;align-items:center;gap:8px;background:#ffd600;color:#1a1a2e;border:none;border-radius:12px;padding:14px 28px;font-family:'Nunito',sans-serif;font-weight:900;font-size:.95rem;cursor:pointer;">📬 Request a Quote for Your School</button>
+  </div>
+</div>
+</section>
+
+<!-- QUOTE MODAL — for workshops AND pricing -->
+<div id="quote-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:600;align-items:center;justify-content:center;padding:24px;" onclick="if(event.target===this)closeQuoteModal()">
+  <div style="background:#0e1b3d;border:1px solid rgba(255,255,255,.12);border-radius:20px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;" onclick="event.stopPropagation()">
+    <div style="background:linear-gradient(135deg,rgba(26,110,255,.3),rgba(255,214,0,.1));padding:20px 24px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;">
+      <div>
+        <div style="font-family:'Fredoka One',cursive;font-size:1.15rem;color:white;">Request a Quote</div>
+        <div id="quote-type-label" style="font-size:.75rem;color:rgba(255,255,255,.45);font-weight:700;margin-top:2px;"></div>
+      </div>
+      <button onclick="closeQuoteModal()" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:1.3rem;cursor:pointer;">✕</button>
+    </div>
+    <div style="padding:24px;display:flex;flex-direction:column;gap:13px;">
+      <div><label style="font-size:.73rem;font-weight:800;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:5px;">Your name *</label><input id="q-name" type="text" placeholder="Your full name" style="width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 14px;color:white;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:600;outline:none;" onfocus="this.style.borderColor='#ffd600'" onblur="this.style.borderColor='rgba(255,255,255,.12)'"/></div>
+      <div><label style="font-size:.73rem;font-weight:800;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:5px;">School name *</label><input id="q-school" type="text" placeholder="Name of your school" style="width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 14px;color:white;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:600;outline:none;" onfocus="this.style.borderColor='#ffd600'" onblur="this.style.borderColor='rgba(255,255,255,.12)'"/></div>
+      <div><label style="font-size:.73rem;font-weight:800;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:5px;">City &amp; Country *</label><input id="q-city" type="text" placeholder="e.g. Casablanca, Morocco" style="width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 14px;color:white;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:600;outline:none;" onfocus="this.style.borderColor='#ffd600'" onblur="this.style.borderColor='rgba(255,255,255,.12)'"/></div>
+      <div><label style="font-size:.73rem;font-weight:800;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:5px;">Email *</label><input id="q-email" type="email" placeholder="your@school.ma" style="width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 14px;color:white;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:600;outline:none;" onfocus="this.style.borderColor='#ffd600'" onblur="this.style.borderColor='rgba(255,255,255,.12)'"/></div>
+      <div><label style="font-size:.73rem;font-weight:800;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:5px;">Message or questions</label><textarea id="q-msg" placeholder="Tell us about your school and what you need..." rows="3" style="width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 14px;color:white;font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:600;outline:none;resize:vertical;" onfocus="this.style.borderColor='#ffd600'" onblur="this.style.borderColor='rgba(255,255,255,.12)'"></textarea></div>
+      <button onclick="submitQuote()" id="q-btn" style="width:100%;background:#ffd600;color:#1a1a2e;border:none;border-radius:12px;padding:14px;font-family:'Nunito',sans-serif;font-weight:900;font-size:.97rem;cursor:pointer;margin-top:4px;"><span id="q-btn-txt">Send Quote Request →</span></button>
+      <div id="q-ok" style="display:none;text-align:center;padding:12px;background:rgba(0,200,83,.1);border:1px solid rgba(0,200,83,.25);border-radius:10px;font-size:.88rem;font-weight:700;color:#4DF0A8;">✅ Thank you! We'll reply within 1–2 business days with a personalised quote.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PRICING ═══ -->
+<section id="pricing" class="pricing-bg">
+<div class="si">
+  <div class="sec-head center rev">
+    <span class="stag stag-gold">Pricing & Licensing</span>
+    <h2 class="sh">Simple, school-friendly pricing</h2>
+    <p class="sp">One licence per school gives access to both platforms and all workbooks. No per-student fees — pay once per school year.</p>
+  </div>
+  <div class="lic-grid">
+    <div class="lic rev d1">
+      <div class="lic-ico">🎒</div>
+      <div class="lic-name">Starter</div>
+      
+      <p class="lic-desc">Perfect for one teacher exploring the platform with a single class before committing.</p>
+      <ul class="lic-ul">
+        <li>1 platform (primary or secondary)</li>
+        <li>1 workbook — Level 1</li>
+        <li>Up to 15 students</li>
+        <li>Email support</li>
+        <li class="no">AI lesson generator</li>
+        <li class="no">Multi-class management</li>
+      </ul>
+      <button class="btn-lic b-out" onclick="openQuoteModal('Starter Plan — Free Trial')">Request a Quote →</button>
+    </div>
+    <div class="lic feat rev d2">
+      <div class="feat-pill">⭐ Most Popular</div>
+      <div class="lic-ico">🏫</div>
+      <div class="lic-name">School</div>
+      
+      <p class="lic-desc">Everything your school needs — both platforms, all workbooks, unlimited students. One price for the whole school year.</p>
+      <ul class="lic-ul">
+        <li>Both platforms — primary & secondary</li>
+        <li>All workbooks — all levels</li>
+        <li>Unlimited students</li>
+        <li>Class & student management</li>
+        <li>AI lesson generator (EN · AR · FR)</li>
+        <li>Progress reports per domain</li>
+        <li>Priority support</li>
+      </ul>
+      <button class="btn-lic b-yellow" onclick="openQuoteModal('School Licence')">Request a Quote →</button>
+    </div>
+    <div class="lic rev d3">
+      <div class="lic-ico">🌍</div>
+      <div class="lic-name">District</div>
+      
+      <p class="lic-desc">Multi-school management, custom branding, dedicated support and formal contracts for districts and government programmes.</p>
+      <ul class="lic-ul">
+        <li>Multi-school management</li>
+        <li>Custom branding option</li>
+        <li>API access & integrations</li>
+        <li>Dedicated support & onboarding</li>
+        <li>Custom reporting & SLA</li>
+        <li>Formal contract & invoicing</li>
+      </ul>
+      <button class="btn-lic b-blue" onclick="openQuoteModal('District / Multi-School Plan')">Request a Quote →</button>
+    </div>
+  </div>
+
+  <div style="overflow-x:auto;margin-top:2.5rem;" class="rev">
+    <table class="ctable">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th class="c">Starter</th>
+          <th class="c" style="background:#b8922e;">School ⭐</th>
+          <th class="c">District</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Price</td><td class="c">On request</td><td class="c">On request</td><td class="c">On request</td></tr>
+        <tr><td>Platforms included</td><td class="c">1</td><td class="c">Both</td><td class="c">Both + custom</td></tr>
+        <tr><td>Students</td><td class="c">Max 15</td><td class="c">Unlimited</td><td class="c">Unlimited</td></tr>
+        <tr><td>Workbooks</td><td class="c">Level 1 only</td><td class="c">All levels</td><td class="c">All levels</td></tr>
+        <tr><td>AI lesson generator</td><td class="c"><span class="cno">—</span></td><td class="c"><span class="cyes">✓</span></td><td class="c"><span class="cyes">✓</span></td></tr>
+        <tr><td>Multi-class management</td><td class="c"><span class="cno">—</span></td><td class="c"><span class="cyes">✓</span></td><td class="c"><span class="cyes">✓</span></td></tr>
+        <tr><td>Languages (EN · AR · FR)</td><td class="c"><span class="cyes">✓</span></td><td class="c"><span class="cyes">✓</span></td><td class="c"><span class="cyes">✓</span></td></tr>
+        <tr><td>Custom branding</td><td class="c"><span class="cno">—</span></td><td class="c"><span class="cno">—</span></td><td class="c"><span class="cyes">✓</span></td></tr>
+        <tr><td>Support level</td><td class="c">Email</td><td class="c">Priority</td><td class="c">Dedicated</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pay-row rev">
+    <span>Payments:</span>
+    <span class="pchip">💳 Stripe (soon)</span>
+    <span class="pchip">📱 Wafa QR (soon)</span>
+    <span class="pchip">🏦 Bank transfer</span>
+    <span class="pchip">📧 Invoice on request</span>
+  </div>
+</div>
+</section>
+
+<!-- ═══ NEWSLETTER ═══ -->
+<section class="nl-section" style="padding:72px 24px;">
+<div class="si">
+  <div class="nl-inner rev">
+    <span class="stag" style="color:var(--yellow);background:rgba(255,214,0,.12);border-color:rgba(255,214,0,.25);">Stay Updated</span>
+    <h2 class="sh sw" style="margin-top:.5rem;">📬 Get school updates</h2>
+    <p class="sp spw">New workbooks, platform features and workshops — delivered to your inbox.</p>
+    <div class="nl-form">
+      <input type="email" id="nlE" class="nl-inp" placeholder="your@email.com"/>
+      <button class="btn btn-yellow" onclick="subNL()">Subscribe</button>
+    </div>
+    <div id="nl-ok">✓ Subscribed! We'll be in touch soon.</div>
+    <p class="nl-note">Via MailerLite (coming soon) · No spam · Unsubscribe anytime</p>
+  </div>
+</div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact" class="contact-section">
+<div class="si">
+  <div class="sec-head rev">
+    <span class="stag stag-blue">Contact</span>
+    <h2 class="sh">Let's talk</h2>
+    <p class="sp">Questions, demo requests or partnership ideas — we're here in English, Arabic and French.</p>
+  </div>
+  <div class="con-tabs rev" id="contabs">
+    <button class="ctab on" onclick="setCtab('demo',this)">🎓 Request Demo</button>
+    <button class="ctab" onclick="setCtab('school',this)">🏫 School Licence</button>
+    <button class="ctab" onclick="setCtab('partner',this)">🤝 Partnership</button>
+    <button class="ctab" onclick="setCtab('support',this)">💬 Support</button>
+  </div>
+  <div class="con-grid">
+    <div class="con-info rev-l">
+      <div class="ci">
+        <div class="ci-ico">📧</div>
+        <div><h4>Email</h4><p><a href="mailto:info@smartskillsmorocco.com">info@smartskillsmorocco.com</a></p></div>
+      </div>
+      <div class="ci">
+        <div class="ci-ico">💬</div>
+        <div><h4>WhatsApp</h4><p><a href="https://wa.me/31615569963" target="_blank" rel="noopener">+31 6 15 56 99 63</a></p></div>
+      </div>
+      <div class="ci">
+        <div class="ci-ico">🌍</div>
+        <div><h4>Region</h4><p>Morocco & Moroccan diaspora — fully online</p></div>
+      </div>
+      <div class="ci">
+        <div class="ci-ico">💬</div>
+        <div><h4>Languages</h4><p>English · العربية · Français · Nederlands</p></div>
+      </div>
+      <div class="dom-box">
+        <h4>🌐 Our domains</h4>
+        <div class="drow"><span class="ddot" style="background:#D4A847;"></span><span class="durl">www.smartskillsmorocco.com</span><span class="dlbl"> — this site</span></div>
+        <div class="drow"><span class="ddot" style="background:var(--u1);"></span><span class="durl">www.smartskillsmorocco.online</span><span class="dlbl"> — both platforms</span></div>
+      </div>
+    </div>
+    <div class="rev-r">
+      <div class="cf-wrap">
+        <div class="cf-row cf-grp">
+          <div><label class="cflbl">Name / School</label><input id="cf1" type="text" class="cfinp" placeholder="Your name or school"/></div>
+          <div><label class="cflbl">Email</label><input id="cf2" type="email" class="cfinp" placeholder="your@email.com"/></div>
+        </div>
+        <div class="cf-grp"><label class="cflbl">Subject</label>
+          <select id="cf3" class="cfinp" style="cursor:pointer;">
+            <option value="demo">🎓 Request a live demo</option>
+            <option value="school">🏫 School licence enquiry</option>
+            <option value="district">🌍 District / multi-school deal</option>
+            <option value="partner">🤝 Partnership / collaboration</option>
+            <option value="workbook">📓 Workbook order</option>
+            <option value="whatsapp">💬 Prefer WhatsApp chat</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="cf-grp"><label class="cflbl">Message</label><textarea id="cf4" class="cfinp" placeholder="Tell us about your school — name, city, number of students and what you're looking for."></textarea></div>
+        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+          <button class="btn-submit" onclick="subCF()"><span id="cftxt">Send Message →</span></button>
+          <a href="https://wa.me/31615569963" target="_blank" rel="noopener" class="btn btn-green btn-sm">💬 WhatsApp Us</a>
+        </div>
+        <div class="cf-succ" id="cf-ok">✅ Thank you! We'll reply within 1–2 business days. Check your inbox!</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+<div class="ft">
+  <div class="ft-top">
+    <div>
+      <a href="#top" class="ft-brand-logo">
+        <img src="/mnt/user-data/uploads/4ef53d5e-9c91-4c97-9f44-348d849867dc.jpg" alt="SmartSkills Morocco"/>
+      </a>
+      <p class="ft-tagline">Digital literacy platforms and workbooks for primary and secondary schools in Morocco.</p>
+      <div class="ft-socials">
+        <a href="#" class="fsoc" title="TikTok" target="_blank">🎵</a>
+        <a href="#" class="fsoc" title="Instagram" target="_blank">📷</a>
+        <a href="#" class="fsoc" title="LinkedIn" target="_blank">💼</a>
+        <a href="#" class="fsoc" title="YouTube" target="_blank">▶️</a>
+        <a href="#" class="fsoc" title="Podcast" target="_blank">🎙️</a>
+        <a href="https://wa.me/31615569963" class="fsoc" title="WhatsApp" target="_blank" rel="noopener">💬</a>
+      </div>
+    </div>
+    <div class="ft-col">
+      <h5>Platforms</h5>
+      <ul>
+        <li><a href="https://www.smartskillsmorocco.online" target="_blank">Primary School</a></li>
+        <li><a href="https://www.smartskillsmorocco.online" target="_blank">Secondary School</a></li>
+        <li><a href="#workbooks">Workbooks</a></li>
+        <li><a href="#workshops">Workshops</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#noura-anwar">Our Story</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#contact">Partnerships</a></li>
+        <li><a href="#contact">Press</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h5>Support</h5>
+      <ul>
+        <li><a href="#contact">Help Centre</a></li>
+        <li><a href="#contact">Teacher Guide</a></li>
+        <li><a href="#contact">School Onboarding</a></li>
+        <li><a href="https://wa.me/31615569963" target="_blank">WhatsApp Support</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h5>Legal</h5>
+      <ul>
+        <li><a href="#contact">Privacy Policy</a></li>
+        <li><a href="#contact">Terms of Use</a></li>
+        <li><a href="#contact">Cookie Policy</a></li>
+        <li><a href="#contact">GDPR</a></li>
+      </ul>
+    </div>
+  </div>
+  <hr class="ft-div"/>
+  <div class="ft-bot">
+    <div>
+      <div class="ft-copy">© 2025 SmartSkills Morocco · www.smartskillsmorocco.com · info@smartskillsmorocco.com</div>
+      <div class="ft-legal" style="margin-top:4px;">
+        <a href="#contact">Privacy</a><a href="#contact">Terms</a><a href="#contact">Cookies</a>
+      </div>
+    </div>
+    <div class="ft-chips">
+      <span class="fchip">Vercel</span><span class="fchip">Supabase</span>
+      <span class="fchip">Stripe (soon)</span><span class="fchip">MailerLite (soon)</span><span class="fchip">Wafa QR (soon)</span>
+    </div>
+  </div>
+</div>
+</footer>
+
+<!-- ═══ VIDEO MODAL ═══ -->
+<div id="vid-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;display:none;align-items:center;justify-content:center;padding:24px;" onclick="this.style.display='none'">
+  <div style="background:var(--dark);border-radius:var(--rl);overflow:hidden;width:100%;max-width:800px;position:relative;" onclick="event.stopPropagation()">
+    <div style="padding:14px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.08);">
+      <div style="font-family:var(--fd);font-size:1.1rem;color:white;">Platform Demo</div>
+      <button onclick="document.getElementById('vid-modal').style.display='none'" style="background:none;border:none;color:rgba(255,255,255,.6);font-size:1.4rem;cursor:pointer;">✕</button>
+    </div>
+    <div style="aspect-ratio:16/9;background:#000;display:flex;align-items:center;justify-content:center;">
+      <div style="text-align:center;padding:40px;">
+        <div style="font-size:3rem;margin-bottom:12px;">🎬</div>
+        <div style="font-family:var(--fd);font-size:1.3rem;color:white;margin-bottom:8px;">Add your HeyGen / demo video here</div>
+        <div style="font-size:.85rem;color:rgba(255,255,255,.45);font-weight:600;">Replace this placeholder with an iframe embed:<br>&lt;iframe src="YOUR_VIDEO_URL" ...&gt;&lt;/iframe&gt;</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── nav ── */
+function toggleMob(){document.getElementById('mob').classList.toggle('open');}
+document.addEventListener('click',function(e){
+  var m=document.getElementById('mob');
+  if(m.classList.contains('open')&&!e.target.closest('nav')&&!e.target.closest('#mob'))m.classList.remove('open');
+});
+
+/* ── scroll reveal ── */
+(function(){
+  var els=document.querySelectorAll('.rev,.rev-l,.rev-r');
+  var ob=new IntersectionObserver(function(ents){
+    ents.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');ob.unobserve(e.target);}});
+  },{threshold:0.08,rootMargin:'0px 0px -30px 0px'});
+  els.forEach(function(el){ob.observe(el);});
+})();
+
+/* ── star field ── */
+(function(){
+  var sf=document.getElementById('starfield');
+  if(!sf)return;
+  for(var i=0;i<80;i++){
+    var s=document.createElement('div');
+    s.className='star';
+    s.style.left=Math.random()*100+'%';
+    s.style.top=Math.random()*100+'%';
+    s.style.setProperty('--dur',(2+Math.random()*4)+'s');
+    s.style.setProperty('--del',(Math.random()*5)+'s');
+    sf.appendChild(s);
+  }
+})();
+
+/* ── contact tabs ── */
+var tabMap={demo:0,school:1,partner:2,support:3};
+var subMap={demo:'🎓 Request a live demo',school:'🏫 School licence enquiry',partner:'🤝 Partnership / collaboration',support:'💬 Prefer WhatsApp chat'};
+function setCtab(key,el){
+  document.querySelectorAll('.ctab').forEach(function(t){t.classList.remove('on');});
+  el.classList.add('on');
+  var sel=document.getElementById('cf3');
+  if(sel&&subMap[key]){for(var i=0;i<sel.options.length;i++){if(sel.options[i].text===subMap[key]){sel.selectedIndex=i;break;}}}
+}
+function openContact(type){
+  document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+  setTimeout(function(){
+    var tabs=document.querySelectorAll('.ctab');
+    var i=tabMap[type]||0;
+    if(tabs[i])setCtab(type,tabs[i]);
+  },450);
+}
+
+/* ── form ── */
+function subCF(){
+  var n=document.getElementById('cf1').value.trim();
+  var e=document.getElementById('cf2').value.trim();
+  var m=document.getElementById('cf4').value.trim();
+  var ok=true;
+  ['cf1','cf2','cf4'].forEach(function(id){document.getElementById(id).classList.remove('err');});
+  if(!n){document.getElementById('cf1').classList.add('err');ok=false;}
+  if(!e||!e.includes('@')){document.getElementById('cf2').classList.add('err');ok=false;}
+  if(!m){document.getElementById('cf4').classList.add('err');ok=false;}
+  if(!ok)return;
+  document.getElementById('cftxt').textContent='Sending...';
+  setTimeout(function(){
+    document.getElementById('cftxt').textContent='Send Message →';
+    document.getElementById('cf-ok').style.display='block';
+    document.getElementById('cf1').value='';
+    document.getElementById('cf2').value='';
+    document.getElementById('cf4').value='';
+    setTimeout(function(){document.getElementById('cf-ok').style.display='none';},6000);
+  },1100);
+}
+
+/* ── newsletter ── */
+function subNL(){
+  var e=document.getElementById('nlE');
+  if(!e.value.trim()||!e.value.includes('@')){e.style.borderColor='var(--u3)';return;}
+  e.style.borderColor='';
+  document.getElementById('nl-ok').style.display='block';
+  e.value='';
+  setTimeout(function(){document.getElementById('nl-ok').style.display='none';},5000);
+}
+
+/* ── video modal ── */
+function openVideoModal(){document.getElementById('vid-modal').style.display='flex';}
+
+/* ── LANGUAGE SWITCHER ── */
+var currentLang = 'nl';
+function setLang(lang, btn) {
+  currentLang = lang;
+  // Update button states
+  document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  // RTL for Arabic
+  if(lang === 'ar') {
+    document.documentElement.setAttribute('dir','rtl');
+    document.documentElement.setAttribute('lang','ar');
+  } else {
+    document.documentElement.setAttribute('dir','ltr');
+    document.documentElement.setAttribute('lang', lang);
+  }
+  // Show/hide content blocks
+  // All elements with data-lang-content: show only matching lang
+  var allLangEls = document.querySelectorAll('[data-lang-content]');
+  allLangEls.forEach(function(el){
+    if(el.getAttribute('data-lang-content') === lang) {
+      el.classList.remove('lang-hidden');
+    } else {
+      el.classList.add('lang-hidden');
+    }
+  });
+  // Nav links - translate
+  var navLabels = {
+    nl: {platform:'Platform', chars:'Noura & Anwar', wb:'Werkboeken', price:'Prijzen', contact:'Contact', cta:'Demo aanvragen 🎓'},
+    en: {platform:'Platform', chars:'Noura & Anwar', wb:'Workbooks', price:'Pricing', contact:'Contact', cta:'Request Demo 🎓'},
+    fr: {platform:'Plateforme', chars:'Noura & Anwar', wb:'Cahiers', price:'Tarifs', contact:'Contact', cta:'Demander une Démo 🎓'},
+    ar: {platform:'المنصة', chars:'نورة وأنور', wb:'الكتب', price:'الأسعار', contact:'اتصل بنا', cta:'طلب عرض 🎓'}
+  };
+  var labels = navLabels[lang] || navLabels['nl'];
+  var navLinks = document.querySelectorAll('.nav-links a');
+  if(navLinks.length >= 6) {
+    navLinks[0].textContent = labels.platform;
+    navLinks[1].textContent = labels.chars;
+    navLinks[2].textContent = labels.wb;
+    navLinks[3].textContent = labels.price;
+    navLinks[4].textContent = labels.contact;
+    navLinks[5].textContent = labels.cta;
+  }
+  // Hero stat labels
+  var statLabels = {
+    nl: ['Leerplatformen','Eenheden per Platform','Fasen per Eenheid','Talen','Gecertificeerd'],
+    en: ['Learning Platforms','Units per Platform','Phases per Unit','Languages','Certified Completion'],
+    fr: ['Plateformes','Unités par Plateforme','Phases par Unité','Langues','Certifié'],
+    ar: ['منصة تعليمية','وحدة لكل منصة','مراحل لكل وحدة','لغات','شهادة اتمام']
+  };
+  var sl = statLabels[lang] || statLabels['nl'];
+  var statEls = document.querySelectorAll('.hs-l');
+  var slArr = sl;
+  statEls.forEach(function(el,i){ if(slArr[i]) el.textContent = slArr[i]; });
+  if(lang==='ar' && typeof window.arabicFontApplied === 'undefined'){
+    window.arabicFontApplied = true;
+    document.querySelectorAll('.sh,.sp,.why-title,.why-desc,.char-name,.char-role,.phase-title,.phase-desc,.hstat,.btn,.hero-sub,.hero h1').forEach(function(e){
+      e.style.fontFamily="'Cairo',sans-serif";
+    });
+  }
+}
+// Initialize with NL on page load - show NL content, hide others
+document.addEventListener('DOMContentLoaded', function(){
+  setLang('en', document.querySelector('.lang-btn'));
+});
+
+
+/* ── Quote Modal (workshops + pricing) ── */
+function openQuoteModal(type){
+  document.getElementById('quote-modal').style.display='flex';
+  document.getElementById('quote-type-label').textContent=type;
+  document.getElementById('q-ok').style.display='none';
+  document.getElementById('q-btn-txt').textContent='Send Quote Request →';
+}
+function closeQuoteModal(){
+  document.getElementById('quote-modal').style.display='none';
+}
+function submitQuote(){
+  var n=document.getElementById('q-name').value.trim();
+  var s=document.getElementById('q-school').value.trim();
+  var e=document.getElementById('q-email').value.trim();
+  var ok=true;
+  if(!n||!s||!e||!e.includes('@')){ok=false;}
+  if(!ok){return;}
+  document.getElementById('q-btn-txt').textContent='Sending...';
+  setTimeout(function(){
+    document.getElementById('q-btn-txt').textContent='Send Quote Request →';
+    document.getElementById('q-ok').style.display='block';
+    ['q-name','q-school','q-city','q-email','q-msg'].forEach(function(id){document.getElementById(id).value='';});
+  },1200);
+}
+
+/* ── nav shadow on scroll ── */
+window.addEventListener('scroll',function(){
+  document.querySelector('nav').style.boxShadow=window.scrollY>60?'0 4px 20px rgba(0,0,0,.35)':'none';
+},{ passive:true });
+</script>
+</body>
+</html>
